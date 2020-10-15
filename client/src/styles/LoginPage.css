@@ -1,0 +1,34 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+#main-content-login {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.login-and-signup-header{
+    text-align: center;
+    color: #5E6C84;
+    font-size: 16px;
+    line-height: 28px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+#signup-navlink {
+    margin: auto;
+    text-decoration:none;
+    color: #0052CC;
+}
+
+#signup-navlink:hover {
+    text-decoration: underline;
+}

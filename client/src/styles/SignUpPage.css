@@ -1,0 +1,26 @@
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+#main-content-sign-up {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#login-navlink {
+    margin: auto;
+    text-decoration:none;
+    color: #0052CC;
+}
+
+#login-navlink:hover {
+    text-decoration: underline;
+}
