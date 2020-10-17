@@ -8,6 +8,8 @@ from flask_login import LoginManager, current_user
 from .models import db, User
 from .api.session import session
 from .api.user_routes import user_routes
+from .api.activities import activity
+
 
 from .config import Config
 
@@ -15,6 +17,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(session, url_prefix='/api/session')
+app.register_blueprint(activity, url_prefix='/api/activity')
 db.init_app(app)
 Migrate(app, db)
 

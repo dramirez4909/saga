@@ -107,7 +107,7 @@ function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!username || !password) {
-            await dispatch(registerErrors({"1":"Must enter username and password"}));
+            await dispatch(registerErrors({"1":"Please enter a username and password"}));
         } else {
             const res = await dispatch(login(username, password));
             // console.log(res.errors);

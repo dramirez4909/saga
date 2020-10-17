@@ -18,6 +18,13 @@ user_security = db.Table(
   db.Column("security_point_id",db.Integer, db.ForeignKey("security_points.id"),primary_key=True)
 )
 
+care_teams = db.Table(
+  "care_teams",
+  db.Model.metadata,
+  db.Column("patient_id",db.Integer, db.ForeignKey("patients.id"),primary_key=True),
+  db.Column("provider_id",db.Integer, db.ForeignKey("providers.id"),primary_key=True)
+)
+
 role_security = db.Table(
   "role_security",
   db.Model.metadata,
@@ -33,13 +40,31 @@ class Encounter_Type(db.Model):
   encounters = db.relationship("Encounter",back_populates="type")
 
 
+class Activity(db.Model):
+  __tablename__ = "activities"
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(40), nullable = False)
+  required_security_point_id = db.Column(db.Integer, db.ForeignKey("security_points.id"), nullable=True)
+
+  security_point = db.relationship("Security_Point",back_populates="activity")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+    }
+
+
 class Order(db.Model):
   __tablename__ = "orders"
   id = db.Column(db.Integer, primary_key = True)
   patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
   status = db.Column(db.String(40), nullable = True)
   encounter_id = db.Column(db.Integer, db.ForeignKey("encounters.id"), nullable=True)
+  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+
   patient = db.relationship("Patient",back_populates="orders")
+  provider = db.relationship("Provider",back_populates="orders")
   encounter = db.relationship("Encounter",back_populates="orders")
 
 
@@ -47,14 +72,28 @@ class Patient(db.Model):
   __tablename__ = "patients"
   id = db.Column(db.Integer, primary_key = True)
   user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+  encounters= db.relationship("Encounter",back_populates="patient")
   orders = db.relationship("Order",back_populates="patient")
+  providers = db.relationship("Provider",secondary=care_teams, back_populates="patients")
+
+
+class Provider(db.Model):
+  __tablename__ = "providers"
+  id = db.Column(db.Integer, primary_key = True)
+  user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+  specialty = db.Column(db.String(40), nullable = False)
   
+  patients = db.relationship("Patient",secondary=care_teams, back_populates="providers")
+  orders = db.relationship("Order",back_populates="provider")
 
 class Encounter(db.Model):
   __tablename__ = "encounters"
   id = db.Column(db.Integer, primary_key = True)
-  encounter_type_id = db.Column(db.Integer, db.ForeignKey("encounter_types.id"))
+  encounter_type_id = db.Column(db.Integer, db.ForeignKey("encounter_types.id"),nullable=True)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=True)
 
+  patient = db.relationship("Patient",back_populates="encounters")
   orders = db.relationship("Order",back_populates="encounter")
   type = db.relationship("Encounter_Type",back_populates="encounters")
 
@@ -65,11 +104,13 @@ class Security_Point(db.Model):
 
   roles = db.relationship("Role",secondary=role_security,back_populates="security_points")
   users = db.relationship("User",secondary=user_security, back_populates="security_points")
+  activity = db.relationship("Activity",back_populates="security_point",uselist=False)
 
   def to_dict(self):
     return {
       "id": self.id,
-      "name": self.name
+      "name": self.name,
+      "activity": self.activity.to_dict()
     }
 
 
@@ -85,7 +126,8 @@ class Role(db.Model):
   def to_dict(self):
     return {
       "id": self.id,
-      "name": self.name
+      "name": self.name,
+      "security_points": [{f"{security_point.id}":security_point.to_dict()} for (security_point) in self.security_points]
     }
 
 class User(db.Model,UserMixin):

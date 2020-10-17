@@ -8,13 +8,13 @@ session = Blueprint('session', __name__)
 def cur_user():
     if current_user.is_authenticated:
         user = current_user.to_dict()
+        print("!!!!!!!!!!!!",user)
         return {"user": user }
 
 
 @session.route("/", methods=["PUT"])
 def login():
     data = request.json
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     print(data)
     if not data:
         return {"errors": ""}

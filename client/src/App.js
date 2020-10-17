@@ -4,13 +4,14 @@ import { AuthRoute, ProtectedRoute } from './components/utils/routes';
 import SignUpPage from './pages/SignUpPage'
 import Dashboard from './pages/Dashboard'
 import LoginPage from './pages/LoginPage'
+import NavBar from './components/NavBar'
 import Home from './pages/HomePage'
 import { CssBaseline } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {setUser} from './store/auth'
-
-import UserList from './components/UsersList';
+import {loadActivities} from './store/activities'
+import HomeContext from './components/utils/HomeContext'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       if (res.ok) {
         res.data = await res.json(); // current user info
         dispatch(setUser(res.data.user))
+        dispatch(loadActivities())
       }
       setLoading(false);
     }
@@ -42,9 +44,9 @@ function App() {
         <Switch>
             <AuthRoute exact path='/signup' component={SignUpPage} currentUserId={currentUser.id}/>
             <AuthRoute exact path='/login' component={LoginPage} currentUserId={currentUser.id}/>
-            <ProtectedRoute exact path='/users' component={UserList} currentUserId={currentUser.id}/>
             <ProtectedRoute exact path='/dashboard' component={Dashboard} currentUserId={currentUser.id}/>
-            <AuthRoute exact path='/' component={Home} currentUserId={currentUser.id}/>
+            <ProtectedRoute exact path='/' component={Home} currentUserId={currentUser.id}/>
+            <AuthRoute exact path='/' component={LoginPage} currentUserId={currentUser.id}/>
         </Switch>
     </BrowserRouter>
     </>
