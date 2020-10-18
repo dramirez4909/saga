@@ -72,6 +72,8 @@ class Patient(db.Model):
   __tablename__ = "patients"
   id = db.Column(db.Integer, primary_key = True)
   user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+  firstName = db.Column(db.String(40), nullable = True)
+  lastName = db.Column(db.String(40), nullable = True)
 
   encounters= db.relationship("Encounter",back_populates="patient")
   orders = db.relationship("Order",back_populates="patient")
@@ -82,17 +84,22 @@ class Provider(db.Model):
   __tablename__ = "providers"
   id = db.Column(db.Integer, primary_key = True)
   user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
-  specialty = db.Column(db.String(40), nullable = False)
+  specialty = db.Column(db.String(40), nullable = True)
   
   patients = db.relationship("Patient",secondary=care_teams, back_populates="providers")
   orders = db.relationship("Order",back_populates="provider")
+  encounters= db.relationship("Encounter",back_populates="provider")
 
 class Encounter(db.Model):
   __tablename__ = "encounters"
   id = db.Column(db.Integer, primary_key = True)
   encounter_type_id = db.Column(db.Integer, db.ForeignKey("encounter_types.id"),nullable=True)
   patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=True)
+  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"),nullable=True)
+  date = db.Column(db.DateTime, nullable=True)
+  status = db.Column(db.String, nullable=True)
 
+  provider = db.relationship("Provider",back_populates="encounters")
   patient = db.relationship("Patient",back_populates="encounters")
   orders = db.relationship("Order",back_populates="encounter")
   type = db.relationship("Encounter_Type",back_populates="encounters")

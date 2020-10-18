@@ -6,6 +6,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../store/auth';
 import {openTab} from '../store/activities'
 import HomeContext from '../components/utils/HomeContext'
+import ScheduleTwoToneIcon from '@material-ui/icons/ScheduleTwoTone';
+import BorderColorTwoToneIcon from '@material-ui/icons/BorderColorTwoTone';
+import DashboardTwoToneIcon from '@material-ui/icons/DashboardTwoTone';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -21,9 +26,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   logo: {
-    color: "white",
+    color: "#0BB5FF",
     textDecoration: "none",
-    fontSize: "15px",
+    fontSize: "18px",
     margin: "2px",
   },
   icon: {
@@ -40,6 +45,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const iconStyle = {
+  height: "17px",
+  width: "17px",
+  marginRight:"3px",
+}
+
+const buttonStyle = {
+  display: "flex",
+  flexDirection:"row",
+  padding: "2px",
+  alignItems: "center",
+  color: "grey",
+  backgroundColor: "hsla(0,0%,100%,.3)",
+  borderRadius: "2px",
+  margin: "2px",
+  cursor: "pointer"
+}
+
 
 const Navbar = () => {
   const classes = useStyles();
@@ -48,6 +71,7 @@ const Navbar = () => {
   const context = useContext(HomeContext)
   const [loading,setLoading] = useState(true)
   const [activities,setActivities] =useState([])
+  const openTabs = useSelector(state=>state.activities.open_tabs)
   const handleLogOut = ()=> {
       dispatch(logout())
   }
@@ -60,17 +84,27 @@ const Navbar = () => {
   },[allActivities])
 
   const openActivity=(activity)=>{
+      if (!openTabs.includes(activity)){
+        dispatch(openTab(activity))
+      }
       context.setSelectedTabName(activity.name)
   }
 
   return (
     <>
-        <div style={{position:"sticky",top:0,display:"flex",flexDirection:"row",margin:0,width:"100%",backgroundColor:"rgb(255, 107, 107)", justifyContent:"space-between"}}>
+        <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",margin:0,width:"100%",backgroundColor:"white", justifyContent:"space-between"}}>
           <div className={classes.left}>
             <div onClick={()=>context.setSelectedTabName("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
-              <p className={classes.logo} style={{textDecoration:"none"}}>Saga</p>
+              <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
             </div>
-            {activities.map(activity=><button key={activity.id} onClick={(e)=>openActivity(activity)}>{activity.name}</button>)}
+            {activities.map(activity=>
+            <div key={activity.id} onClick={(e)=>openActivity(activity)} style={{...buttonStyle}}>
+            {activity.name === "My Schedule" ? <ScheduleTwoToneIcon style={{...iconStyle,color:"#b1f3b1"}}/> : <></>}
+            {activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
+            {activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
+            {activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"grey"}}/> : <></>}
+            {activity.name}
+              </div>)}
           </div>
           <div>
           </div>

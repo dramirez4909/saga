@@ -22,8 +22,10 @@ function App() {
       const res = await fetch("/api/session/current_user");
       if (res.ok) {
         res.data = await res.json(); // current user info
-        dispatch(setUser(res.data.user))
-        dispatch(loadActivities())
+        if (res.data.user) {
+          dispatch(setUser(res.data.user))
+          dispatch(loadActivities())
+        }
       }
       setLoading(false);
     }

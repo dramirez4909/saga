@@ -7,19 +7,52 @@ import Orders from './Orders'
 import Schedule from './Schedule'
 import NavBar from '../components/NavBar'
 import HomeContext from '../components/utils/HomeContext'
+import { makeStyles } from '@material-ui/core/styles';
+import '../styles/HomePage.css'
+import ActivityTab from '../components/ActivityTab'
+
+const useStyles = makeStyles((theme) => ({
+    tabStyle: {
+        cursor:"pointer",
+        margin:"5px",
+        padding:"3px",
+        color:"grey",
+        borderRadius: "5px",
+        display:"flex",
+        transition: "all .1s ease-in-out",
+        '&:hover': {
+            transform: "scale(1.15)",
+        }
+    }
+    
+}));
 
 const tabStyle = {
+    cursor:"pointer",
+    padding:"3px",
+    color:"grey",
+    borderRadius: "5px",
+    display:"flex",
+    alignItems:"center",
+    alignContent:"center",
+    transition: "all .1s ease-in-out",
+    '&:hover': {
+        transform: "scale(1.15)",
+    }
+}
 
+const tabContentStyle = {
+    backgroundColor:"white",
+    height:"100vh"
 }
 
 const HomePage=(props)=>{
+    const classes = useStyles()
     const [tabs,setTabs] = useState([])
     const [selectedTabName,setSelectedTabName] = useState("dashboard")
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const [activities,setActivities] =useState([])
     const allActivities = useSelector(state=>state.activities)
-
-
 
     useEffect(()=>{
         if (openTabs && (allActivities.role_activities || allActivities.user_activities)){
@@ -31,27 +64,23 @@ const HomePage=(props)=>{
 
     return (
         <>
-            <HomeContext.Provider value={{setSelectedTabName}}>
+            <HomeContext.Provider value={{setSelectedTabName, selectedTabName}}>
                 <NavBar>
                 </NavBar>
-                <div style={{display:"flex",flexDirection:"column"}}>
-                    <div style={{display:"flex",flexDirection:"row"}}>
-                    {activities.map((activity, index)=>
+                <div style={{display:"flex",flexDirection:"column",height:"100%",backgroundColor:"#ececec"}}>
+                    <ul className={"tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0, listStyleType:"none"}}>
+                    {tabs.map((activity, index)=>
                     (
-                        <div key={activity.name} onClick={(e)=>{setSelectedTabName(activity.name)}} style={{ cursor:"pointer"}}>
-                            {activity.name}
-                        </div>
+                        <ActivityTab activity={activity}/>
                         ))}
-                    </div>
-                    {activities.map(( activity, index)=>
+                    </ul>
+                    {tabs.map(( activity, index)=>
                     (
-                        <>
-                        <div key={activity.name} style={{display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column"}}>
+                        <div key={activity.name} style={{display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column", ...tabContentStyle}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
-                            {activity.name === "schedule" ? <Schedule/> : <></>}
-                            {activity.name === "orders" ? <Orders/> : <></>}
+                            {activity.name === "My Schedule" ? <Schedule/> : <></>}
+                            {activity.name === "Orders" ? <Orders/> : <></>}
                         </div>
-                        </>
                         ))}
                 </div>
             </HomeContext.Provider>

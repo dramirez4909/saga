@@ -121,7 +121,7 @@ function LoginPage() {
         }
     }
 
-    const demoLogin = async (e) => {
+    const demoProviderLogin = async (e) => {
         e.preventDefault();
         await dispatch(login('DemoUser', 'password'));
         document.location.reload();
@@ -137,7 +137,7 @@ function LoginPage() {
                 classes={{root: classes.container}}>
                     <h1 className="login-and-signup-header">welcome back!</h1>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <ColorButton size="small" onClick={demoLogin}>Login As a Demo User</ColorButton>
+                        <ColorButton size="small" onClick={demoProviderLogin}>Login As a Demo Provider</ColorButton>
                     </div>
                     <Divider style={{width: "100%", margin: "10px"}}/>
                     <div style={{color:"red", display: "flex", flexDirection:"column"}}>
