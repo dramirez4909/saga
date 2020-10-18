@@ -92,7 +92,7 @@ const Navbar = () => {
 
   return (
     <>
-        <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",margin:0,width:"100%",backgroundColor:"white", justifyContent:"space-between"}}>
+        <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:"white", justifyContent:"space-between"}}>
           <div className={classes.left}>
             <div onClick={()=>context.setSelectedTabName("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
               <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
@@ -103,7 +103,7 @@ const Navbar = () => {
             {activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
             {activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
             {activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"grey"}}/> : <></>}
-            {activity.name}
+            {activity.name === "chart" ? "" : <p style={{margin:0, marginLeft:"4px"}}>{activity.name}</p>}
               </div>)}
           </div>
           <div>

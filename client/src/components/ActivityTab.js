@@ -42,7 +42,7 @@ function ActivityTab(props) {
             {props.activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
             {props.activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
             {props.activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"#d3d3d3"}}/> : <></>}
-            <p style={{margin:0, marginLeft:"4px"}}>{props.activity.name}</p></a>
+            {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px"}}>{props.activity.name}</p>} </a>
             </li>
         </>
     );

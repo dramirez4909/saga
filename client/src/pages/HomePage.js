@@ -10,6 +10,8 @@ import HomeContext from '../components/utils/HomeContext'
 import { makeStyles } from '@material-ui/core/styles';
 import '../styles/HomePage.css'
 import ActivityTab from '../components/ActivityTab'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import DepSchedule from './DepSchedule'
 
 const useStyles = makeStyles((theme) => ({
     tabStyle: {
@@ -43,7 +45,6 @@ const tabStyle = {
 
 const tabContentStyle = {
     backgroundColor:"white",
-    height:"100vh"
 }
 
 const HomePage=(props)=>{
@@ -65,6 +66,7 @@ const HomePage=(props)=>{
     return (
         <>
             <HomeContext.Provider value={{setSelectedTabName, selectedTabName}}>
+                <DragDropContext>
                 <NavBar>
                 </NavBar>
                 <div style={{display:"flex",flexDirection:"column",height:"100%",backgroundColor:"#ececec"}}>
@@ -79,10 +81,12 @@ const HomePage=(props)=>{
                         <div key={activity.name} style={{display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column", ...tabContentStyle}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
                             {activity.name === "My Schedule" ? <Schedule/> : <></>}
-                            {activity.name === "Orders" ? <Orders/> : <></>}
+                            {activity.name === "Place Orders" ? <Orders/> : <></>}
+                            {activity.name === "Dep. Schedule" ? <DepSchedule/> : <></>}
                         </div>
                         ))}
                 </div>
+                </DragDropContext>
             </HomeContext.Provider>
         </>
     )

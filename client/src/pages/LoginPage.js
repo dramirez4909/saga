@@ -79,6 +79,7 @@ const ColorButton = withStyles((theme) => ({
         color: "white",
         paddingRight: "10px",
         paddingLeft: "10px",
+        margin: "4px",
         backgroundColor:"grey",
         '&:hover': {
             backgroundColor: "#b1f3b1 !important",
@@ -126,6 +127,11 @@ function LoginPage() {
         await dispatch(login('DemoUser', 'password'));
         document.location.reload();
     }
+    const demoSchedulerLogin = async (e) => {
+        e.preventDefault();
+        await dispatch(login('DemoScheduler', 'password'));
+        document.location.reload();
+    }
 
     return (
         <>
@@ -137,7 +143,8 @@ function LoginPage() {
                 classes={{root: classes.container}}>
                     <h1 className="login-and-signup-header">welcome back!</h1>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <ColorButton size="small" onClick={demoProviderLogin}>Login As a Demo Provider</ColorButton>
+                        <ColorButton size="small" onClick={demoProviderLogin}>Login As a Provider</ColorButton>
+                        <ColorButton size="small" onClick={demoSchedulerLogin}>Login As a Scheduler</ColorButton>
                     </div>
                     <Divider style={{width: "100%", margin: "10px"}}/>
                     <div style={{color:"red", display: "flex", flexDirection:"column"}}>
