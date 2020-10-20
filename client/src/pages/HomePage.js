@@ -12,6 +12,8 @@ import '../styles/HomePage.css'
 import ActivityTab from '../components/ActivityTab'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import DepSchedule from './DepSchedule'
+import PatientSearch from './PatientSearch'
+import PatientChart from './PatientChart'
 
 const useStyles = makeStyles((theme) => ({
     tabStyle: {
@@ -70,7 +72,7 @@ const HomePage=(props)=>{
                 <NavBar>
                 </NavBar>
                 <div style={{display:"flex",flexDirection:"column",height:"100%",backgroundColor:"#ececec"}}>
-                    <ul className={"tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0, listStyleType:"none"}}>
+                    <ul className={"tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0, marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                     (
                         <ActivityTab activity={activity}/>
@@ -83,6 +85,8 @@ const HomePage=(props)=>{
                             {activity.name === "My Schedule" ? <Schedule/> : <></>}
                             {activity.name === "Place Orders" ? <Orders/> : <></>}
                             {activity.name === "Dep. Schedule" ? <DepSchedule/> : <></>}
+                            {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
+                            {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
                         </div>
                         ))}
                 </div>

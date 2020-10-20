@@ -1,6 +1,12 @@
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
 from app.models import User, Activity, Security_Point, Role, db
+from app.api.encounters import Authentication
+import requests
+import json
+import argparse
+import os
+apikey=os.environ.get('UMLS_SECRET_KEY')
 
 activity = Blueprint('activity', __name__)
 

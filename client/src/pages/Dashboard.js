@@ -26,11 +26,10 @@ const Dashboard=(props)=>{
     }
     return (
         <>
-        <h1>Dashboard Page</h1>
-        {
-            activities.map(activity => <DashboardComponent key={activity.id} activity={activity}/>)
-        }
+        <div style={{margin:"20px"}}>
+        <h1>Dashboard</h1>
         <Button onClick={handleLogOut}>Log out</Button>
+        </div>
         </>
     )
 }

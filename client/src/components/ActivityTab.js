@@ -5,6 +5,7 @@ import BorderColorTwoToneIcon from '@material-ui/icons/BorderColorTwoTone';
 import DashboardTwoToneIcon from '@material-ui/icons/DashboardTwoTone';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import SearchIcon from '@material-ui/icons/Search';
+import ContactIcon from '@material-ui/icons/AccountCircleTwoTone';
 
 const iconStyle = {
     height: "25px",
@@ -12,16 +13,8 @@ const iconStyle = {
   }
 
 const tabStyle = {
-    cursor:"pointer",
-    padding:"3px",
-    color:"grey",
-    borderRadius: "5px",
-    display:"flex",
-    alignItems:"center",
-    alignContent:"center",
-    transition: "all .1s ease-in-out",
     '&:hover': {
-        transform: "scale(1.15)",
+        background: "blue",
     }
 }
 
@@ -34,7 +27,7 @@ function ActivityTab(props) {
                 style={{zIndex: props.activity.name === context.selectedTabName ? 1 : "",
                 background: props.activity.name === context.selectedTabName ? "white" : "#ececec",
                 borderTopLeftRadius: props.activity.name === context.selectedTabName ? "5px" : "",
-                borderTopRightRadius: props.activity.name === context.selectedTabName ? "5px" : "",
+                borderTopRightRadius: props.activity.name === context.selectedTabName ? "5px" : ""
             }}
                 >   
             <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <DashboardTwoToneIcon style={{...iconStyle,color:"#FFC8DD"}}/> : <></> }
@@ -42,6 +35,7 @@ function ActivityTab(props) {
             {props.activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
             {props.activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
             {props.activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"#d3d3d3"}}/> : <></>}
+            {props.activity.patient ? <ContactIcon style={{...iconStyle,color:"#fed5a4"}}/> : <></>}
             {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px"}}>{props.activity.name}</p>} </a>
             </li>
         </>

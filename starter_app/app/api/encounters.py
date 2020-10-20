@@ -1,58 +1,40 @@
+import os
+import requests
+#from pyquery import PyQuery as pq
+from lxml.html import fromstring
+uri="https://utslogin.nlm.nih.gov"
+#option 1 - username/pw authentication at /cas/v1/tickets
+#auth_endpoint = "/cas/v1/tickets/"
+#option 2 - api key authentication at /cas/v1/api-key
+auth_endpoint = "/cas/v1/api-key"
+apikey=os.environ.get('UMLS_SECRET_KEY')
 
-from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
-from app.models import User, db, Encounter
+class Authentication:
+    #def __init__(self, username,password):
+    def __init__(self, apikey):
+        #self.username=username
+        #self.password=password
+        self.apikey=apikey
+        self.service="http://umlsks.nlm.nih.gov"
+        #!/usr/bin/python
+        ## 6/16/2017 - remove PyQuery dependency
+        ## 5/19/2016 - update to allow for authentication based on api-key, rather than username/pw
+        ## See https://documentation.uts.nlm.nih.gov/rest/authentication.html for full explanation
 
-lists = Blueprint('lists', __name__)
+    def gettgt(self):
+        #params = {'username': self.username,'password': self.password}
+        params = {'apikey': self.apikey}
+        h = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain", "User-Agent":"python" }
+        r = requests.post(uri+auth_endpoint,data=params,headers=h)
+        response = fromstring(r.text)
+        ## extract the entire URL needed from the HTML form (action attribute) returned - looks similar to https://utslogin.nlm.nih.gov/cas/v1/tickets/TGT-36471-aYqNLN2rFIJPXKzxwdTNC5ZT7z3B3cTAKfSc5ndHQcUxeaDOLN-cas
+        ## we make a POST call to this URL in the getst method
+        tgt = response.xpath('//form/@action')[0]
+        return tgt
 
-@lists.route("/move-encounter",methods=["PATCH"])
-def move_encounter():
-    data = request.json
-    encounter = Encounter.query.get(data["encounter-id"])
-    encounter.list_id = int(data["add-to"])
-    db.session.add(card)
-    db.session.commit()
-    removed_list = List.query.get(data["remove-from"])
-    added_list = List.query.get(data["add-to"])
-    board = Board.query.get(data["board"])
-    format_board = { 
-        "board":board.to_dict(), 
-        "removeFromListId": removed_list.id,
-        "addToListId": added_list.id,
-        "removeFromCardObject":removed_list.cards_object(), 
-        "addToCardObject":added_list.cards_object(),
-        "card":card.to_dict()
-        }
-    return format_board
-
-@lists.route("/create",methods=["POST"])
-def create_list():
-    data = request.json
-    if not data:
-        return {"welcome":"welcome"}
-    ls = List(
-        title=data['title'],
-        description=data['description'],
-        board_id=data['board_id']
-    )
-    db.session.add(ls)
-    db.session.commit()
-    format_list = ls.to_dict()
-    listId = f"{ls.id}"
-    return {"list":format_list}
-
-
-@lists.route("/add-card",methods=["POST"])
-def add_card():
-    data = request.json
-    card = Card(
-        title=data['title'],
-        description=data['description'],
-        list_id=data['list_id']
-    )
-    db.session.add(card)
-    db.session.commit()
-    board = Board.query.get(data["boardId"])
-    ls = List.query.get(card.list_id)
-    format_res = {"listId":ls.id,"cardObject":ls.cards_object(),"board":board.to_dict(),"card":card.to_dict()}
-    return format_res
+    def getst(self,tgt):
+        params = {'service': self.service}
+        h = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain", "User-Agent":"python" }
+        r = requests.post(tgt,data=params,headers=h)
+        st = r.text
+        return st

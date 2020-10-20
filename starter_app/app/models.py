@@ -39,6 +39,11 @@ class Encounter_Type(db.Model):
 
   encounters = db.relationship("Encounter",back_populates="type")
 
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+    }
 
 class Activity(db.Model):
   __tablename__ = "activities"
@@ -67,6 +72,83 @@ class Order(db.Model):
   provider = db.relationship("Provider",back_populates="orders")
   encounter = db.relationship("Encounter",back_populates="orders")
 
+class Problem(db.Model):
+  __tablename__ = "problems"
+  id = db.Column(db.Integer, primary_key = True)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
+  name = db.Column(db.String(40), nullable = True)
+  created_at = db.Column(db.DateTime, nullable = True)
+  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+
+  patient = db.relationship("Patient",back_populates="problems")
+  provider = db.relationship("Provider",back_populates="problems")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "created_at": self.created_at
+    }
+
+class Note(db.Model):
+  __tablename__ = "notes"
+  id = db.Column(db.Integer, primary_key = True)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
+  content = db.Column(db.String(2000), nullable = True)
+  created_at = db.Column(db.DateTime, nullable = True)
+  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+  
+  patient = db.relationship("Patient",back_populates="notes")
+  provider = db.relationship("Provider",back_populates="notes")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "patient_id": self.patient_id,
+      "content": self.content,
+      "created_at": self.created_at,
+      "provider_id": self.provider_id
+    }
+
+class Medication(db.Model):
+  __tablename__ = "medications"
+  id = db.Column(db.Integer, primary_key = True)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
+  last_fill = db.Column(db.DateTime, nullable=True)
+  name = db.Column(db.String(2000), nullable = True)
+  instructions = db.Column(db.String(2000), nullable = True)
+  created_at = db.Column(db.DateTime, nullable = True)
+  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+  
+  patient = db.relationship("Patient",back_populates="medications")
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "last_fill": self.last_fill,
+      "name": self.name,
+      "instructions": self.instructions,
+      "created_at": self.created_at
+    }
+
+
+class Allergy(db.Model):
+  __tablename__ = "allergies"
+  id = db.Column(db.Integer, primary_key = True)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
+  noted = db.Column(db.DateTime, nullable=True)
+  name = db.Column(db.String(2000), nullable = True)
+  details = db.Column(db.String(2000), nullable = True)
+  
+  patient = db.relationship("Patient",back_populates="allergies")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "noted": self.noted,
+      "name": self.name,
+      "details": self.details
+    }
+
 
 class Patient(db.Model):
   __tablename__ = "patients"
@@ -74,11 +156,57 @@ class Patient(db.Model):
   user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
   firstName = db.Column(db.String(40), nullable = True)
   lastName = db.Column(db.String(40), nullable = True)
-
+  dob = db.Column(db.DateTime, nullable=True)
+  ethnicity = db.Column(db.String(40),nullable=True)
+  sex = db.Column(db.String(40),nullable=True)
+  mobile_phone = db.Column(db.String(40),nullable=True)
+  home_phone = db.Column(db.String(40),nullable=True)
+  work_phone = db.Column(db.String(40),nullable=True)
+  address_line_one = db.Column(db.String(80),nullable=True)
+  address_line_two = db.Column(db.String(80),nullable=True)
+  address_line_three = db.Column(db.String(80),nullable=True)
+  address_city = db.Column(db.String(80),nullable=True)
+  address_state = db.Column(db.String(20),nullable=True)
+  address_zip = db.Column(db.String(20),nullable=True)
+  medications = db.relationship("Medication",back_populates="patient")
   encounters= db.relationship("Encounter",back_populates="patient")
   orders = db.relationship("Order",back_populates="patient")
   providers = db.relationship("Provider",secondary=care_teams, back_populates="patients")
+  problems = db.relationship("Problem",back_populates="patient")
+  notes = db.relationship("Note",back_populates="patient")
+  allergies = db.relationship("Allergy",back_populates="patient")
 
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "firstName": self.firstName,
+      "lastName": self.lastName,
+      "fullName": f"{self.lastName}, {self.firstName}",
+      "dob": self.dob,
+      "ethnicity": self.ethnicity,
+      "sex":self.sex,
+      "work_phone":self.work_phone,
+      "home_phone":self.home_phone,
+      "mobile_phone":self.mobile_phone,
+      "address_line_one":self.address_line_one,
+      "address_line_two":self.address_line_two,
+      "address_line_three":self.address_line_three,
+      "address_state":self.address_state,
+      "address_city":self.address_city,
+      "address_zip":self.address_zip,
+      "medications": [medication.to_dict() for medication in self.medications],
+      "allergies": [allergy.to_dict() for allergy in self.allergies],
+      "notes": [note.to_dict() for note in self.notes],
+      "problems": [problem.to_dict() for problem in self.problems],
+      "enounters": [encounter.to_dict() for encounter in self.encounter]
+    }
+
+  def to_dictionary(self):
+    return {
+      "id": self.id,
+      "firstName": self.firstName,
+      "lastName": self.lastName,
+    }
 
 class Provider(db.Model):
   __tablename__ = "providers"
@@ -89,6 +217,8 @@ class Provider(db.Model):
   patients = db.relationship("Patient",secondary=care_teams, back_populates="providers")
   orders = db.relationship("Order",back_populates="provider")
   encounters= db.relationship("Encounter",back_populates="provider")
+  problems = db.relationship("Problem",back_populates="provider")
+  notes = db.relationship("Note",back_populates="provider")
 
 class Encounter(db.Model):
   __tablename__ = "encounters"
@@ -103,6 +233,14 @@ class Encounter(db.Model):
   patient = db.relationship("Patient",back_populates="encounters")
   orders = db.relationship("Order",back_populates="encounter")
   type = db.relationship("Encounter_Type",back_populates="encounters")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "type": self.type.to_dict(),
+      "date": self.date,
+      "status": self.status,
+    }
 
 class Security_Point(db.Model):
   __tablename__ = "security_points"
