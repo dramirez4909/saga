@@ -11,6 +11,7 @@ from .api.user_routes import user_routes
 from .api.activities import activity
 from .api.umls import umls
 from .api.patients import patients
+from .api.encounters import encounters
 
 
 from .config import Config
@@ -22,6 +23,7 @@ app.register_blueprint(session, url_prefix='/api/session')
 app.register_blueprint(activity, url_prefix='/api/activity')
 app.register_blueprint(umls,url_prefix='/api/umls')
 app.register_blueprint(patients,url_prefix='/api/patients')
+app.register_blueprint(encounters,url_prefix='/api/encounters')
 db.init_app(app)
 Migrate(app, db)
 

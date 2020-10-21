@@ -1,11 +1,13 @@
 from dotenv import load_dotenv
+import datetime
+from datetime import time
 load_dotenv()
 
 from app import app, db
-from app.models import User, Security_Point,Role, Encounter, Patient, Provider, Activity
+from app.models import User, Security_Point,Role, Encounter, Patient, Provider, Activity, Encounter_Type
 
 with app.app_context():
-  # db.drop_all()
+  db.drop_all()
   db.create_all()
 
   demo = User(username = 'DemoUser', email = 'demo@aa.io', password ='password', first_name="Angela",last_name="Alegria")
@@ -23,9 +25,20 @@ with app.app_context():
   chart_access = Security_Point(name="chart access")
   patient_user_access = Security_Point(name="patient user access")
 
-  demo_provider =Provider(user_id=1,specialty="Family Medicine")
-  demo_patient = Patient(firstName="Clare",lastName="Donohue=Meyer")
-
+  demo_provider =Provider(specialty="Family Medicine")
+  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731")
+  rosemary = Patient(firstName="Rosemary",lastName="Boxer",dob = datetime.datetime(1926, 8, 11), sex="female", address_line_one ="4909 23rd St.",address_city="Austin",address_state="TX",address_zip="78704")
+  thyme = Patient(firstName="Laura",lastName="Thyme",dob = datetime.datetime(1930, 2, 9), sex="female", address_line_one ="3038 Mason Rd.",address_city="Austin",address_state="TX",address_zip="78718")
+  severus = Patient(firstName="Severus",lastName="Snape",dob = datetime.datetime(1967, 7, 19), sex="male", address_line_one ="7677 W. 15th St.",address_city="Austin",address_state="TX",address_zip="78712")
+  watson = Patient(firstName="John H.",lastName="Watson",dob = datetime.datetime(1960, 8, 19), sex="male", address_line_one ="2810 Baker St.",address_city="Austin",address_state="TX",address_zip="78710")
+  aurelio = Patient(firstName="Aureliano",lastName="Buendia",dob = datetime.datetime(1931, 3, 15), sex="male", address_line_one ="2020 Macondo St.",address_city="Austin",address_state="TX",address_zip="78710")
+  juan = Patient(firstName="Juan-Jose",lastName="Arcadio",dob = datetime.datetime(1930, 3, 15), sex="male", address_line_one ="2013 Macondo St.",address_city="Austin",address_state="TX",address_zip="78711")
+  jacob = Patient(firstName="Ursula",lastName="Buendia",dob = datetime.datetime(1913, 5, 15), sex="female", address_line_one ="2020 Macondo St.",address_city="Austin",address_state="TX",address_zip="78721")
+  philip = Patient(firstName="Philip",lastName="Marlowe",dob = datetime.datetime(1920, 3, 15), sex="male", address_line_one ="2012 Tea St.",address_city="Austin",address_state="TX",address_zip="78714")
+  jo = Patient(firstName="Jo",lastName="March",dob = datetime.datetime(1920, 3, 15), sex="female", address_line_one ="7819 Alcott St.",address_city="Austin",address_state="TX",address_zip="78710")
+  clarice = Patient(firstName="Clarice",lastName="Starling",dob = datetime.datetime(1924, 12, 15), sex="female", address_line_one ="7819 Tremor St.",address_city="Austin",address_state="TX",address_zip="78710")
+  sarah = Patient(firstName="Sarah",lastName="Connor",dob = datetime.datetime(1945, 2, 15), sex="female", address_line_one ="7819 Tomorrow Ln.",address_city="Austin",address_state="TX",address_zip="78710")
+  elizabeth = Patient(firstName="Elizabeth",lastName="Bennet",dob = datetime.datetime(1994, 3, 15), sex="female", address_line_one ="7834 Austen St.",address_city="Austin",address_state="TX",address_zip="78710")
 
   my_schedule = Activity(name="My Schedule", required_security_point_id=1)
   orders = Activity(name="Place Orders", required_security_point_id=2)
@@ -33,19 +46,39 @@ with app.app_context():
   search_patients = Activity(name="Patient Search",required_security_point_id=4)
   patient_chart = Activity(name="chart",required_security_point_id=5)
 
+  encounter_one = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,10,30),end=datetime.datetime(2020,10,21,11,30))
   provider_role = Role(name="provider")
   scheduler_role = Role(name="scheduler")
   demo.roles.append(provider_role)
+
+  appointment_encounter_type = Encounter_Type(name="Appointment")
+
+  demo_provider.user = demo
+  appointment_encounter_type.encounters.append(encounter_one)
+  demo_provider.encounters.append(encounter_one)
+  demo_patient.encounters.append(encounter_one)
   provider_role.security_points.append(my_schedule_access)
   provider_role.security_points.append(orders_access)
   provider_role.security_points.append(department_schedule_access)
   provider_role.security_points.append(patient_search)
   provider_role.security_points.append(chart_access)
-  
 
   scheduler_role.security_points.append(department_schedule_access)
 
+  db.session.add(encounter_one)
   db.session.add(demo)
+  db.session.add(rosemary)
+  db.session.add(thyme)
+  db.session.add(severus)
+  db.session.add(watson)
+  db.session.add(aurelio)
+  db.session.add(juan) 
+  db.session.add(jacob)
+  db.session.add(philip)
+  db.session.add(jo)
+  db.session.add(clarice)
+  db.session.add(sarah)
+  db.session.add(elizabeth)
   db.session.add(ian)
   db.session.add(javier)
   db.session.add(dean)
@@ -66,6 +99,7 @@ with app.app_context():
   db.session.add(provider_role )
   db.session.add(scheduler_role)
   db.session.add(demo_patient)
+  db.session.add(demo_provider)
 
 
   db.session.commit()

@@ -1,5 +1,8 @@
 import os
 import requests
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required
+from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
+from app.models import User, Activity, Security_Point, Role, db, Encounter,Provider
 #from pyquery import PyQuery as pq
 from lxml.html import fromstring
 uri="https://utslogin.nlm.nih.gov"
@@ -8,6 +11,17 @@ uri="https://utslogin.nlm.nih.gov"
 #option 2 - api key authentication at /cas/v1/api-key
 auth_endpoint = "/cas/v1/api-key"
 apikey=os.environ.get('UMLS_SECRET_KEY')
+
+encounters = Blueprint('encounters', __name__)
+
+@encounters.route("/provider/<id>")
+def provider_encounters(id):
+    provider = Provider.query.get(id)
+    encounters = db.session.query(Encounter).filter(Encounter.provider_id == provider.id).all()
+    format_encounters = [encounter.to_dict() for encounter in encounters]
+    return {"encounters":format_encounters}
+    
+
 
 class Authentication:
     #def __init__(self, username,password):

@@ -97,7 +97,9 @@ class Note(db.Model):
   content = db.Column(db.String(2000), nullable = True)
   created_at = db.Column(db.DateTime, nullable = True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+  encounter_id = db.Column(db.Integer, db.ForeignKey("encounters.id"),nullable=True)
   
+  encounter = db.relationship("Encounter",back_populates="notes")
   patient = db.relationship("Patient",back_populates="notes")
   provider = db.relationship("Provider",back_populates="notes")
 
@@ -168,6 +170,8 @@ class Patient(db.Model):
   address_city = db.Column(db.String(80),nullable=True)
   address_state = db.Column(db.String(20),nullable=True)
   address_zip = db.Column(db.String(20),nullable=True)
+  picture = db.Column(db.String(20),nullable=True)
+
   medications = db.relationship("Medication",back_populates="patient")
   encounters= db.relationship("Encounter",back_populates="patient")
   orders = db.relationship("Order",back_populates="patient")
@@ -198,7 +202,9 @@ class Patient(db.Model):
       "allergies": [allergy.to_dict() for allergy in self.allergies],
       "notes": [note.to_dict() for note in self.notes],
       "problems": [problem.to_dict() for problem in self.problems],
-      "enounters": [encounter.to_dict() for encounter in self.encounter]
+      "enounters": [encounter.without_patient() for encounter in self.encounters],
+      "providers": [provider.name_and_id() for provider in self.providers],
+      "picture":self.picture
     }
 
   def to_dictionary(self):
@@ -215,10 +221,38 @@ class Provider(db.Model):
   specialty = db.Column(db.String(40), nullable = True)
   
   patients = db.relationship("Patient",secondary=care_teams, back_populates="providers")
+  user = db.relationship("User", back_populates="provider")
   orders = db.relationship("Order",back_populates="provider")
   encounters= db.relationship("Encounter",back_populates="provider")
   problems = db.relationship("Problem",back_populates="provider")
   notes = db.relationship("Note",back_populates="provider")
+
+  def name_and_id(self):
+    return {
+      "id":self.id,
+      "first_name": self.user.first_name,
+      "last_name": self.user.lastName,
+      "full_name": f"{self.user.first_name} {self.user.last_name}",
+      "encounters": [encounter.to_dict() for encounter in self.encounters]
+    }
+
+  def without_encounters(self):
+    return {
+      "id":self.id,
+      "first_name": self.user.first_name,
+      "last_name": self.user.last_name,
+      "full_name": f"{self.user.first_name} {self.user.last_name}",
+      "patients": [patient.to_dict() for patient in self.patients]
+    }
+
+  def to_dict(self): 
+    return {
+      "id":self.id,
+      "first_name": self.user.first_name,
+      "last_name": self.user.last_name,
+      "full_name": f"{self.user.first_name} {self.user.last_name}",
+      "patients": [patient.to_dict() for patient in self.patients],
+    }
 
 class Encounter(db.Model):
   __tablename__ = "encounters"
@@ -227,19 +261,32 @@ class Encounter(db.Model):
   patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"),nullable=True)
   date = db.Column(db.DateTime, nullable=True)
+  start = db.Column(db.DateTime, nullable=True)
+  end = db.Column(db.DateTime, nullable=True)
   status = db.Column(db.String, nullable=True)
 
+  notes = db.relationship("Note",back_populates="encounter")
   provider = db.relationship("Provider",back_populates="encounters")
   patient = db.relationship("Patient",back_populates="encounters")
   orders = db.relationship("Order",back_populates="encounter")
   type = db.relationship("Encounter_Type",back_populates="encounters")
 
+  def without_patient(self):
+    return {
+      "id": self.id,
+      "provider": self.provider.to_dict()
+    }
+
   def to_dict(self):
     return {
       "id": self.id,
+      "patient": self.patient.to_dict(),
+      "provider": self.provider.without_encounters(),
       "type": self.type.to_dict(),
       "date": self.date,
       "status": self.status,
+      "start": self.start,
+      "end":self.end
     }
 
 class Security_Point(db.Model):
@@ -286,6 +333,7 @@ class User(db.Model,UserMixin):
   first_name = db.Column(db.String(100), nullable=True)
   last_name = db.Column(db.String(100), nullable=True)
 
+  provider = db.relationship("Provider", back_populates="user")
   roles = db.relationship("Role",secondary=user_roles, back_populates="users")
   security_points = db.relationship("Security_Point",secondary=user_security, back_populates="users")
 

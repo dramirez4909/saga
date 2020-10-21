@@ -47,6 +47,7 @@ const tabStyle = {
 
 const tabContentStyle = {
     backgroundColor:"white",
+    height:"100vh"
 }
 
 const HomePage=(props)=>{
@@ -63,7 +64,6 @@ const HomePage=(props)=>{
             setActivities([{name:"dashboard",id:0 },...Object.values(allActivities.role_activities),...Object.values(allActivities.user_activities)])
         }
     },[openTabs, allActivities])
-    console.log(activities)
 
     return (
         <>
@@ -75,7 +75,7 @@ const HomePage=(props)=>{
                     <ul className={"tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0, marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                     (
-                        <ActivityTab activity={activity}/>
+                        <ActivityTab key={index} activity={activity}/>
                         ))}
                     </ul>
                     {tabs.map(( activity, index)=>

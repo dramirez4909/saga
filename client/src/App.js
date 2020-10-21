@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import {setUser} from './store/auth'
 import {loadActivities} from './store/activities'
 import HomeContext from './components/utils/HomeContext'
+import { loadProviderEncounters } from './store/encounters';
 
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
         if (res.data.user) {
           dispatch(setUser(res.data.user))
           dispatch(loadActivities())
+          console.log(res.data.user.id)
+          dispatch(loadProviderEncounters(res.data.user.id))
         }
       }
       setLoading(false);

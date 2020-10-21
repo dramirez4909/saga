@@ -2,10 +2,12 @@ import { createStore, compose, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import auth from './auth';
 import activities from './activities'
+import encounters from './encounters'
 
 const rootReducer = combineReducers({
     auth,
-    activities
+    activities,
+    encounters
 });
 
 let storeEnhancer;

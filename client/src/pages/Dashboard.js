@@ -18,7 +18,6 @@ const Dashboard=(props)=>{
             setLoading(false)
         }
     },[allActivities])
-    console.log(activities)
     if (loading) {
         return (
             <p>loading...</p>

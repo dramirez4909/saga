@@ -15,8 +15,8 @@ function PatientPreviewCard(props) {
 
     return (
         <>
-            <div>
-                <strong>full name:</strong> {props.patient.firstName} {props.patient.lastName}
+            <div style={{display:"flex",flexDirection:"column",borderRadius:"7px",margin:"10px"}}>
+                <div><h3>{props.patient.firstName} {props.patient.lastName}</h3></div>
                 <button onClick={()=>openChart(props.patient.id)}>Open Chart</button>
             </div>
         </>
