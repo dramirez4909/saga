@@ -105,9 +105,27 @@ function DepSchedule(props) {
         eventLayout.push(newEncounterCard)
     })
     const [encountersToDisplay,setEncountersToDisplay] = useState(eventLayout)
+    const [oldLayout,setOldLayout] = useState(encountersToDisplay)
+    const [events,setEvents] = useState(encountersToDisplay)
+
+    const updateLayout=(e)=>{
+        const difference = oldLayout.filter((el,index)=>el.x !== e[index].x || el.y !== e[index].y || el.h !== e[index].h)
+        setOldLayout(encountersToDisplay)
+        console.log(difference)
+        const newEvents = [...encountersToDisplay]
+        newEvents.forEach((event,index) => {
+            event.x = e[index].x
+            event.y = e[index].y
+            event.w = e[index].w
+            event.h = e[index].h
+        })
+        setEvents(newEvents)
+        console.log(newEvents)
+      }
+    
     return (
         <>
-            <WeekContext.Provider>
+            <WeekContext.Provider value={{updateLayout}}>
                 <div style={{display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "3.5% 96.5%", margin:"20px"}}>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"1",gridRowEnd:"2", display:"grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gridTemplateRows: "1fr",}}>
                     {weekDays.map((date,index)=>{
@@ -124,7 +142,7 @@ function DepSchedule(props) {
                     })}
                 </div>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3"}}>
-                    <DepCalendar events={encountersToDisplay} {...defaultProps}/>
+                    <DepCalendar events={events} {...defaultProps}/>
                 </div>
                 </div>
             </WeekContext.Provider>
