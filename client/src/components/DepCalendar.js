@@ -2,19 +2,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import '../styles/schedule.css'
 import _ from "lodash";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import RGL, { Responsive, WidthProvider } from "react-grid-layout";
 import WeekContext from "./utils/WeekContext";
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = WidthProvider(RGL)
 
 
 const DragFromOutsideLayout=(props)=> {
   const context = useContext(WeekContext)
 
   const [mounted,setMounted] = useState(false)
-  const [layouts,setLayouts] = useState({lg:props.events})
+  const [layouts,setLayouts] = useState(props.events)
 
   useEffect(()=>{
-    setMounted(true)
+    setMounted(false)
   },[])
 
   const generateDOM=()=>{
@@ -38,7 +38,7 @@ const DragFromOutsideLayout=(props)=> {
       }
       if (l.static) {
         return (
-          <div key={i} className={"static"}>
+          <div key={i} className={"static"} style={{backgroundColor:"#f9f9f9"}}>
             <span
               className="text"
               title="Time is unschedulable"
@@ -48,10 +48,10 @@ const DragFromOutsideLayout=(props)=> {
         )
       }
       return (
-            <div key={i}>
-              <div style={{justifyContent:"space-between", display:"flex",flexDirection:"row",padding:"5px",cursor:"pointer"}}>
+            <div key={i} style={{borderRadius:"5px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px", backgroundColor:"#c67aff", border:"3px solid white"}}>
+              <div style={{justifyContent:"space-between", display:"flex",flexDirection:"row",padding:"5px",cursor:"pointer",color:"white"}}>
                 <div>
-                  {l.patient.fullName}
+                  <strong>{l.patient.fullName}</strong>
                 </div>
                 <div>
                   {`${startHour}:${startMin} - ${endHour}:${endMin}`}
@@ -92,7 +92,7 @@ const DragFromOutsideLayout=(props)=> {
         </div> */}
         <ResponsiveReactGridLayout
           {...props}
-          layouts={layouts}
+          layout={layouts}
           // onBreakpointChange={this.onBreakpointChange}
           onLayoutChange={context.updateLayout}
           onDrop={onDrop}

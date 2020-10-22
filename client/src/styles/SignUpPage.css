@@ -36,5 +36,5 @@ body,
     background-image:
     repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%),
       repeating-linear-gradient(#f9f9f9 0 1px, transparent 1px 100%);
-    background-size: 20% 11px;
+    background-size: 20% 9px;
 }

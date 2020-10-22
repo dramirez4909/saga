@@ -9,12 +9,12 @@ function DepSchedule(props) {
 
     const defaultProps = {
         className: "layout",
-        rowHeight: 10,
-        margin:[1.5,1],
+        rowHeight: 8,
+        margin:[1,1],
         onLayoutChange: function() {},
         preventCollision: true,
         verticalCompact: false,
-        cols: { lg: 5, md: 10, sm: 6, xs: 4, xxs: 2 },
+        cols: 5,
       };
     
     const [schedule,setSchedule] = useState("")
@@ -126,7 +126,8 @@ function DepSchedule(props) {
     return (
         <>
             <WeekContext.Provider value={{updateLayout}}>
-                <div style={{display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "3.5% 96.5%", margin:"20px"}}>
+            <div style={{display:"grid", gridTemplateColumns: ".05% 99.95%", gridTemplateRows: "3% 97%"}}>
+                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "3% 97%", gridTemplateRows: "3.5% 95% 2%", margin:"20px", border:"2px solid ivory", borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px"}}>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"1",gridRowEnd:"2", display:"grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gridTemplateRows: "1fr",}}>
                     {weekDays.map((date,index)=>{
                         return (
@@ -143,6 +144,7 @@ function DepSchedule(props) {
                 </div>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3"}}>
                     <DepCalendar events={events} {...defaultProps}/>
+                </div>
                 </div>
                 </div>
             </WeekContext.Provider>
