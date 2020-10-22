@@ -48,7 +48,7 @@ const DragFromOutsideLayout=(props)=> {
         )
       }
       return (
-            <div key={i} style={{borderRadius:"5px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px", backgroundColor:"#2196f3",backgroundColor:"hsla(0,0%,100%,.32)"}}>
+            <div key={i} style={{borderRadius:"5px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px", backgroundColor:"#2196f3"}}>
               <div style={{justifyContent:"space-between", display:"flex",flexDirection:"row",padding:"5px",cursor:"pointer",color:"white",alignItems:"center"}}>
                 <div>
                   <strong style={{fontSize:"12px"}}>{l.patient.fullName}</strong>

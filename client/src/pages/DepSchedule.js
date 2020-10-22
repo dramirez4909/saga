@@ -66,39 +66,46 @@ function DepSchedule(props) {
         return {range:weekRangeString,dates:dateArray}
     };
     const yearAndWeek = getWeekNumber(new Date())
-    const [currentWeek,setCurrentWeek] = useState(yearAndWeek[1]-1)
+    const [currentWeek,setCurrentWeek] = useState(yearAndWeek[1])
+    console.log("CURRENT WEEK:",currentWeek)
     const currViewInfo = getDateRangeOfWeek(currentWeek)
     const range = getDates(currViewInfo.dates[0],currViewInfo.dates[1])
     const weekDates = range.map(date=>eval(date.getMonth()+1) +"/" + date.getDate())
     const [weekDays,setWeekDays] = useState(weekDates.slice(1,6))
-    
-    useEffect(()=>{
-        const currViewInfo = getDateRangeOfWeek(currentWeek)
-        const range = getDates(currViewInfo.dates[0],currViewInfo.dates[1])
-        const weekDates = range.map(date=>eval(date.getMonth()+1) +"/" + date.getDate())
-        setWeekDays(weekDates.slice(1,6))
-    },[currentWeek])
+    const encountersByWeek = useSelector(state=>state.encounters.by_week)
+    const [encounters,setEncounters] = useState(encountersByWeek[currentWeek])
+    const [loading,setLoading] = useState(false)
     
     const hours = ["8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm"]
 
-    const encounters = useSelector(state=>state.encounters.my_encounters)
+    
     console.log("encounters",encounters)
 
-    const createEncountersByWeekObject=(encounters)=>{
-        Object.values(encounters).forEach((encounter,index)=>{
-            const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
-            const dateStartArr = encounter.start.split(" ")
-            console.log(encounter.start)
-            dateStartArr.pop()
-            const newStartDateNoTZ = dateStartArr.join(" ")
-            const encStartTime = new Date(newStartDateNoTZ)
-        })
-        
-    }
+
+    // const createEncountersByWeekObject=(encounters)=>{
+    //     const encsByWeek = {}
+    //     Object.values(encounters).forEach((encounter,index)=>{
+    //         const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
+    //         const dateStartArr = encounter.start.split(" ")
+    //         console.log(encounter.start)
+    //         dateStartArr.pop()
+    //         const newStartDateNoTZ = dateStartArr.join(" ")
+    //         const encStartTime = new Date(newStartDateNoTZ)
+    //         const encounterWeekNumber = getWeekNumber(encStartTime)
+    //         console.log(encounterWeekNumber)
+    //         const encWeek = encounterWeekNumber[1]
+    //         encsByWeek[encWeek] ? encsByWeek[encWeek][encounter.id]=encounter : encsByWeek[encWeek] = {[encounter.id]:encounter}
+    //     })
+    //     console.log(encsByWeek)
+    // }
+
+    // const [encountersByWeek, setEncountersByWeek] = useState(createEncountersByWeekObject(encounters))
 
     
     const generateLayout=(encounters)=>{
+            console.log("THESE ARE ENCOUNTERS!!!",encounters)
             const eventLayout = [{x:0,y:0,i:"0",h:2,w:5,static:true},{x:0,y:44,i:"1",h:2,w:5,static:true}]
+            if (!encounters) return eventLayout
             Object.values(encounters).forEach((encounter,index)=>{
             const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
             const dateStartArr = encounter.start.split(" ")
@@ -130,11 +137,13 @@ function DepSchedule(props) {
         return eventLayout
     }
     const [encountersToDisplay,setEncountersToDisplay] = useState(generateLayout(encounters))
+    console.log("DISPPLAY:",encountersToDisplay)
     const [oldLayout,setOldLayout] = useState(encountersToDisplay)
     const [events,setEvents] = useState(encountersToDisplay)
 
     const updateLayout=(e)=>{
         const difference = oldLayout.filter((el,index)=>el.x !== e[index].x || el.y !== e[index].y || el.h !== e[index].h)
+        console.log("OLD LAYOUT",oldLayout)
         setOldLayout(encountersToDisplay)
         console.log(difference)
         const newEvents = [...encountersToDisplay]
@@ -147,6 +156,20 @@ function DepSchedule(props) {
         setEvents(newEvents)
         console.log(newEvents)
       }
+
+      useEffect(()=>{
+        if (encountersByWeek) {
+            const currViewInfo = getDateRangeOfWeek(currentWeek - 1)
+            const range = getDates(currViewInfo.dates[0],currViewInfo.dates[1])
+            const weekDates = range.map(date=>eval(date.getMonth()+1) +"/" + date.getDate())
+            setWeekDays(weekDates.slice(1,6))
+            setEncounters(encountersByWeek[currentWeek])
+            setEncountersToDisplay(generateLayout(encountersByWeek[currentWeek]))
+            setEvents(generateLayout(encountersByWeek[currentWeek]))
+            setOldLayout(generateLayout(encountersByWeek[currentWeek]))
+            setLoading(false)
+        }
+    },[currentWeek])
     
     return (
         <>
@@ -154,8 +177,13 @@ function DepSchedule(props) {
             <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                     
                     <div style={{display:"flex",flexDirection:"row"}}>
-                    <button onClick={()=>{setCurrentWeek(currentWeek - 1)}}>prev</button>
-                    <button onClick={()=>{setCurrentWeek(currentWeek + 1)}}>next</button>
+                    <button onClick={()=>{
+                        setLoading(true)
+                        setCurrentWeek(currentWeek - 1)
+                        }}>prev</button>
+                    <button onClick={()=>{
+                        setLoading(true)
+                        setCurrentWeek(currentWeek + 1)}}>next</button>
                     </div>
             </div>
             <div style={{display:"grid", gridTemplateColumns: "20% 80%", gridTemplateRows: "1.5% 98.5%"}}>
@@ -175,7 +203,7 @@ function DepSchedule(props) {
                     })}
                 </div>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3"}}>
-                    <DepCalendar events={events} {...defaultProps}/>
+                    {loading ? <div style={{display:"flex",flexDirection:"row",width:"100%",height:"380px",alignItems:"center",justifyContent:"center"}}>...loading</div> : <DepCalendar events={events} {...defaultProps}/>}
                 </div>
                 </div>
                 </div>
