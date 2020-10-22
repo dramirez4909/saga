@@ -70,41 +70,66 @@ function DepSchedule(props) {
     const currViewInfo = getDateRangeOfWeek(currentWeek)
     const range = getDates(currViewInfo.dates[0],currViewInfo.dates[1])
     const weekDates = range.map(date=>eval(date.getMonth()+1) +"/" + date.getDate())
-    const weekDays = weekDates.slice(1,6)
+    const [weekDays,setWeekDays] = useState(weekDates.slice(1,6))
+    
+    useEffect(()=>{
+        const currViewInfo = getDateRangeOfWeek(currentWeek)
+        const range = getDates(currViewInfo.dates[0],currViewInfo.dates[1])
+        const weekDates = range.map(date=>eval(date.getMonth()+1) +"/" + date.getDate())
+        setWeekDays(weekDates.slice(1,6))
+    },[currentWeek])
     
     const hours = ["8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm"]
 
     const encounters = useSelector(state=>state.encounters.my_encounters)
     console.log("encounters",encounters)
-    const eventLayout = [{x:0,y:0,i:"0",h:2,w:5,static:true},{x:0,y:44,i:"1",h:2,w:5,static:true}]
-    Object.values(encounters).forEach((encounter,index)=>{
-        const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
-        const dateStartArr = encounter.start.split(" ")
-        dateStartArr.pop()
-        const newStartDateNoTZ = dateStartArr.join(" ")
-        const encStartTime = new Date(newStartDateNoTZ)
-        const day = encStartTime.getDay()
-        newEncounterCard.x = day - 1
-        const hour = encStartTime.getHours()
-        const minutes = encStartTime.getMinutes()
-        newEncounterCard.start = `${hour}:${minutes}`
-        console.log(hour,minutes)
-        const hourMark = ((4*(hour - 8)) + 2) + (minutes/15)
-        newEncounterCard.y = hourMark
-        const dateEndArr = encounter.end.split(" ")
-        dateEndArr.pop()
-        const newEndDateNoTZ = dateEndArr.join(" ")
-        const encEndTime = new Date(newEndDateNoTZ)
-        const endHour = encEndTime.getHours()
-        const endMinutes = encEndTime.getMinutes()
-        newEncounterCard.end = `${endHour}:${endMinutes}`
-        const endHourMark = ((4*(endHour - 8)) + 2) + (endMinutes/15)
-        newEncounterCard.h = endHourMark - hourMark
-        console.log("encCARD!",newEncounterCard)
-        console.log("encStartTime",encStartTime)
-        eventLayout.push(newEncounterCard)
-    })
-    const [encountersToDisplay,setEncountersToDisplay] = useState(eventLayout)
+
+    const createEncountersByWeekObject=(encounters)=>{
+        Object.values(encounters).forEach((encounter,index)=>{
+            const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
+            const dateStartArr = encounter.start.split(" ")
+            console.log(encounter.start)
+            dateStartArr.pop()
+            const newStartDateNoTZ = dateStartArr.join(" ")
+            const encStartTime = new Date(newStartDateNoTZ)
+        })
+        
+    }
+
+    
+    const generateLayout=(encounters)=>{
+            const eventLayout = [{x:0,y:0,i:"0",h:2,w:5,static:true},{x:0,y:44,i:"1",h:2,w:5,static:true}]
+            Object.values(encounters).forEach((encounter,index)=>{
+            const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
+            const dateStartArr = encounter.start.split(" ")
+            console.log(encounter.start)
+            dateStartArr.pop()
+            const newStartDateNoTZ = dateStartArr.join(" ")
+            const encStartTime = new Date(newStartDateNoTZ)
+            const day = encStartTime.getDay()
+            newEncounterCard.x = day - 1
+            const hour = encStartTime.getHours()
+            const minutes = encStartTime.getMinutes()
+            newEncounterCard.start = `${hour}:${minutes}`
+            console.log(hour,minutes)
+            const hourMark = ((4*(hour - 8)) + 2) + (minutes/15)
+            newEncounterCard.y = hourMark
+            const dateEndArr = encounter.end.split(" ")
+            dateEndArr.pop()
+            const newEndDateNoTZ = dateEndArr.join(" ")
+            const encEndTime = new Date(newEndDateNoTZ)
+            const endHour = encEndTime.getHours()
+            const endMinutes = encEndTime.getMinutes()
+            newEncounterCard.end = `${endHour}:${endMinutes}`
+            const endHourMark = ((4*(endHour - 8)) + 2) + (endMinutes/15)
+            newEncounterCard.h = endHourMark - hourMark
+            console.log("encCARD!",newEncounterCard)
+            console.log("encStartTime",encStartTime)
+            eventLayout.push(newEncounterCard)
+        })
+        return eventLayout
+    }
+    const [encountersToDisplay,setEncountersToDisplay] = useState(generateLayout(encounters))
     const [oldLayout,setOldLayout] = useState(encountersToDisplay)
     const [events,setEvents] = useState(encountersToDisplay)
 
@@ -126,8 +151,15 @@ function DepSchedule(props) {
     return (
         <>
             <WeekContext.Provider value={{updateLayout}}>
-            <div style={{display:"grid", gridTemplateColumns: ".05% 99.95%", gridTemplateRows: "3% 97%"}}>
-                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "3% 97%", gridTemplateRows: "3.5% 95% 2%", margin:"20px", border:"2px solid ivory", borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px"}}>
+            <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
+                    
+                    <div style={{display:"flex",flexDirection:"row"}}>
+                    <button onClick={()=>{setCurrentWeek(currentWeek - 1)}}>prev</button>
+                    <button onClick={()=>{setCurrentWeek(currentWeek + 1)}}>next</button>
+                    </div>
+            </div>
+            <div style={{display:"grid", gridTemplateColumns: "20% 80%", gridTemplateRows: "1.5% 98.5%"}}>
+                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "3.5% 95% 2%", margin:"20px", border:"2px solid #f9f9f9", borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px"}}>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"1",gridRowEnd:"2", display:"grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gridTemplateRows: "1fr",}}>
                     {weekDays.map((date,index)=>{
                         return (
@@ -135,7 +167,7 @@ function DepSchedule(props) {
                         )
                     })}
                 </div>
-                <div style={{gridColumnStart:"1",gridColumnEnd:"2",gridRowStart:"2",gridRowEnd:"3", display:"grid", gridTemplateColumns: "1fr", gridTemplateRows: "1fr repeat(11,2fr) 1fr",height:"100%"}}>
+                <div style={{gridColumnStart:"1",fontSize:"12px",color:"grey",gridColumnEnd:"2",gridRowStart:"2",gridRowEnd:"3", display:"grid", gridTemplateColumns: "1fr", gridTemplateRows: "1fr repeat(11,2fr) 1fr",height:"100%"}}>
                     {hours.map((hour,index)=>{
                         return (
                             <div key={index} style={{display:"flex",alignItems:"center",justifyContent:"center",gridColumnStart:1,gridColumnEnd:2,gridRowStart:index + 2,gridRowEnd:index + 3}}>{hour}</div>

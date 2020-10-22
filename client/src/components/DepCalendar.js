@@ -48,13 +48,13 @@ const DragFromOutsideLayout=(props)=> {
         )
       }
       return (
-            <div key={i} style={{borderRadius:"5px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px", backgroundColor:"#c67aff", border:"3px solid white"}}>
-              <div style={{justifyContent:"space-between", display:"flex",flexDirection:"row",padding:"5px",cursor:"pointer",color:"white"}}>
+            <div key={i} style={{borderRadius:"5px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px", backgroundColor:"#2196f3",backgroundColor:"hsla(0,0%,100%,.32)"}}>
+              <div style={{justifyContent:"space-between", display:"flex",flexDirection:"row",padding:"5px",cursor:"pointer",color:"white",alignItems:"center"}}>
                 <div>
-                  <strong>{l.patient.fullName}</strong>
+                  <strong style={{fontSize:"12px"}}>{l.patient.fullName}</strong>
                 </div>
-                <div>
-                  {`${startHour}:${startMin} - ${endHour}:${endMin}`}
+                <div style={{fontSize:"10px",fontWeight:"strong"}}>
+                  <strong>{`${startHour}:${startMin} - ${endHour}:${endMin}`}</strong>
                 </div>
                 </div>
             </div>

@@ -13,8 +13,10 @@ const iconStyle = {
   }
 
 const tabStyle = {
+    display: "inline-block",
+    transition: "all .2s ease-in-out",
     '&:hover': {
-        background: "blue",
+        transform: "scale(1.5)"
     }
 }
 
@@ -22,12 +24,12 @@ function ActivityTab(props) {
     const context = useContext(HomeContext)
     return (
         <>
-            <li key={props.activity.name} onClick={(e)=>{context.setSelectedTabName(props.activity.name)}} 
+            <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTabName(props.activity.name)}} 
                 className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
                 style={{zIndex: props.activity.name === context.selectedTabName ? 1 : "",
                 background: props.activity.name === context.selectedTabName ? "white" : "#ececec",
-                borderTopLeftRadius: props.activity.name === context.selectedTabName ? "5px" : "",
-                borderTopRightRadius: props.activity.name === context.selectedTabName ? "5px" : ""
+                borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : ""
             }}
                 >   
             <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <DashboardTwoToneIcon style={{...iconStyle,color:"#FFC8DD"}}/> : <></> }

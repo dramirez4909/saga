@@ -65,6 +65,12 @@ const HomePage=(props)=>{
         }
     },[openTabs, allActivities])
 
+    const tabStyle = {
+        '&:hover': {
+            backgroundColor: "hsla(0,0%,100%,.32)",
+        }
+    }
+
     return (
         <>
             <HomeContext.Provider value={{setSelectedTabName, selectedTabName}}>
@@ -75,7 +81,7 @@ const HomePage=(props)=>{
                     <ul className={"tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0, marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                     (
-                        <ActivityTab key={index} activity={activity}/>
+                        <ActivityTab key={index} style={{...tabStyle}} activity={activity}/>
                         ))}
                     </ul>
                     {tabs.map(( activity, index)=>

@@ -48,10 +48,34 @@ with app.app_context():
 
   encounter_one = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,10,30),end=datetime.datetime(2020,10,21,11,30))
   provider_role = Role(name="provider")
+  encounter_two = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,10,30),end=datetime.datetime(2020,10,21,11,30))
+  encounter_three = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,16,30),end=datetime.datetime(2020,10,21,17,30))
+  encounter_four = Encounter(date=datetime.datetime(2020,10,22),start=datetime.datetime(2020,10,21,13,30),end=datetime.datetime(2020,10,21,14,30))
+  encounter_five = Encounter(date=datetime.datetime(2020,10,23),start=datetime.datetime(2020,10,19,14,30),end=datetime.datetime(2020,10,19,15,30))
+  encounter_six = Encounter(date=datetime.datetime(2020,10,20),start=datetime.datetime(2020,10,20,8,30),end=datetime.datetime(2020,10,20,10,30))
+  encounter_seven = Encounter(date=datetime.datetime(2020,10,26),start=datetime.datetime(2020,10,20,10,30),end=datetime.datetime(2020,10,20,11,30))
+  encounter_eight = Encounter(date=datetime.datetime(2020,10,22),start=datetime.datetime(2020,10,22,11,30),end=datetime.datetime(2020,10,22,12,30))
+  encounter_nine = Encounter(date=datetime.datetime(2020,10,19),start=datetime.datetime(2020,10,19,10,30),end=datetime.datetime(2020,10,19,11,30))
+  encounter_ten = Encounter(date=datetime.datetime(2020,10,19),start=datetime.datetime(2020,10,19,8,30),end=datetime.datetime(2020,10,19,9,30))
+  encounter_eleven = Encounter(date=datetime.datetime(2020,10,22),start=datetime.datetime(2020,10,22,8,30),end=datetime.datetime(2020,10,22,9,30))
+  appointment_encounter_type = Encounter_Type(name="Appointment")
+  appointment_encounter_type.encounters.append(encounter_two)
+  appointment_encounter_type.encounters.append(encounter_three)
+  appointment_encounter_type.encounters.append(encounter_four)
+  appointment_encounter_type.encounters.append(encounter_five)
+  appointment_encounter_type.encounters.append(encounter_six)
+  appointment_encounter_type.encounters.append(encounter_seven)
+  appointment_encounter_type.encounters.append(encounter_eight)
+  appointment_encounter_type.encounters.append(encounter_nine)
+  appointment_encounter_type.encounters.append(encounter_ten)
+  appointment_encounter_type.encounters.append(encounter_eleven)
+
+
+
   scheduler_role = Role(name="scheduler")
   demo.roles.append(provider_role)
 
-  appointment_encounter_type = Encounter_Type(name="Appointment")
+  
 
   demo_provider.user = demo
   appointment_encounter_type.encounters.append(encounter_one)
@@ -64,6 +88,27 @@ with app.app_context():
   provider_role.security_points.append(chart_access)
 
   scheduler_role.security_points.append(department_schedule_access)
+  demo_provider.encounters.append(encounter_two)
+  demo_provider.encounters.append(encounter_three)
+  demo_provider.encounters.append(encounter_four)
+  demo_provider.encounters.append(encounter_five)
+  demo_provider.encounters.append(encounter_six)
+  demo_provider.encounters.append(encounter_seven)
+  demo_provider.encounters.append(encounter_eight)
+  demo_provider.encounters.append(encounter_nine)
+  demo_provider.encounters.append(encounter_ten)
+  demo_provider.encounters.append(encounter_eleven)
+
+  demo_patient.encounters.append(encounter_two)
+  demo_patient.encounters.append(encounter_three)
+  demo_patient.encounters.append(encounter_four)
+  demo_patient.encounters.append(encounter_five)
+  demo_patient.encounters.append(encounter_six)
+  demo_patient.encounters.append(encounter_seven)
+  demo_patient.encounters.append(encounter_eight)
+  demo_patient.encounters.append(encounter_nine)
+  demo_patient.encounters.append(encounter_ten)
+  demo_patient.encounters.append(encounter_eleven)
 
   db.session.add(encounter_one)
   db.session.add(demo)

@@ -21,6 +21,10 @@ def provider_encounters(id):
     format_encounters = [encounter.to_dict() for encounter in encounters]
     return {"encounters":format_encounters}
     
+# @encounters.route("/provider/<id>/weeks")
+# def provider_encounters_by_week(id):
+#     provider = Provider.query.get(id)
+#     encounters = db.session.query(Encounter).filter(Encounter.provider_id == provider.id).all()
 
 
 class Authentication:
