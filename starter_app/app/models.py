@@ -170,7 +170,7 @@ class Patient(db.Model):
   address_city = db.Column(db.String(80),nullable=True)
   address_state = db.Column(db.String(20),nullable=True)
   address_zip = db.Column(db.String(20),nullable=True)
-  picture = db.Column(db.String(20),nullable=True)
+  picture = db.Column(db.String(800),nullable=True)
 
   medications = db.relationship("Medication",back_populates="patient")
   encounters= db.relationship("Encounter",back_populates="patient")

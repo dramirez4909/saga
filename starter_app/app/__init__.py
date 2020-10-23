@@ -1,4 +1,5 @@
 import os
+import boto3
 from flask import Flask, render_template, request, session
 from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -13,8 +14,15 @@ from .api.umls import umls
 from .api.patients import patients
 from .api.encounters import encounters
 
-
+from .config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
 from .config import Config
+
+
+s3 = boto3.client(
+    's3',
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY,
+)
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -52,6 +60,24 @@ def react_root(path):
 
 login = LoginManager(app)
 login.login_view = "session.login"
+
+@app.route('/files')
+def files():
+    s3_resource= boto3.resource('s3')
+    my_bucket = s3_resource.Bucket(AWS_BUCKET_NAME)
+    summaries = my_bucket.objects.all()
+    return {"summaries":summaries}
+
+@app.route('/upload',methods=['POST'])
+def upload():
+  file = request.files['file']
+
+  s3_resource = boto3.resource('s3')
+  my_bucket = s3_resource.Bucket(AWS_BUCKET_NAME)
+  mines = my_bucket.Object(file.filename).put(Body=file)
+  mineyy = my_bucket.Object(file.filename).get()
+  print("!!!!!!!!!!!!!!!!!!!!!!!",mineyy)
+  return "uploaded"
 
 @login.user_loader
 def load_user(id):

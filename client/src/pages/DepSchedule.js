@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import DepCalendar from '../components/DepCalendar'
 import WeekContext from '../components/utils/WeekContext'
 import '../styles/schedule.css'
+import { Transition } from 'react-transition-group';
 
 
 function DepSchedule(props) {
@@ -175,7 +176,6 @@ function DepSchedule(props) {
         <>
             <WeekContext.Provider value={{updateLayout}}>
             <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
-                    
                     <div style={{display:"flex",flexDirection:"row"}}>
                     <button onClick={()=>{
                         setLoading(true)
@@ -203,7 +203,7 @@ function DepSchedule(props) {
                     })}
                 </div>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3"}}>
-                    {loading ? <div style={{display:"flex",flexDirection:"row",width:"100%",height:"380px",alignItems:"center",justifyContent:"center"}}>...loading</div> : <DepCalendar events={events} {...defaultProps}/>}
+                    {loading ? <div className={"grid"} style={{display:"flex",flexDirection:"row",width:"100%",height:"415px",alignItems:"center",justifyContent:"center",borderTop:"16px solid #f9f9f9",borderBottom:"16px solid #f9f9f9"}}></div> : <DepCalendar events={events} {...defaultProps}/>}
                 </div>
                 </div>
                 </div>

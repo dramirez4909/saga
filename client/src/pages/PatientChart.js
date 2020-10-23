@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {withStyles,makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import '../styles/PatientChart.css'
 
 const useStylesLoginTextField = makeStyles((theme) => ({
     root: {
@@ -30,6 +31,23 @@ const useStylesLoginTextField = makeStyles((theme) => ({
 function PatientChart(props) {
     const [dxSearchTerm,setDxSearchTerm] = useState("")
     const [dxSearchResults,setDxSearchResults]=useState([]);
+    const [patient,setPatient] = useState(props.patient)
+    const form = useRef(null)
+
+    const submit = e => {
+    e.preventDefault()
+    const data = new FormData(form.current)
+    fetch(`/api/patients/upload/${patient.id}`, {
+      method: 'POST',
+      body: data,
+    })
+      .then(res => res.json())
+      .then(json => {
+          console.log(json)
+          setPatient(json.patient)
+        })
+    }
+
     useEffect(()=>{
         const searchDxs= async (searchTerm) => {
             const response = await fetch(`/api/umls/search-term/${searchTerm}`)
@@ -41,11 +59,21 @@ function PatientChart(props) {
             searchDxs(dxSearchTerm)
         }
     },[dxSearchTerm])
-    const [schedule,setSchedule] = useState("")
+
+    const submitProfilePicture=(e)=>{
+        console.log(e)
+    }
+
+
     return (
         <>
             <div style={{margin:"20px"}}>
-            <h1>{props.patient.firstName + " " + props.patient.lastName}</h1>
+            <h1>{patient.firstName + " " + patient.lastName}</h1>
+            <div className={"user-photo"}>
+            <div className={"circular--portrait"}>
+                <img id="user-photo" src={patient.picture ? patient.picture : "https://saga-health.s3-us-west-1.amazonaws.com/IMG_6788.jpg"}/>
+            </div>
+            </div>
             <LoginTextField placeholder="enter a diagnosis" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
             <ul>
                 {dxSearchResults.map(dx=>{
@@ -54,6 +82,12 @@ function PatientChart(props) {
                     )
                     })}
             </ul>
+            {/* <form class="upload-form" action='/upload' method="post" encType="multipart/form-data" onSubmit={(e)=>{submitProfilePicture(e)}}>
+            </form> */}
+            <form ref={form} onSubmit={submit}>
+                <input type="file" name="file"></input>
+                <input type="submit" name="Sign Up" />
+            </form>
             </div>
         </>
     );

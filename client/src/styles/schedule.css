@@ -3,9 +3,57 @@
     transition: height 200ms ease;
 }
 .react-grid-item {
-    transition: all 200ms ease;
+    transition: all 300ms ease;
     transition-property: left, top;
 }
+
+.schedule-card-blue{
+    color: white;
+    transition: all .05s ease-in-out;
+    /* transition-property:  */
+    /* transition-property: scale, box-shadow ; */
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px; */
+    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; */
+    background-color: rgb(85, 177, 250);
+}
+
+.patient-photo-schedule {
+    border:"1px solid white";
+    border-radius: 2.5em;
+    height: 35px;
+    width: 35px;
+  }
+
+.schedule-card-blue.react-grid-item:hover{
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+    /* box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px; */
+    /* box-shadow: rgba(0,0,0,0.3) 0 0 10px; */
+    /* background-color: rgb(33, 150, 243); */
+    /* color: grey; */
+    transform:scale(1.02);
+    /* border: 2px solid #2196f3; */
+    z-index: 3;
+}
+
+.schedule-card:hover{
+    background-color: white;
+    color: grey;
+    /* transform:scale(1.05); */
+    /* border: 2px solid #2196f3; */
+    z-index: 3;
+}
+
+.provider-schedule {
+    background: linear-gradient(to top, transparent, white),
+    url("https://saga-health.s3-us-west-1.amazonaws.com/texture-1668079_1920.jpg");
+    /* background-image: url("../images/Untitled.svg"); */
+    /* background-image:url("../images/6851895.png"); */
+    background-repeat: no-repeat;
+    /* background-attachment: fixed; */
+    background-size: cover;
+    height: 100vh
+}
+
 .react-grid-item.cssTransforms {
     transition-property: transform;
 }
@@ -31,13 +79,19 @@
     user-select: none;
 }
 
+.tooltip{
+    /* pointer-events: inherit */
+}
+
 .react-grid-item:hover > .react-resizable-handle {
     position: absolute;
+    color:white;
     width: 20px;
     height: 20px;
     bottom: 0;
     right: 0;
     background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg08IS0tIEdlbmVyYXRvcjogQWRvYmUgRmlyZXdvcmtzIENTNiwgRXhwb3J0IFNWRyBFeHRlbnNpb24gYnkgQWFyb24gQmVhbGwgKGh0dHA6Ly9maXJld29ya3MuYWJlYWxsLmNvbSkgLiBWZXJzaW9uOiAwLjYuMSAgLS0+DTwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DTxzdmcgaWQ9IlVudGl0bGVkLVBhZ2UlMjAxIiB2aWV3Qm94PSIwIDAgNiA2IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHZlcnNpb249IjEuMSINCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiDQl4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjZweCIgaGVpZ2h0PSI2cHgiDT4NCTxnIG9wYWNpdHk9IjAuMzAyIj4NCQk8cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=');
+    /* background-image: url('../images/Untitled.svg'); */
     background-position: bottom right;
     padding: 0 3px 3px 0;
     background-repeat: no-repeat;
