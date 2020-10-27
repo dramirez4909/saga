@@ -16,7 +16,7 @@ const es = [
 ]
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 const DndCalendar = withDragAndDrop(Calendar)
-const MyCalendar = props => {
+const ProviderSchedule = props => {
     const [events,setEvents] = useState(es)
     const [displayDragItemInCell,setDisplayDragItemInCell] =useState(true)
     const [draggedEvent,setDraggedEvent] = useState({})
@@ -119,7 +119,6 @@ const MyCalendar = props => {
                     localizer={localizer}
                     startAccessor="start"
                     selectable
-                    popup={true}
                     onEventDrop={moveEvent}
                     endAccessor="end"
                     onEventResize={resizeEvent}
@@ -137,4 +136,4 @@ const MyCalendar = props => {
         )
 }
 
-export default MyCalendar
+export default ProviderSchedule
