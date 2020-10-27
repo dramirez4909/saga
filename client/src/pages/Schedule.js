@@ -10,7 +10,7 @@ function DepSchedule(props) {
 
     const defaultProps = {
         className: "layout",
-        rowHeight: 10,
+        rowHeight: 9,
         margin:[1.2,1],
         onLayoutChange: function() {},
         preventCollision: true,
@@ -201,7 +201,7 @@ function DepSchedule(props) {
                     </div>
             </div>
             {/* <div style={{display:"grid", gridTemplateColumns: "20% 80%", gridTemplateRows: "1.5% 98.5%"}}> */}
-                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "3.5% 95% 2%", margin:"20px", border:"2px solid #f9f9f9", backgroundColor:"white",borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 5px",gridGap: "1px"}}>
+                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "8.5% 91%% .5%", margin:"20px", border:"2px solid #f9f9f9", backgroundColor:"white",borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 5px",gridGap: "1px"}}>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"1",gridRowEnd:"2", display:"grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gridTemplateRows: "1fr"}}>
                     {weekDays.map((date,index)=>{
                         return (

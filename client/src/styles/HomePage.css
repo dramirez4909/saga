@@ -1,3 +1,20 @@
+.MuiPaper-root.MuiDrawer-paper.makeStyles-drawerClose-9.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0 {
+    position: initial;
+    width: 62px;
+}
+
+.MuiPaper-root.MuiDrawer-paper.makeStyles-drawerOpen-8.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0 {
+  position:relative;
+}
+
+div.makeStyles-drawerClose-9 {
+  width: 62px;
+}
+
+div.makeStyles-toolbar-10 {
+  display: none;
+}
+
 .tabs li { 
   /* Makes a horizontal row */
   float: left; 
@@ -15,7 +32,7 @@
   
   /* Default colors */ 
   color: black;
-  background: #ececee; 
+  background: rgb(221,224,230); 
   
   /* Only round the top corners */
   -webkit-border-top-left-radius: 15px;
@@ -56,7 +73,7 @@
 }
 /* Squares */
 .tabs li:before, .tabs li:after {
-  background: #ececee;
+  background: rgb(221,224,230);
   width: 10px;
   height: 8px;
 }
@@ -73,19 +90,19 @@
   /* Circles are circular */
   border-bottom-left-radius: 10px;  
   border-bottom-right-radius: 10px;
-  background: #ececee;
+  background: rgb(221,224,230);
   
   /* Circles over squares */
   z-index: 2;
 }
 .tabs .active a:after, .tabs .active a:before {
-  background: #ececee;
+  background: rgb(221,224,230);
 }
 /* First and last tabs have different
    outside color needs */
 .tabs li:first-child.active a:before,
 .tabs li:last-child.active a:after {
-  background: #ececee;
+  background: rgb(221,224,230);
 }
 .tabs li a:before {
   left: -20px;

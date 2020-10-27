@@ -4,14 +4,14 @@ from datetime import time
 load_dotenv()
 
 from app import app, db
-from app.models import User, Security_Point,Role, Encounter, Patient, Provider, Activity, Encounter_Type
+from app.models import User, Security_Point,Role, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type
 
 with app.app_context():
   db.drop_all()
   db.create_all()
 
   demo = User(username = 'DemoUser', email = 'demo@aa.io', password ='password', first_name="Angela",last_name="Alegria")
-  ian = User(username = 'Ian', email = 'ian@aa.io', password='password', first_name="Enrique",last_name="Ramirez")
+  ian = User(username = 'Angelo', email = 'angelo@health.io', password='password', first_name="Angelo",last_name="Ramirez")
   javier = User(username = 'Javier', email = 'javier@aa.io', password='password', first_name="Martin",last_name="Martinez")
   dean = User(username = 'Dean', email = 'dean@aa.io', password='password', first_name="Oscar",last_name="Holden")
   angela = User(username = 'Angela', email = 'angela@aa.io', password='password', first_name="Jonathan",last_name="Gutierez")
@@ -26,7 +26,7 @@ with app.app_context():
   patient_user_access = Security_Point(name="patient user access")
 
   demo_provider =Provider(specialty="Family Medicine")
-  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731")
+  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731",bmi="22.74",beats_per_minute="115/75",weight="112",height="5'4''",ethnicity="White",picture="https://saga-health.s3-us-west-1.amazonaws.com/Tulsa-Headshot-Photographer_9639a.jpg",smoker="yes",occupation="Writer",mobile_phone="(832) 370-8893", home_phone="(281) 349-8893", work_phone="(409) 342-8144")
   rosemary = Patient(firstName="Rosemary",lastName="Boxer",dob = datetime.datetime(1926, 8, 11), sex="female", address_line_one ="4909 23rd St.",address_city="Austin",address_state="TX",address_zip="78704")
   thyme = Patient(firstName="Laura",lastName="Thyme",dob = datetime.datetime(1930, 2, 9), sex="female", address_line_one ="3038 Mason Rd.",address_city="Austin",address_state="TX",address_zip="78718")
   severus = Patient(firstName="Severus",lastName="Snape",dob = datetime.datetime(1967, 7, 19), sex="male", address_line_one ="7677 W. 15th St.",address_city="Austin",address_state="TX",address_zip="78712")
@@ -70,9 +70,10 @@ with app.app_context():
   appointment_encounter_type.encounters.append(encounter_ten)
   appointment_encounter_type.encounters.append(encounter_eleven)
 
-
+  appointment_order_type=Order_Type(name="Appointment Request")
 
   scheduler_role = Role(name="scheduler")
+  scheduler_role.users.append(ian)
   demo.roles.append(provider_role)
 
   
@@ -110,6 +111,7 @@ with app.app_context():
   demo_patient.encounters.append(encounter_ten)
   demo_patient.encounters.append(encounter_eleven)
 
+  db.session.add(appointment_order_type)
   db.session.add(encounter_one)
   db.session.add(demo)
   db.session.add(rosemary)

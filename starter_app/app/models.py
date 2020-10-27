@@ -59,18 +59,53 @@ class Activity(db.Model):
       "name": self.name,
     }
 
+class Order_Type(db.Model):
+  __tablename__ = "order_types"
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(40), nullable = False)
+
+  orders = db.relationship("Order",back_populates="type")
+
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+    }
+
 
 class Order(db.Model):
   __tablename__ = "orders"
   id = db.Column(db.Integer, primary_key = True)
+  order_type = db.Column(db.Integer, db.ForeignKey("order_types.id"), nullable = True)
   patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
   status = db.Column(db.String(40), nullable = True)
   encounter_id = db.Column(db.Integer, db.ForeignKey("encounters.id"), nullable=True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
 
+  type = db.relationship("Order_Type",back_populates="orders")
   patient = db.relationship("Patient",back_populates="orders")
   provider = db.relationship("Provider",back_populates="orders")
   encounter = db.relationship("Encounter",back_populates="orders")
+
+  def to_dict(self):
+    if self.encounter:
+      return{
+        "id":self.id,
+        "patient": self.patient.without_orders(),
+        "encounter": self.encounter.without_orders(),
+        "status": self.status,
+        "provider": self.provider.without_orders(),
+        "type":self.type.name,
+      }
+    else: 
+      return{
+        "id":self.id,
+        "patient": self.patient.without_orders(),
+        "status": self.status,
+        "provider": self.provider.without_orders(),
+        "type":self.type.name,
+      }
 
 class Problem(db.Model):
   __tablename__ = "problems"
@@ -171,6 +206,14 @@ class Patient(db.Model):
   address_state = db.Column(db.String(20),nullable=True)
   address_zip = db.Column(db.String(20),nullable=True)
   picture = db.Column(db.String(800),nullable=True)
+  bmi = db.Column(db.String(20),nullable=True)
+  weight = db.Column(db.String(20),nullable=True)
+  height = db.Column(db.String(20),nullable=True)
+  beats_per_minute = db.Column(db.String(20),nullable=True)
+  mrn = db.Column(db.String(20),nullable=True)
+  smoker = db.Column(db.String(20),nullable=True)
+  occupation = db.Column(db.String(50),nullable=True)
+
 
   medications = db.relationship("Medication",back_populates="patient")
   encounters= db.relationship("Encounter",back_populates="patient")
@@ -180,15 +223,21 @@ class Patient(db.Model):
   notes = db.relationship("Note",back_populates="patient")
   allergies = db.relationship("Allergy",back_populates="patient")
 
-  def to_dict(self):
+  def without_orders(self):
     return {
       "id": self.id,
       "firstName": self.firstName,
       "lastName": self.lastName,
       "fullName": f"{self.lastName}, {self.firstName}",
       "dob": self.dob,
+      "mrn": self.mrn,
+      "beats_per_minute": self.beats_per_minute,
+      "height": self.height,
+      "weight": self.weight,
+      "occupation":self.occupation,
       "ethnicity": self.ethnicity,
       "sex":self.sex,
+      "smoker":self.smoker,
       "work_phone":self.work_phone,
       "home_phone":self.home_phone,
       "mobile_phone":self.mobile_phone,
@@ -202,8 +251,75 @@ class Patient(db.Model):
       "allergies": [allergy.to_dict() for allergy in self.allergies],
       "notes": [note.to_dict() for note in self.notes],
       "problems": [problem.to_dict() for problem in self.problems],
-      "enounters": [encounter.without_patient() for encounter in self.encounters],
+      "bmi": self.bmi,
+      "picture":self.picture
+    }
+
+  def without_encounters(self):
+    return {
+      "id": self.id,
+      "firstName": self.firstName,
+      "lastName": self.lastName,
+      "fullName": f"{self.lastName}, {self.firstName}",
+      "dob": self.dob,
+      "mrn": self.mrn,
+      "beats_per_minute": self.beats_per_minute,
+      "height": self.height,
+      "weight": self.weight,
+      "occupation":self.occupation,
+      "ethnicity": self.ethnicity,
+      "sex":self.sex,
+      "smoker":self.smoker,
+      "work_phone":self.work_phone,
+      "home_phone":self.home_phone,
+      "mobile_phone":self.mobile_phone,
+      "address_line_one":self.address_line_one,
+      "address_line_two":self.address_line_two,
+      "address_line_three":self.address_line_three,
+      "address_state":self.address_state,
+      "address_city":self.address_city,
+      "address_zip":self.address_zip,
+      "orders":[order.to_dict() for order in self.orders],
+      "medications": [medication.to_dict() for medication in self.medications],
+      "allergies": [allergy.to_dict() for allergy in self.allergies],
+      "notes": [note.to_dict() for note in self.notes],
+      "problems": [problem.to_dict() for problem in self.problems],
+      "bmi": self.bmi,
+      "picture":self.picture
+    }
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "firstName": self.firstName,
+      "lastName": self.lastName,
+      "fullName": f"{self.lastName}, {self.firstName}",
+      "dob": self.dob,
+      "mrn": self.mrn,
+      "beats_per_minute": self.beats_per_minute,
+      "height": self.height,
+      "weight": self.weight,
+      "occupation":self.occupation,
+      "ethnicity": self.ethnicity,
+      "sex":self.sex,
+      "smoker":self.smoker,
+      "work_phone":self.work_phone,
+      "home_phone":self.home_phone,
+      "mobile_phone":self.mobile_phone,
+      "address_line_one":self.address_line_one,
+      "address_line_two":self.address_line_two,
+      "address_line_three":self.address_line_three,
+      "address_state":self.address_state,
+      "address_city":self.address_city,
+      "address_zip":self.address_zip,
+      "orders":[order.to_dict() for order in self.orders],
+      "medications": [medication.to_dict() for medication in self.medications],
+      "allergies": [allergy.to_dict() for allergy in self.allergies],
+      "notes": [note.to_dict() for note in self.notes],
+      "problems": [problem.to_dict() for problem in self.problems],
+      "encounters": [encounter.without_patient() for encounter in self.encounters],
       "providers": [provider.name_and_id() for provider in self.providers],
+      "bmi": self.bmi,
       "picture":self.picture
     }
 
@@ -227,11 +343,20 @@ class Provider(db.Model):
   problems = db.relationship("Problem",back_populates="provider")
   notes = db.relationship("Note",back_populates="provider")
 
+  def to_dict(self): 
+    return {
+      "id":self.id,
+      "first_name": self.user.first_name,
+      "last_name": self.user.last_name,
+      "full_name": f"{self.user.first_name} {self.user.last_name}",
+      "patients": [patient.to_dict() for patient in self.patients],
+    }
+
   def name_and_id(self):
     return {
       "id":self.id,
       "first_name": self.user.first_name,
-      "last_name": self.user.lastName,
+      "last_name": self.user.last_name,
       "full_name": f"{self.user.first_name} {self.user.last_name}",
       "encounters": [encounter.to_dict() for encounter in self.encounters]
     }
@@ -244,14 +369,13 @@ class Provider(db.Model):
       "full_name": f"{self.user.first_name} {self.user.last_name}",
       "patients": [patient.to_dict() for patient in self.patients]
     }
-
-  def to_dict(self): 
+  
+  def without_orders(self):
     return {
       "id":self.id,
       "first_name": self.user.first_name,
       "last_name": self.user.last_name,
       "full_name": f"{self.user.first_name} {self.user.last_name}",
-      "patients": [patient.to_dict() for patient in self.patients],
     }
 
 class Encounter(db.Model):
@@ -274,14 +398,32 @@ class Encounter(db.Model):
   def without_patient(self):
     return {
       "id": self.id,
-      "provider": self.provider.to_dict()
+      "orders": [order.to_dict() for order in self.orders],
+      "patient": self.patient.without_encounters(),
+      "type": self.type.to_dict(),
+      "date": self.date,
+      "status": self.status,
+      "start": self.start,
+      "end":self.end
+    }
+
+  def without_orders(self):
+    return {
+      "id": self.id,
+      "provider": self.provider.to_dict(),
+      "patient": self.patient.without_encounters(),
+      "type": self.type.to_dict(),
+      "date": self.date,
+      "status": self.status,
+      "start": self.start,
+      "end":self.end
     }
 
   def to_dict(self):
     return {
       "id": self.id,
       "patient": self.patient.to_dict(),
-      "provider": self.provider.without_encounters(),
+      # "provider": self.provider.without_encounters(),
       "type": self.type.to_dict(),
       "date": self.date,
       "status": self.status,
@@ -338,11 +480,20 @@ class User(db.Model,UserMixin):
   security_points = db.relationship("Security_Point",secondary=user_security, back_populates="users")
 
   def to_dict(self):
-    return {
-      "id": self.id,
-      "username": self.username,
-      "email": self.email
-    }
+    if self.provider:
+      return {
+        "id": self.id,
+        "username": self.username,
+        "email": self.email,
+        "provider": self.provider[0].to_dict()
+      }
+    else:
+      return {
+        "id": self.id,
+        "username": self.username,
+        "email": self.email,
+        "roles": [role.to_dict() for role in self.roles]
+      }
   
   @property
   def password(self):

@@ -44,8 +44,8 @@
 }
 
 .provider-schedule {
-    background: linear-gradient(to top, transparent, white),
-    url("https://saga-health.s3-us-west-1.amazonaws.com/texture-1668079_1920.jpg");
+    background: linear-gradient(to top, transparent, white);
+    /* url("https://saga-health.s3-us-west-1.amazonaws.com/texture-1668079_1920.jpg"); */
     /* background-image: url("../images/Untitled.svg"); */
     /* background-image:url("../images/6851895.png"); */
     background-repeat: no-repeat;

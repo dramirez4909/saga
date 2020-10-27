@@ -7,7 +7,8 @@ import WeekContext from "./utils/WeekContext";
 import {openPatientChart} from '../store/activities'
 import { useDispatch, useSelector } from 'react-redux';
 import HomeContext from './utils/HomeContext';
-
+import Divider from '@material-ui/core/Divider';
+import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
 
 
 const ResponsiveReactGridLayout = WidthProvider(RGL)
@@ -33,7 +34,7 @@ const DragFromOutsideLayout=(props)=> {
 
   const openChart=(patient)=>{
     if (!openTabs.some(activity=>activity.name === `${patient.lastName}, ${patient.firstName}`)) dispatch(openPatientChart(patient.id))
-    homeContext.setSelectedTabName(`${patient.lastName}, ${patient.firstName}`)
+    homeContext.setSelectedTab(`${patient.lastName}, ${patient.firstName}`,patient)
   }
 
   const [hoverEncounter,setHoverEncounter] = useState({})
@@ -72,18 +73,23 @@ const DragFromOutsideLayout=(props)=> {
       return (
             <div key={i} className={"schedule-card-blue"} onMouseLeave={()=>{setHoverEncounter({})}} onMouseEnter={()=>{setHoverEncounter(l.encounter)}} style={{borderRadius:"5px",cursor:"pointer",display:"flex",flexDirection:"column"}}>
               <div style={{justifyContent:"space-between", display:"flex",flexDirection:"row",padding:"5px",alignItems:"center",marginBottom:"0px",alignContent:"center"}}>
-                <img style={{alignSelf:"normal",marginRight:"2px"}} className="patient-photo-schedule" src={l.encounter.patient ? l.encounter.patient.picture : ""}/>
-                <div style={{marginTop:"-6px",marginLeft:"-6px"}}>
+                {/* <img style={{alignSelf:"normal",marginRight:"2px"}} className="patient-photo-schedule" src={l.encounter.patient ? l.encounter.patient.picture : ""}/> */}
+                <div style={{marginTop:"-6px",marginLeft:"6px"}}>
                   <strong style={{fontSize:"13px"}}>{l.patient.fullName}</strong>
-                <strong style={{fontSize:"11px",display:"block",borderRadius:"4px",background:"white",color:"grey",width:"fit-content",padding:"2px",border:"1px solid grey"}}>EXAM ROOM B</strong>
+                {/* <strong style={{fontSize:"11px",display:"block",borderRadius:"4px",background:"white",color:"grey",width:"fit-content",padding:"2px",border:"1px solid grey"}}>EXAM ROOM B</strong> */}
                 </div>
                 <div style={{fontSize:"12px",fontWeight:"strong"}}>
                   <strong>{`${startHour}:${startMin} - ${endHour}:${endMin}`}</strong>
                 </div>
                 </div>
-                <div style={{display: hoverEncounter.id === l.encounter.id ? "flex" : "none",borderRadius:"5px",display:"flex",flexDirection:"row",marginLeft:"10px",background:"white"}}>
-                    <div onClick={()=>openChart(l.encounter.patient)} style={{display: hoverEncounter.id === l.encounter.id ? "flex" : "none",flexDirection:"row",justifyContent:"center",color:"white", borderRadius:"3px",padding:"3px",height:"min-content",width:"fit-content",cursor:"pointer",background:"skyblue"}}>open chart</div>
-                    <div onClick={()=>openChart(l.encounter.patient)} style={{display: hoverEncounter.id === l.encounter.id ? "flex" : "none", flexDirection:"row",justifyContent:"center",color:"white", borderRadius:"3px",padding:"3px",height:"min-content",width:"fit-content",cursor:"pointer",background:"skyblue"}}>open encounter</div>
+                <div style={{display: hoverEncounter.id === l.encounter.id ? "flex" : "flex",borderRadius:"5px",display:"flex",flexDirection:"column",marginRight:"140px",marginLeft:"-50px",background:"white",padding: hoverEncounter.id === l.encounter.id ? "6px" : "",boxShadow:"rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px"}}>
+                  <div style={{display:hoverEncounter.id === l.encounter.id ? "flex" : "none",flexDirection:"column"}}>
+                    <div onClick={()=>openChart(l.encounter.patient)} style={{display: hoverEncounter.id === l.encounter.id ? "flex" : "none",flexDirection:"row",justifyContent:"center",color:"white", borderRadius:"3px",padding:"3px",height:"min-content",width:"100%",cursor:"pointer",background:"lightgreen"}}> open chart <ExitToAppTwoToneIcon style={{marginLeft:"3px"}}/> </div>
+                    <div onClick={()=>openChart(l.encounter.patient)} style={{marginTop:"2px", display: hoverEncounter.id === l.encounter.id ? "flex" : "none", flexDirection:"row",justifyContent:"center",color:"white", borderRadius:"3px",padding:"3px",height:"min-content",width:"100%",cursor:"pointer",background:"lightgreen"}}>open encounter</div>
+                  </div>
+                  <div style={{position:"relative",display:hoverEncounter.id === l.encounter.id ? "" : "none",opacity:"100%",width:"160px",height:"160px",overflow:"hidden",borderRadius:"50%",border:"2px solid #fff"}}>
+                    <img src={`${hoverEncounter.patient ? hoverEncounter.patient.picture : ""}`} style={{display:hoverEncounter.id === l.encounter.id ? "flex" : "none"}} className={"user-photo"}/>
+                  </div>
                 </div>
             </div>
           )

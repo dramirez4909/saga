@@ -3,11 +3,15 @@ import thunk from 'redux-thunk';
 import auth from './auth';
 import activities from './activities'
 import encounters from './encounters'
+import orders from './orders'
+import currentPatient from './current_patient'
 
 const rootReducer = combineReducers({
     auth,
     activities,
-    encounters
+    encounters,
+    orders,
+    currentPatient
 });
 
 let storeEnhancer;

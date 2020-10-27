@@ -10,7 +10,7 @@ function PatientPreviewCard(props) {
 
     const openChart=(id)=>{
         if (!openTabs.some(activity=>activity.name === `${props.patient.lastName}, ${props.patient.firstName}`)) dispatch(openPatientChart(id))
-        context.setSelectedTabName(`${props.patient.lastName}, ${props.patient.firstName}`)
+        context.setSelectedTab(`${props.patient.lastName}, ${props.patient.firstName}`,props.patient)
     }
 
     return (

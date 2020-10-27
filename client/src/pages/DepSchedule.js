@@ -1,24 +1,26 @@
 import React, { useState, useEffect} from 'react';
-import { useSelector } from 'react-redux';
-import DepCalendar from '../components/DepCalendar'
+import { useDispatch, useSelector } from 'react-redux';
+import ProviderCalendar from '../components/DepCalendar'
 import WeekContext from '../components/utils/WeekContext'
 import '../styles/schedule.css'
 import { Transition } from 'react-transition-group';
+import {createNewEncounter} from '../store/encounters'
+import Cookies from 'js-cookie'
+
 
 
 function DepSchedule(props) {
 
     const defaultProps = {
         className: "layout",
-        rowHeight: 8,
-        margin:[1,1],
+        rowHeight: 9,
+        margin:[1.2,1],
         onLayoutChange: function() {},
         preventCollision: true,
         verticalCompact: false,
         cols: 5,
       };
     
-    const [schedule,setSchedule] = useState("")
     const currentDate = new Date
     const date = currentDate.getDate();
 
@@ -76,7 +78,7 @@ function DepSchedule(props) {
     const encountersByWeek = useSelector(state=>state.encounters.by_week)
     const [encounters,setEncounters] = useState(encountersByWeek[currentWeek])
     const [loading,setLoading] = useState(false)
-    
+    const dispatch = useDispatch()
     const hours = ["8am","9am","10am","11am","12pm","1pm","2pm","3pm","4pm","5pm","6pm"]
 
     
@@ -102,15 +104,26 @@ function DepSchedule(props) {
 
     // const [encountersByWeek, setEncountersByWeek] = useState(createEncountersByWeekObject(encounters))
 
+    const currentTimeIndicator = () => {
+        const currentTimeIndicatorCard = {x:"",y:"",h:1,w:1,static:true}
+        const currentTime = new Date()
+        const day = currentTime.getDay()
+        currentTimeIndicatorCard.x = day - 1
+        const hour = currentTime.getHours()
+        const minutes = currentTime.getMinutes()
+        currentTime.start = `${hour}:${minutes}`
+        const hourMark = ((4*(hour - 8)) + 2) + (minutes/15)
+        currentTimeIndicatorCard.y = hourMark
+        currentTimeIndicatorCard.x = day - 1
+        return currentTimeIndicatorCard
+    }
     
     const generateLayout=(encounters)=>{
-            console.log("THESE ARE ENCOUNTERS!!!",encounters)
             const eventLayout = [{x:0,y:0,i:"0",h:2,w:5,static:true},{x:0,y:44,i:"1",h:2,w:5,static:true}]
             if (!encounters) return eventLayout
             Object.values(encounters).forEach((encounter,index)=>{
             const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
             const dateStartArr = encounter.start.split(" ")
-            console.log(encounter.start)
             dateStartArr.pop()
             const newStartDateNoTZ = dateStartArr.join(" ")
             const encStartTime = new Date(newStartDateNoTZ)
@@ -131,16 +144,36 @@ function DepSchedule(props) {
             newEncounterCard.end = `${endHour}:${endMinutes}`
             const endHourMark = ((4*(endHour - 8)) + 2) + (endMinutes/15)
             newEncounterCard.h = endHourMark - hourMark
-            console.log("encCARD!",newEncounterCard)
-            console.log("encStartTime",encStartTime)
             eventLayout.push(newEncounterCard)
         })
         return eventLayout
     }
     const [encountersToDisplay,setEncountersToDisplay] = useState(generateLayout(encounters))
-    console.log("DISPPLAY:",encountersToDisplay)
-    const [oldLayout,setOldLayout] = useState(encountersToDisplay)
-    const [events,setEvents] = useState(encountersToDisplay)
+    const [oldLayout,setOldLayout] = useState(generateLayout(encounters))
+    const [events,setEvents] = useState(generateLayout(encounters))
+    const [encounterToCreate,setEncounterToCreate] = useState({})
+
+    useEffect(()=>{
+        const createEncounter = async (encounter) => {
+            const csrfToken = Cookies.get("XSRF-TOKEN")
+            const jsonEncounter = JSON.stringify(encounter)
+            const res = await fetch('/api/encounters/create',{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: jsonEncounter
+            })
+            const data = await res.json()
+            console.log("NEW ENCOUNTER: ",data)
+            // dispatch(loadDepartmentEncounters) 
+            setEvents(generateLayout({...encounters,[data.encounter.id]:data.encounter}))
+            encountersByWeek[currentWeek][data.encounter.id] = data.encounter
+            setLoading(false)
+            }
+        if (encounterToCreate.start) createEncounter(encounterToCreate)
+    },[encounterToCreate])
 
     const updateLayout=(e)=>{
         const difference = oldLayout.filter((el,index)=>el.x !== e[index].x || el.y !== e[index].y || el.h !== e[index].h)
@@ -155,7 +188,6 @@ function DepSchedule(props) {
             event.h = e[index].h
         })
         setEvents(newEvents)
-        console.log(newEvents)
       }
 
       useEffect(()=>{
@@ -170,25 +202,26 @@ function DepSchedule(props) {
             setOldLayout(generateLayout(encountersByWeek[currentWeek]))
             setLoading(false)
         }
-    },[currentWeek])
+    },[currentWeek,encountersByWeek])
     
     return (
         <>
-            <WeekContext.Provider value={{updateLayout}}>
-            <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
-                    <div style={{display:"flex",flexDirection:"row"}}>
-                    <button onClick={()=>{
+            <WeekContext.Provider value={{updateLayout,setEvents,setEncounterToCreate,setLoading}}>
+            <div className={"provider-schedule"}>
+            <div style={{display:"flex",flexDirection:"row",justifyContent:"right"}}>
+                    <div style={{display:"flex",flexDirection:"row", justifyContent:"right"}}>
+                    <button className={"schedule-card"} style={{background: "lightsteelblue", outline:"none", color:"white", border:"none", borderRadius:"3px", margin: "3px"}} onClick={()=>{
                         setLoading(true)
                         setCurrentWeek(currentWeek - 1)
-                        }}>prev</button>
-                    <button onClick={()=>{
+                        }}>Prev. Week</button>
+                    <button className={"schedule-card"} style={{background: "lightsteelblue",color:"white",outline:"none", border:"none", borderRadius:"3px", margin: "3px"}} onClick={()=>{
                         setLoading(true)
-                        setCurrentWeek(currentWeek + 1)}}>next</button>
+                        setCurrentWeek(currentWeek + 1)}}>Next Week</button>
                     </div>
             </div>
-            <div style={{display:"grid", gridTemplateColumns: "20% 80%", gridTemplateRows: "1.5% 98.5%"}}>
-                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "3.5% 95% 2%", margin:"20px", border:"2px solid #f9f9f9", borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 10px"}}>
-                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"1",gridRowEnd:"2", display:"grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gridTemplateRows: "1fr",}}>
+            {/* <div style={{display:"grid", gridTemplateColumns: "20% 80%", gridTemplateRows: "1.5% 98.5%"}}> */}
+                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3",display:"grid", gridTemplateColumns: "4% 96%", gridTemplateRows: "8.5% 91%% .5%", margin:"20px", border:"2px solid #f9f9f9", backgroundColor:"white",borderRadius:"7px",boxShadow: "rgba(0,0,0,0.1) 0 0 5px",gridGap: "1px"}}>
+                <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"1",gridRowEnd:"2", display:"grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gridTemplateRows: "1fr"}}>
                     {weekDays.map((date,index)=>{
                         return (
                             <div  key={index} style={{display:"flex",alignItems:"center",justifyContent:"center",gridColumnStart:index + 1,gridColumnEnd:`${index+2}`,gridRowStart:"1",gridRowEnd:"2"}}>{date}</div>
@@ -203,9 +236,10 @@ function DepSchedule(props) {
                     })}
                 </div>
                 <div style={{gridColumnStart:"2",gridColumnEnd:"3",gridRowStart:"2",gridRowEnd:"3"}}>
-                    {loading ? <div className={"grid"} style={{display:"flex",flexDirection:"row",width:"100%",height:"415px",alignItems:"center",justifyContent:"center",borderTop:"16px solid #f9f9f9",borderBottom:"16px solid #f9f9f9"}}></div> : <DepCalendar events={events} {...defaultProps}/>}
+                    {loading ? <div className={"grid"} style={{display:"flex",flexDirection:"row",width:"100%",height:"599px",alignItems:"center",justifyContent:"center",borderTop:"24px solid #f9f9f9",borderBottom:"24px solid #f9f9f9"}}></div> : <ProviderCalendar events={events} currentWeek={currentWeek} weekDays={weekDays} {...defaultProps}/>}
                 </div>
                 </div>
+                {/* </div> */}
                 </div>
             </WeekContext.Provider>
         </>

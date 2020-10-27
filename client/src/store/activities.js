@@ -46,7 +46,7 @@ export default function activitiesReducer(state = {} ,action) {
     switch (action.type){
         case LOAD_ACTIVITES:
             newState = action.activities
-            newState["open_tabs"] = [{id:"0",name:"dashboard"}]
+            newState["open_tabs"] = [{id:0,name:"dashboard"}]
             return action.activities
         case OPEN_TAB:
             const openTabs = [...state.open_tabs]
@@ -58,6 +58,10 @@ export default function activitiesReducer(state = {} ,action) {
             newState.open_tabs = currentTabs
             newState.open_tabs.push({id:5, patient:action.patient, name:action.patient.lastName + ", " + action.patient.firstName})
             return newState
+        // case UPDATE_CHART_ORDERS: 
+        //     const tabs = [...state.opentabs]
+        //     newState.openTabs = tabs
+        //     const patient = openTabs.find((patientTab)=>patientTab.name = )
         default:
             return state
     }

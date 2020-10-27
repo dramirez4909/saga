@@ -4,34 +4,51 @@ const LOAD_ENCOUNTERS = 'encounter/LOAD_ENCOUNTERS'
 const ENCOUNTERS_BY_WEEK = 'encounter/ENCOUNTERS_BY_WEEK'
 const OPEN_TAB = 'encounter/OPEN_TAB'
 const OPEN_CHART = 'encounter/OPEN_CHART'
+const ADD_ENCOUNTER = 'encounter/ADD_ENCOUNTER'
 
 export const loadProviderEncounters = (id) => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN");
     const res = await fetch(`/api/encounters/provider/${id}`)
     if (res.ok) {
         const data = await res.json()
-        dispatch(setProviderEncounters(data.encounters))
+        // dispatch(setEncounters(data.encounters))
     }
 }
 
-export const loadProviderEncountersByWeek = (id) => async (dispatch) => {
+export const loadDepartmentEncounters = () => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN");
-    const res = await fetch(`/api/encounters/provider/${id}/weeks`)
+    const res = await fetch(`/api/encounters/department`)
     if (res.ok) {
         const data = await res.json()
-        dispatch(setProviderEncountersByWeek(data.weeks))
+        dispatch(setEncounters(data.encounters))
     }
 }
 
-export const setProviderEncountersByWeek = (weeks) => {
+export const createNewEncounter=(encounter)=>async(dispatch)=>{
+        const csrfToken = Cookies.get("XSRF-TOKEN")
+        const jsonEncounter = JSON.stringify(encounter)
+        const res = await fetch('/api/encounters/create',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: jsonEncounter
+        })
+        const data = await res.json()
+        console.log(data)
+        dispatch(loadDepartmentEncounters)
+    }
+
+export const addEncounter = (encounter) => {
     return {
-        type: ENCOUNTERS_BY_WEEK,
-        weeks
+        type: ADD_ENCOUNTER,
+        encounter
     }
 }
 
 
-export const setProviderEncounters = (encounters) => {
+export const setEncounters = (encounters) => {
     return {
         type: LOAD_ENCOUNTERS,
         encounters
@@ -76,8 +93,18 @@ export default function encountersReducer(state = {my_encounters: {}} ,action) {
                 console.log(encsByWeek)
             newState["by_week"] = encsByWeek
             return newState
-        case ENCOUNTERS_BY_WEEK:
-            console.log(action.weeks)
+        // case ADD_ENCOUNTER:
+        //     const encounterWeeks = Object.assign({},state.by_week)
+        //     const newEncounterCard = {x:"",y:"",w:1,h:"",i:`${index + 2}`,minW: 1,maxW:1,encounter,patient:encounter.patient,start:"",end:""}
+        //     const dateStartArr = encounter.start.split(" ")
+        //     console.log(encounter.start)
+        //     dateStartArr.pop()
+        //     const newStartDateNoTZ = dateStartArr.join(" ")
+        //     const encStartTime = new Date(newStartDateNoTZ)
+        //     const encounterWeekNumber = getWeekNumber(encStartTime)
+        //     console.log(encounterWeekNumber)
+        //     const encWeek = encounterWeekNumber[1]
+        //     encsByWeek[encWeek] ? encsByWeek[encWeek][encounter.id]=encounter : encsByWeek[encWeek] = {[encounter.id]:encounter}
         default:
             return state
     }

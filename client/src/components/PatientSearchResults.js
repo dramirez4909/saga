@@ -49,7 +49,7 @@ export default function PatientSearchResults(props) {
 
   const openChart=(patient)=>{
     if (!openTabs.some(activity=>activity.name === `${patient.lastName}, ${patient.firstName}`)) dispatch(openPatientChart(patient.id))
-    homeContext.setSelectedTabName(`${patient.lastName}, ${patient.firstName}`)
+    homeContext.setSelectedTab(`${patient.lastName}, ${patient.firstName}`,patient)
   }
 
   return (

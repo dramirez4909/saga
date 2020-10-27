@@ -129,7 +129,7 @@ function LoginPage() {
     }
     const demoSchedulerLogin = async (e) => {
         e.preventDefault();
-        await dispatch(login('DemoScheduler', 'password'));
+        await dispatch(login('Angelo', 'password'));
         document.location.reload();
     }
 

@@ -87,14 +87,14 @@ const Navbar = () => {
       if (!openTabs.includes(activity)){
         dispatch(openTab(activity))
       }
-      context.setSelectedTabName(activity.name)
+      context.setSelectedTab(activity.name,activity.patient)
   }
 
   return (
     <>
         <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:"white", justifyContent:"space-between"}}>
           <div className={classes.left}>
-            <div onClick={()=>context.setSelectedTabName("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
+            <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
               <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
             </div>
             {activities.map(activity=>

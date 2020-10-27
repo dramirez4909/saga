@@ -1,6 +1,15 @@
+/* .MuiPaper-root.MuiDrawer-paper.makeStyles-drawerPaper-22.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0{
+  position:relative;
+} */
+
+/* .MuiPaper-root.MuiDrawer-paper.makeStyles-drawerPaper-22.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0{
+
+} */
+#root > div:nth-child(2) > div.makeStyles-content-11 > div:nth-child(2) > div.makeStyles-root-1 > div > div > div > div > div.MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
+  display:none;
+}
+
 .circular--portrait {
-    grid-row: 2 /3;
-    grid-column: 2 / 3;
     position: relative;
     opacity: 100%;
     width: 230px;
@@ -11,8 +20,6 @@
   }
 
 .user-photo {
-    grid-row-start: 2;
-    grid-column-start: 2;
     border-radius: 2.5em;
     height: auto;
     align-content: space-between;

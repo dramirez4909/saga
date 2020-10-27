@@ -24,10 +24,10 @@ function ActivityTab(props) {
     const context = useContext(HomeContext)
     return (
         <>
-            <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTabName(props.activity.name)}} 
+            <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient)}} 
                 className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
                 style={{zIndex: props.activity.name === context.selectedTabName ? 1 : "",
-                background: props.activity.name === context.selectedTabName ? "white" : "#ececec",
+                background: props.activity.name === context.selectedTabName ? "white" : "rgb(221,224,230)",
                 borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
                 borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : ""
             }}
@@ -36,8 +36,8 @@ function ActivityTab(props) {
             {props.activity.name === "My Schedule" ? <ScheduleTwoToneIcon style={{...iconStyle,color:"#b1f3b1"}}/> : <></>}
             {props.activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
             {props.activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
-            {props.activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"#d3d3d3"}}/> : <></>}
-            {props.activity.patient ? <ContactIcon style={{...iconStyle,color:"#fed5a4"}}/> : <></>}
+            {props.activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"grey"}}/> : <></>}
+            {props.activity.patient ? <ContactIcon style={{...iconStyle,color:"seashell"}}/> : <></>}
             {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px"}}>{props.activity.name}</p>} </a>
             </li>
         </>

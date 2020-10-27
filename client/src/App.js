@@ -12,8 +12,8 @@ import { useSelector } from 'react-redux';
 import {setUser} from './store/auth'
 import {loadActivities} from './store/activities'
 import HomeContext from './components/utils/HomeContext'
-import { loadProviderEncounters } from './store/encounters';
-
+import { loadProviderEncounters , loadDepartmentEncounters} from './store/encounters';
+import { loadDepartmentOrders} from './store/orders';
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -26,8 +26,14 @@ function App() {
         if (res.data.user) {
           dispatch(setUser(res.data.user))
           dispatch(loadActivities())
-          console.log(res.data.user.id)
-          dispatch(loadProviderEncounters(res.data.user.id))
+          if (res.data.user.roles) {
+            const userRoles = res.data.user.roles.map(role=>role.name)
+            if (userRoles.includes("scheduler")) {
+              dispatch(loadDepartmentEncounters())
+              dispatch(loadDepartmentOrders())
+            }
+          }
+          if (res.data.user.provider) dispatch(loadProviderEncounters(res.data.user.id))
         }
       }
       setLoading(false);

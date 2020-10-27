@@ -2,7 +2,7 @@ import os
 import requests
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
-from app.models import User, Activity, Security_Point, Role, db, Encounter,Provider
+from app.models import User, Activity, Security_Point, Role, db, Encounter,Provider, Order, Order_Type
 #from pyquery import PyQuery as pq
 from lxml.html import fromstring
 uri="https://utslogin.nlm.nih.gov"
@@ -21,10 +21,20 @@ def provider_encounters(id):
     format_encounters = [encounter.to_dict() for encounter in encounters]
     return {"encounters":format_encounters}
     
-# @encounters.route("/provider/<id>/weeks")
-# def provider_encounters_by_week(id):
-#     provider = Provider.query.get(id)
-#     encounters = db.session.query(Encounter).filter(Encounter.provider_id == provider.id).all()
+@encounters.route("/department")
+def department_encounters_and_orders():
+    encounters = db.session.query(Encounter).all()
+    format_encounters = [encounter.to_dict() for encounter in encounters]
+    return {"encounters":format_encounters}
+
+@encounters.route("/create",methods=["POST"])
+def create_encounter():
+    data = request.json
+    encounter = Encounter(patient_id=data["patient_id"],date=data["date"],start=data["start"],end=data["end"],encounter_type_id=data["encounter_type_id"])
+    db.session.add(encounter)
+    db.session.commit()
+    format_encounter = encounter.to_dict()
+    return {"encounter":format_encounter}
 
 
 class Authentication:
