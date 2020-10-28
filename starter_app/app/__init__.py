@@ -14,6 +14,7 @@ from .api.umls import umls
 from .api.patients import patients
 from .api.encounters import encounters
 from .api.orders import orders
+from .api.departments import departments
 
 from .config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
 from .config import Config
@@ -34,6 +35,7 @@ app.register_blueprint(umls,url_prefix='/api/umls')
 app.register_blueprint(patients,url_prefix='/api/patients')
 app.register_blueprint(orders,url_prefix='/api/orders')
 app.register_blueprint(encounters,url_prefix='/api/encounters')
+app.register_blueprint(departments,url_prefix='/api/departments')
 db.init_app(app)
 Migrate(app, db)
 

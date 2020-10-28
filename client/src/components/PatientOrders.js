@@ -86,7 +86,7 @@ function PatientOrders(props) {
     const current_user = useSelector(state=>state.auth.user)
     const [selectedIndex, setSelectedIndex] = useState(1);
     const [displayOrderForm,setDisplayOrderForm] = useState(false)
-    const [newOrderType,setNewOrderType] =useState("Appointment Request")
+    const [newOrderType,setNewOrderType] =useState("Outpatient Appointment Request")
     const [newOrderPatientName,setNewOrderPatientName]=useState(props.patient.fullName)
     const [newOrderStatus,setNewOrderStatus]=useState("unscheduled")
     const [newOrderSignature,setNewOrderSignature]=useState("")
@@ -107,7 +107,7 @@ function PatientOrders(props) {
     useEffect(()=>{
         if (newOrderSignature) {
             setNewOrderSignature("")
-            dispatch(createOrder({order_type:newOrderType,patient_id:props.patient.id,status:newOrderStatus,provider_id:current_user.id}))
+            dispatch(createOrder({order_type: 1, newOrderType, patient_id:props.patient.id,status:newOrderStatus,provider_id:current_user.id}))
         }
     },[createNewOrder])
 

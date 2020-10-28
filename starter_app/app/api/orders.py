@@ -18,17 +18,18 @@ orders = Blueprint('orders', __name__)
 def create_order():
     data = request.json
     print("!!!!!!!!!!!!!!!!!!!!!!!!!",data)
-    order_type = db.session.query(Order_Type).filter(Order_Type.name == data['order_type']).first()
+    order_type = Order_Type.query.get(data['order_type'])
     provider_user = db.session.query(Provider).filter(Provider.user_id == data['provider_id']).first()
-    order = Order(order_type=order_type.id, patient_id=data['patient_id'],provider_id=provider_user.id,status=data['status'] )
+    order = Order(order_type=order_type.id, patient_id=data['patient_id'],provider_id=provider_user.id,status=data['status'], department_id=order_type.department_id)
     db.session.add(order)
+    order_type.orders.append(order)
     db.session.commit()
     format_order = order.to_dict()
     return {"order":format_order}
 
 @orders.route("/department")
 def department_orders():
-    orders = db.session.query(Order).filter(Order.order_type == 1).all()
+    orders = db.session.query(Order).filter(Order.status != "scheduled").filter(Order.order_type == 1).all()
     print("JADFJASJDFJASDJFASJDFJASDJFJASF",orders)
     format_orders = [order.to_dict() for order in orders]
     return {"orders":format_orders}

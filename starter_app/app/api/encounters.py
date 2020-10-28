@@ -1,5 +1,7 @@
 import os
 import requests
+from datetime import datetime
+from datetime import time
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
 from app.models import User, Activity, Security_Point, Role, db, Encounter,Provider, Order, Order_Type
@@ -30,11 +32,36 @@ def department_encounters_and_orders():
 @encounters.route("/create",methods=["POST"])
 def create_encounter():
     data = request.json
-    encounter = Encounter(patient_id=data["patient_id"],date=data["date"],start=data["start"],end=data["end"],encounter_type_id=data["encounter_type_id"])
+    order = Order.query.get(data["order"]["id"])
+    order.status = "scheduled"
+    start = datetime.fromisoformat((data["start"][:-1]+"-01:00"))
+    end = datetime.fromisoformat((data["end"][:-1]+"-01:00"))
+
+    patient_id = data["order"]["patient"]["id"]
+    provider_id = data["order"]["provider"]["id"]
+    department_id = data["order"]["department"]["id"]
+    type = 1
+    if data["order"]["type"] == "Outpatient Appointment Request":
+        type = 1
+    print("!!!!!!!!!!!!!!!!!!!!!!",(data["end"][:-1]+"-05:00"))
+    print("!!!!!!!!!!!!!!!!!!!!!!",start)
+    encounter = Encounter(patient_id=patient_id,start=start,end=end,encounter_type_id=type,provider_id=provider_id,date=start,department_id=department_id)
+    order.encounter = encounter
     db.session.add(encounter)
+    db.session.add(order)
     db.session.commit()
     format_encounter = encounter.to_dict()
     return {"encounter":format_encounter}
+
+@encounters.route("/encounterfromorder/create",methods=["GET","POST"])
+def create_encounter_from_order():
+    data = request.json
+    print("!!!!!!!!!!!!!!!!!!!!!!",data)
+    # encounter = Encounter(patient_id=data["patient_id"],date=data["date"],start=data["start"],end=data["end"],encounter_type_id=data["encounter_type_id"])
+    # db.session.add(encounter)
+    # db.session.commit()
+    # format_encounter = encounter.to_dict()
+    return 
 
 
 class Authentication:

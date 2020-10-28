@@ -39,7 +39,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import {setCurrentPatient} from '../store/current_patient'
-import MyCalendar from './calendar'
+import DepartmentScheduler from './DepartmentScheduler'
+import ProviderSchedule from './ProviderSchedule'
 
 
 const drawerWidth = 240;
@@ -290,9 +291,9 @@ const HomePage=(props)=>{
                         <Fade in={activity.name === selectedTabName} timeout={150} mountOnEnter unmountOnExit>
                         <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column", ...tabContentStyle}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
-                            {activity.name === "My Schedule" ? <Schedule/> : <></>}
+                            {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>}
                             {activity.name === "Place Orders" ? <Orders/> : <></>}
-                            {activity.name === "Dep. Schedule" ? <MyCalendar/> : <></>}
+                            {activity.name === "Dep. Schedule" ? <DepartmentScheduler/> : <></>}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
                         </div>

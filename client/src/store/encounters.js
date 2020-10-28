@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import {removeAppointmentOrder} from './orders'
 
 const LOAD_ENCOUNTERS = 'encounter/LOAD_ENCOUNTERS'
 const ENCOUNTERS_BY_WEEK = 'encounter/ENCOUNTERS_BY_WEEK'
@@ -24,7 +25,25 @@ export const loadDepartmentEncounters = () => async (dispatch) => {
     }
 }
 
+export const createEncounterFromOrder = (encounterProps,order) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const encounter = {...encounterProps, order}
+    const jsonEncounter = JSON.stringify(encounter)
+    const res = await fetch('/api/encounterfromorder/create',{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonEncounter
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(removeAppointmentOrder(order))
+}
+
 export const createNewEncounter=(encounter)=>async(dispatch)=>{
+        console.log(encounter)
         const csrfToken = Cookies.get("XSRF-TOKEN")
         const jsonEncounter = JSON.stringify(encounter)
         const res = await fetch('/api/encounters/create',{
@@ -37,7 +56,6 @@ export const createNewEncounter=(encounter)=>async(dispatch)=>{
         })
         const data = await res.json()
         console.log(data)
-        dispatch(loadDepartmentEncounters)
     }
 
 export const addEncounter = (encounter) => {

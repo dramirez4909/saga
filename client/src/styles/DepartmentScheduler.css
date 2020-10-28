@@ -1,0 +1,54 @@
+/* .rbc-time-view .rbc-row {
+    min-height: 0px;
+}
+
+.rbc-time-view .rbc-row div:nth-child(1) {
+    height: 0px !important;
+} */
+
+/* .rbc-time-header > .rbc-row:nth-of-type(2) {
+    display: none !important;
+} */
+/* 
+#root > div:nth-child(2) > div.makeStyles-content-11 > div:nth-child(2) > div.makeStyles-root-1 > div > div > div:nth-child(2) > div > div.rbc-time-view > div.rbc-time-header > div.rbc-time-header-content > div.rbc-allday-cell > div.rbc-row-content > div > div:nth-child(1){
+    display: none;
+}
+
+#root > div:nth-child(2) > div.makeStyles-content-11 > div:nth-child(2) > div.makeStyles-root-1 > div > div > div:nth-child(2) > div > div.rbc-time-view > div.rbc-time-header > div.rbc-time-header-content > div.rbc-allday-cell > div.rbc-row-content > div > div:nth-child(2) {
+    display: none;
+} */
+
+div.rbc-allday-cell {
+    display:none;
+}
+
+.rbc-header {
+    overflow: hidden;
+    flex: 1 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 3px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 90%;
+    min-height: 0;
+    border-bottom: none;
+}
+
+.draggable:active {
+    color: white;
+    background-color: lightseagreen;
+  }
+  
+/* 
+@keyframes drag_style {
+    0% {
+      background-color: white;
+      color: white;
+    }
+    100% {
+      background-color: #d691b4;
+      color:"white"
+    }
+  } */

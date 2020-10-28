@@ -4,7 +4,7 @@ from datetime import time
 load_dotenv()
 
 from app import app, db
-from app.models import User, Security_Point,Role, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type
+from app.models import User, Security_Point,Role, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department
 
 with app.app_context():
   db.drop_all()
@@ -58,8 +58,9 @@ with app.app_context():
   encounter_nine = Encounter(date=datetime.datetime(2020,10,13),start=datetime.datetime(2020,10,13,10,30),end=datetime.datetime(2020,10,13,11,30))
   encounter_ten = Encounter(date=datetime.datetime(2020,10,19),start=datetime.datetime(2020,10,19,8,30),end=datetime.datetime(2020,10,19,9,30))
   encounter_eleven = Encounter(date=datetime.datetime(2020,10,22),start=datetime.datetime(2020,10,22,8,30),end=datetime.datetime(2020,10,22,9,30))
-  appointment_encounter_type = Encounter_Type(name="Appointment")
+  appointment_encounter_type = Encounter_Type(name="Outpatient Appointment")
   appointment_encounter_type.encounters.append(encounter_two)
+  appointment_encounter_type.encounters.append(encounter_one)
   appointment_encounter_type.encounters.append(encounter_three)
   appointment_encounter_type.encounters.append(encounter_four)
   appointment_encounter_type.encounters.append(encounter_five)
@@ -70,7 +71,27 @@ with app.app_context():
   appointment_encounter_type.encounters.append(encounter_ten)
   appointment_encounter_type.encounters.append(encounter_eleven)
 
-  appointment_order_type=Order_Type(name="Appointment Request")
+  demo_provider.encounters.append(encounter_eight)
+  demo_provider.encounters.append(encounter_seven)
+  demo_provider.encounters.append(encounter_six)  
+  demo_provider.encounters.append(encounter_five)
+  demo_provider.encounters.append(encounter_four)
+  demo_provider.encounters.append(encounter_three)
+  demo_provider.encounters.append(encounter_two)
+  demo_provider.encounters.append(encounter_one)
+  demo_provider.encounters.append(encounter_eleven)
+  demo_provider.encounters.append(encounter_ten)
+  demo_provider.encounters.append(encounter_nine)
+
+  radiology_department = Department(name="Radiology")
+  fam_department = Department(name="Outpatient Family Medicine")
+
+  fam_department.encounters.append(encounter_two)
+  fam_department.encounters.append(encounter_four)
+  
+  appointment_order_type=Order_Type(name="Outpatient Appointment Request")
+  fam_department.order_types.append(appointment_order_type)
+  fam_department.encounter_types.append(appointment_encounter_type)
 
   scheduler_role = Role(name="scheduler")
   scheduler_role.users.append(ian)

@@ -266,7 +266,7 @@ function PatientChart(props) {
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
             </div>
-            {/* <LoginTextField placeholder="enter a diagnosis" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
+            <LoginTextField placeholder="enter a diagnosis" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
             <ul>
                 {dxSearchResults.map(dx=>{
                     return(
@@ -277,7 +277,7 @@ function PatientChart(props) {
             <form ref={form} onSubmit={submit}>
                 <input type="file" name="file"></input>
                 <input type="submit" name="Sign Up" />
-            </form> */}
+            </form>
             </div>
             </div>
             </div>

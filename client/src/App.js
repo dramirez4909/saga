@@ -26,12 +26,13 @@ function App() {
         if (res.data.user) {
           dispatch(setUser(res.data.user))
           dispatch(loadActivities())
+          console.log(res.data.user)
           if (res.data.user.roles) {
             const userRoles = res.data.user.roles.map(role=>role.name)
-            if (userRoles.includes("scheduler")) {
-              dispatch(loadDepartmentEncounters())
-              dispatch(loadDepartmentOrders())
-            }
+            // if (userRoles.includes("scheduler")) {
+            //   dispatch(loadDepartmentEncounters())
+            //   dispatch(loadDepartmentOrders())
+            // }
           }
           if (res.data.user.provider) dispatch(loadProviderEncounters(res.data.user.id))
         }

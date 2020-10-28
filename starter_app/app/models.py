@@ -36,8 +36,10 @@ class Encounter_Type(db.Model):
   __tablename__ = "encounter_types"
   id = db.Column(db.Integer, primary_key = True)
   name = db.Column(db.String(40), nullable = False)
+  department_id = db.Column(db.Integer, db.ForeignKey("departments.id"), nullable=True)
 
   encounters = db.relationship("Encounter",back_populates="type")
+  department = db.relationship("Department",back_populates="encounter_types")
 
   def to_dict(self):
     return {
@@ -63,8 +65,11 @@ class Order_Type(db.Model):
   __tablename__ = "order_types"
   id = db.Column(db.Integer, primary_key = True)
   name = db.Column(db.String(40), nullable = False)
+  department_id = db.Column(db.Integer, db.ForeignKey("departments.id"), nullable=True)
+
 
   orders = db.relationship("Order",back_populates="type")
+  department = db.relationship("Department",back_populates="order_types")
 
 
   def to_dict(self):
@@ -82,11 +87,13 @@ class Order(db.Model):
   status = db.Column(db.String(40), nullable = True)
   encounter_id = db.Column(db.Integer, db.ForeignKey("encounters.id"), nullable=True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+  department_id = db.Column(db.Integer, db.ForeignKey("departments.id"), nullable=True)
 
   type = db.relationship("Order_Type",back_populates="orders")
   patient = db.relationship("Patient",back_populates="orders")
   provider = db.relationship("Provider",back_populates="orders")
   encounter = db.relationship("Encounter",back_populates="orders")
+  department = db.relationship("Department",back_populates="orders")
 
   def to_dict(self):
     if self.encounter:
@@ -97,6 +104,7 @@ class Order(db.Model):
         "status": self.status,
         "provider": self.provider.without_orders(),
         "type":self.type.name,
+        "department":{"id":self.department_id}
       }
     else: 
       return{
@@ -105,6 +113,7 @@ class Order(db.Model):
         "status": self.status,
         "provider": self.provider.without_orders(),
         "type":self.type.name,
+        "department":{"id":self.department_id}
       }
 
 class Problem(db.Model):
@@ -123,6 +132,26 @@ class Problem(db.Model):
       "id": self.id,
       "name": self.name,
       "created_at": self.created_at
+    }
+
+class Department(db.Model):
+  __tablename__ = "departments"
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(50),nullable=True)
+  
+  orders = db.relationship("Order",back_populates="department")
+  encounters = db.relationship("Encounter",back_populates="department")
+  encounter_types = db.relationship("Encounter_Type",back_populates="department")
+  order_types = db.relationship("Order_Type",back_populates="department")
+  providers = db.relationship("Provider",back_populates="department")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "orders":[order.to_dict() for order in self.orders],
+      "encounters": [encounter.to_dict() for encounter in self.encounters],
+      "providers": [provider.to_dict() for encounter in self.providers]
     }
 
 class Note(db.Model):
@@ -335,13 +364,15 @@ class Provider(db.Model):
   id = db.Column(db.Integer, primary_key = True)
   user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
   specialty = db.Column(db.String(40), nullable = True)
-  
+  department_id = db.Column(db.Integer, db.ForeignKey("departments.id"), nullable=True)
+
   patients = db.relationship("Patient",secondary=care_teams, back_populates="providers")
   user = db.relationship("User", back_populates="provider")
   orders = db.relationship("Order",back_populates="provider")
   encounters= db.relationship("Encounter",back_populates="provider")
   problems = db.relationship("Problem",back_populates="provider")
   notes = db.relationship("Note",back_populates="provider")
+  department = db.relationship("Department",back_populates="providers")
 
   def to_dict(self): 
     return {
@@ -364,10 +395,10 @@ class Provider(db.Model):
   def without_encounters(self):
     return {
       "id":self.id,
+      "user_id":self.user.id,
       "first_name": self.user.first_name,
       "last_name": self.user.last_name,
       "full_name": f"{self.user.first_name} {self.user.last_name}",
-      "patients": [patient.to_dict() for patient in self.patients]
     }
   
   def without_orders(self):
@@ -381,19 +412,21 @@ class Provider(db.Model):
 class Encounter(db.Model):
   __tablename__ = "encounters"
   id = db.Column(db.Integer, primary_key = True)
-  encounter_type_id = db.Column(db.Integer, db.ForeignKey("encounter_types.id"),nullable=True)
-  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=True)
-  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"),nullable=True)
+  encounter_type_id = db.Column(db.Integer, db.ForeignKey("encounter_types.id"),nullable=False)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=False)
+  provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"),nullable=False)
   date = db.Column(db.DateTime, nullable=True)
   start = db.Column(db.DateTime, nullable=True)
   end = db.Column(db.DateTime, nullable=True)
   status = db.Column(db.String, nullable=True)
+  department_id = db.Column(db.Integer, db.ForeignKey("departments.id"),nullable=True)
 
   notes = db.relationship("Note",back_populates="encounter")
   provider = db.relationship("Provider",back_populates="encounters")
   patient = db.relationship("Patient",back_populates="encounters")
   orders = db.relationship("Order",back_populates="encounter")
   type = db.relationship("Encounter_Type",back_populates="encounters")
+  department = db.relationship("Department",back_populates="encounters")
 
   def without_patient(self):
     return {
@@ -404,14 +437,15 @@ class Encounter(db.Model):
       "date": self.date,
       "status": self.status,
       "start": self.start,
-      "end":self.end
+      "end":self.end,
+      "provider":self.provider.without_encounters(),
     }
 
   def without_orders(self):
     return {
       "id": self.id,
-      "provider": self.provider.to_dict(),
-      "patient": self.patient.without_encounters(),
+      "provider": self.provider.without_encounters(),
+      "patient": self.patient.without_orders(),
       "type": self.type.to_dict(),
       "date": self.date,
       "status": self.status,
@@ -420,16 +454,31 @@ class Encounter(db.Model):
     }
 
   def to_dict(self):
-    return {
-      "id": self.id,
-      "patient": self.patient.to_dict(),
-      # "provider": self.provider.without_encounters(),
-      "type": self.type.to_dict(),
-      "date": self.date,
-      "status": self.status,
-      "start": self.start,
-      "end":self.end
-    }
+    if self.department:
+      return {
+        "id": self.id,
+        "patient": self.patient.to_dict(),
+        # "provider": self.provider.without_encounters(),
+        "type": self.type.to_dict(),
+        "department_id": self.department_id,
+        "date": self.date,
+        "status": self.status,
+        "start": self.start,
+        "end":self.end,
+        "department": {"id": self.department.id, "name": self.department.name}
+      }
+    else:
+      return {
+        "id": self.id,
+        "patient": self.patient.to_dict(),
+        # "provider": self.provider.without_encounters(),
+        "type": self.type.to_dict(),
+        "department_id": self.department_id,
+        "date": self.date,
+        "status": self.status,
+        "start": self.start,
+        "end":self.end,
+      }
 
 class Security_Point(db.Model):
   __tablename__ = "security_points"
@@ -485,7 +534,8 @@ class User(db.Model,UserMixin):
         "id": self.id,
         "username": self.username,
         "email": self.email,
-        "provider": self.provider[0].to_dict()
+        "provider": self.provider[0].to_dict(),
+        "roles": [role.to_dict() for role in self.roles]
       }
     else:
       return {
