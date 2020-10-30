@@ -94,12 +94,16 @@ const tabStyle = {
 }
 
 const metricContainerStyle={
-  marginRight:"20px",
+  marginRight:"12px",
   fontSize:"24px",
+  borderRadius:"9px",
+  background:"white",
   fontWeight:"strong",
+  boxShadow: "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset",
+  padding:"4px",
   color:"grey",
   alignItems:"center"
-}
+  }
 
 const metricTextStyle ={
   marginLeft:"6px"
@@ -152,6 +156,7 @@ function PatientChart(props) {
         const searchDxs= async (searchTerm) => {
             const response = await fetch(`/api/umls/search-term/${searchTerm}`)
             const data = await response.json()
+            console.log(data)
             setDxSearchResults(data.results)
             return;
         }
@@ -253,7 +258,7 @@ function PatientChart(props) {
             <div className={"tabs"} style={{display:"flex",flexDirection:"row",background:"rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px"}}>
               {patientTabs.map((tab,index)=>{
                 return (
-                <li style={{listStyleType:"none",cursor:"pointer",...tabStyle}} className={`${currentPatientTab === tab ? "active" : ""}`} onClick={()=>{setCurrentPatientTab(tab)}}>
+                <li style={{borderRadius:"4px",listStyleType:"none",cursor:"pointer",...tabStyle}} className={`${currentPatientTab === tab ? "active" : ""}`} onClick={()=>{setCurrentPatientTab(tab)}}>
                   <a style={tabStyle}>
                     {tab}
                   </a>

@@ -144,6 +144,7 @@ class Department(db.Model):
   encounter_types = db.relationship("Encounter_Type",back_populates="department")
   order_types = db.relationship("Order_Type",back_populates="department")
   providers = db.relationship("Provider",back_populates="department")
+  resources = db.relationship("Resource",back_populates="department")
 
   def to_dict(self):
     return {
@@ -151,7 +152,8 @@ class Department(db.Model):
       "name": self.name,
       "orders":[order.to_dict() for order in self.orders],
       "encounters": [encounter.to_dict() for encounter in self.encounters],
-      "providers": [provider.to_dict() for encounter in self.providers]
+      "providers": [provider.to_dict() for provider in self.providers],
+      "resources": [resource.to_dict() for resource in self.resources]
     }
 
 class Note(db.Model):
@@ -242,7 +244,7 @@ class Patient(db.Model):
   mrn = db.Column(db.String(20),nullable=True)
   smoker = db.Column(db.String(20),nullable=True)
   occupation = db.Column(db.String(50),nullable=True)
-
+  pronouns = db.Column(db.String(50),nullable=True)
 
   medications = db.relationship("Medication",back_populates="patient")
   encounters= db.relationship("Encounter",back_populates="patient")
@@ -267,6 +269,7 @@ class Patient(db.Model):
       "ethnicity": self.ethnicity,
       "sex":self.sex,
       "smoker":self.smoker,
+      "pronouns":self.pronouns,
       "work_phone":self.work_phone,
       "home_phone":self.home_phone,
       "mobile_phone":self.mobile_phone,
@@ -420,7 +423,9 @@ class Encounter(db.Model):
   end = db.Column(db.DateTime, nullable=True)
   status = db.Column(db.String, nullable=True)
   department_id = db.Column(db.Integer, db.ForeignKey("departments.id"),nullable=True)
+  resource_id = db.Column(db.Integer, db.ForeignKey("resources.id"),nullable=True)
 
+  resource = db.relationship("Resource",back_populates="encounters")
   notes = db.relationship("Note",back_populates="encounter")
   provider = db.relationship("Provider",back_populates="encounters")
   patient = db.relationship("Patient",back_populates="encounters")
@@ -439,6 +444,7 @@ class Encounter(db.Model):
       "start": self.start,
       "end":self.end,
       "provider":self.provider.without_encounters(),
+      "resource_id":self.resource_id,
     }
 
   def without_orders(self):
@@ -449,6 +455,8 @@ class Encounter(db.Model):
       "type": self.type.to_dict(),
       "date": self.date,
       "status": self.status,
+      "provider_id":self.provider_id,
+      "resource_id":self.resource_id,
       "start": self.start,
       "end":self.end
     }
@@ -464,8 +472,11 @@ class Encounter(db.Model):
         "date": self.date,
         "status": self.status,
         "start": self.start,
+        "resource_id": self.resource_id,
         "end":self.end,
-        "department": {"id": self.department.id, "name": self.department.name}
+        "provider_id":self.provider_id,
+        "department": {"id": self.department.id, "name": self.department.name},
+        "resource": {"id": self.resource.id, "name": self.resource.name}
       }
     else:
       return {
@@ -476,8 +487,12 @@ class Encounter(db.Model):
         "department_id": self.department_id,
         "date": self.date,
         "status": self.status,
+        "resource_id":self.resource_id,
+        "provider_id":self.provider_id,
+        "provider":self.provider.without_encounters(),
         "start": self.start,
         "end":self.end,
+        "resource": {"id": self.resource.id, "name": self.resource.name},
       }
 
 class Security_Point(db.Model):
@@ -494,6 +509,24 @@ class Security_Point(db.Model):
       "id": self.id,
       "name": self.name,
       "activity": self.activity.to_dict()
+    }
+
+class Resource(db.Model):
+  __tablename__ = "resources"
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(40), nullable = False)
+  department_id = db.Column(db.Integer, db.ForeignKey("departments.id"),nullable=False)
+
+  department = db.relationship("Department",back_populates="resources")
+  encounters = db.relationship("Encounter",back_populates="resource")
+
+  def to_dict(self):
+    return {
+      "id":self.id,
+      "name":self.name,
+      "encounters": [encounter.to_dict() for encounter in self.encounters],
+      "department_id":self.department_id,
+      "department": {"id":self.department_id, "name":self.department.name}
     }
 
 

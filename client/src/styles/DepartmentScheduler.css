@@ -17,6 +17,54 @@
 #root > div:nth-child(2) > div.makeStyles-content-11 > div:nth-child(2) > div.makeStyles-root-1 > div > div > div:nth-child(2) > div > div.rbc-time-view > div.rbc-time-header > div.rbc-time-header-content > div.rbc-allday-cell > div.rbc-row-content > div > div:nth-child(2) {
     display: none;
 } */
+div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header.rbc-today > a > span {
+    color:white;
+    background-color: rgb(121, 134, 203);
+    border-radius: 50%;
+}
+
+div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header.rbc-today {
+    background-color: rgb(121, 134, 203);
+}
+
+.rbc-current-time-indicator {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: red;
+    pointer-events: none;
+}
+/* .rbc-current-time-indicator:before {
+    content: '';
+    display: inherit;
+    position:absolute;
+    width: 15px;
+    height: 15px;
+    -moz-border-radius: 7.5px;
+    -webkit-border-radius: 7.5px;
+    border-radius: 7.5px;
+    background-color: #ea4335;
+    z-index: 3;
+    transform: translate(-10px, -6.5px);
+} */
+
+.rbc-header + .rbc-header {
+    border-left: none;
+}
+
+div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header > a > span {
+    color:black
+}
+
+div.MuiButtonBase-root.MuiListItem-root.MuiListItem-gutters.MuiListItem-button.Mui-selected {
+    background: #f9f9f9;
+}
+
+div.order-list-item.MuiButtonBase-root.MuiListItem-root.MuiListItem-gutters.MuiListItem-button {
+    padding:0;
+}
 
 div.rbc-allday-cell {
     display:none;
@@ -36,9 +84,37 @@ div.rbc-allday-cell {
     border-bottom: none;
 }
 
-.draggable:active {
-    color: white;
-    background-color: lightseagreen;
+.draggable {
+    cursor: pointer;
+}
+
+.draggable {
+    width: 200px;
+    height: 30px;
+    background-color:white;
+  }
+
+div.rbc-toolbar {
+    background: #f9f9f9;
+    padding: 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+div.rbc-toolbar > span.rbc-toolbar-label {
+    background: white;
+    margin: 10px;
+    border-radius: 4px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding:8px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+  .dragging {
+    background: transparent;
+    color: transparent;
   }
   
 /* 

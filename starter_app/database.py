@@ -4,7 +4,7 @@ from datetime import time
 load_dotenv()
 
 from app import app, db
-from app.models import User, Security_Point,Role, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department
+from app.models import User, Security_Point,Role, Resource, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department
 
 with app.app_context():
   db.drop_all()
@@ -86,8 +86,41 @@ with app.app_context():
   radiology_department = Department(name="Radiology")
   fam_department = Department(name="Outpatient Family Medicine")
 
+  exam_room_a = Resource(name="Exam Room A")
+  exam_room_b = Resource(name="Exam Room B")
+  exam_room_c = Resource(name="Exam Room C")
+  exam_room_d = Resource(name="Exam Room D")
+  
+  exam_room_a.encounters.append(encounter_one)
+  exam_room_b.encounters.append(encounter_two)
+  exam_room_c.encounters.append(encounter_three)
+  exam_room_d.encounters.append(encounter_four)
+  exam_room_d.encounters.append(encounter_five)
+  exam_room_d.encounters.append(encounter_six)
+  exam_room_a.encounters.append(encounter_seven)
+  exam_room_a.encounters.append(encounter_eight)
+  exam_room_b.encounters.append(encounter_nine)
+  exam_room_c.encounters.append(encounter_ten)
+  exam_room_b.encounters.append(encounter_eleven)
+
+
+  fam_department.encounters.append(encounter_one)
   fam_department.encounters.append(encounter_two)
+  fam_department.encounters.append(encounter_three)
+  fam_department.encounters.append(encounter_five)
   fam_department.encounters.append(encounter_four)
+  fam_department.encounters.append(encounter_six)
+  fam_department.encounters.append(encounter_seven)
+  fam_department.encounters.append(encounter_eight)
+  fam_department.encounters.append(encounter_nine)
+  fam_department.encounters.append(encounter_ten)
+  fam_department.encounters.append(encounter_eleven)
+
+
+  fam_department.resources.append(exam_room_a)
+  fam_department.resources.append(exam_room_b)
+  fam_department.resources.append(exam_room_c)
+  fam_department.resources.append(exam_room_d)
   
   appointment_order_type=Order_Type(name="Outpatient Appointment Request")
   fam_department.order_types.append(appointment_order_type)

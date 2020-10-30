@@ -45,7 +45,7 @@ def create_encounter():
         type = 1
     print("!!!!!!!!!!!!!!!!!!!!!!",(data["end"][:-1]+"-05:00"))
     print("!!!!!!!!!!!!!!!!!!!!!!",start)
-    encounter = Encounter(patient_id=patient_id,start=start,end=end,encounter_type_id=type,provider_id=provider_id,date=start,department_id=department_id)
+    encounter = Encounter(resource_id=data['resource'],patient_id=patient_id,start=start,end=end,encounter_type_id=type,provider_id=provider_id,date=start,department_id=department_id)
     order.encounter = encounter
     db.session.add(encounter)
     db.session.add(order)

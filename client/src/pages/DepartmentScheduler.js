@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer,Views } from 'react-big-calendar'
 import moment from 'moment'
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useDispatch, useSelector } from 'react-redux';
 import '../styles/DepartmentScheduler.css'
 import { createNewEncounter } from '../store/encounters';
@@ -20,7 +20,23 @@ import Fade from '@material-ui/core/Fade';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
 import OrderList from '../components/OrderList'
+import { List } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import LocalHospitalTwoToneIcon from '@material-ui/icons/LocalHospitalTwoTone';
+import SelectedOrderPreviewCard from '../components/SelectedOrderPreviewCard';
+import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
+
 const BootstrapInput = withStyles((theme) => ({
+  rootList: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
   root: {
     'label + &': {
       marginTop: theme.spacing(3),
@@ -67,6 +83,38 @@ const ColorButton = withStyles((theme) => ({
       },
   },
   }))(Button);
+  const DepartmentColorButton = withStyles((theme) => ({
+    root: {
+        color: "Black",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        fontStyle:"bold",
+        fontSize:"20px",
+        textTransform:"none",
+        borderRadius:"4px",
+        '&:hover': {
+            backgroundColor: "lightgrey !important",
+        },
+    },
+    }))(Button);
+
+    const SmallColorButton = withStyles((theme) => ({
+      root: {
+          color: "Black",
+          paddingRight: "10px",
+          paddingLeft: "10px",
+          paddingTop:"0",
+          paddingBottom:"0",
+          fontSize:"12px",
+          marginLeft:"5px",
+          textTransform:"none",
+          borderRadius:"4px",
+          border:"1px solid white",
+          '&:hover': {
+              backgroundColor: "#b1f3b1 !important",
+          },
+      },
+      }))(Button);
 
 
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -96,6 +143,13 @@ const localizer = momentLocalizer(moment) // or globalizeLocalizer
 const DndCalendar = withDragAndDrop(Calendar)
 const DepartmentScheduler = props => {
   const classes = useStyles();
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedOrder,setSelectedOrder] = useState({})
+
+  const handleListItemClick = (event, index,order) => {
+    setSelectedIndex(index);
+    setSelectedOrder(order)
+  };
   const [open, setOpen] = React.useState(true);
 
   const handleOpen = () => {
@@ -115,10 +169,12 @@ const DepartmentScheduler = props => {
     const [loading,setLoading] = useState(true)
     const [orders,setOrders] = useState({})
     const [displayDragItemInCell,setDisplayDragItemInCell] =useState(true)
-    const [draggedEvent,setDraggedEvent] = useState({})
+    const [draggedEvent,setDraggedEvent] = useState({order:{}})
     const [calendarLoading,setCalendarLoading] = useState(true)
     const [departmentIndex, setDepartmentIndex] = React.useState();
     const [departments,setDepartments] = useState({})
+    const [slideIn,setSlideIn] = useState(false)
+    const [resourceMap,setResourceMap] = useState([])
 
     const handleChange = (event) => {
       console.log(event.target.value)
@@ -154,8 +210,10 @@ const DepartmentScheduler = props => {
           title: encounter.patient.fullName,
           end: new Date(eventEnd),
           start: new Date(eventStart),
+          resourceId: encounter.resource_id,
         }
       })
+      console.log(encs)
       const ordObj = {}
       dept.orders.forEach(order=>{
         ordObj[order.id] = order
@@ -164,15 +222,39 @@ const DepartmentScheduler = props => {
       console.log("orders: ",dept.orders)
       setEvents(encs)
       console.log("EVENTS",encs)
+      const resMap = dept.resources.map(resource=>{
+        return { resourceId: resource.id, resourceTitle: resource.name }
+      })
+      setResourceMap(resMap)
       setCalendarLoading(false)
     }
+
+    useEffect(()=>{
+      if (calendarLoading === false) {
+        setSlideIn(true)
+      }
+    },[calendarLoading])
 
     const dragFromOutsideItem = () => {
         return draggedEvent
     }
 
-    const handleDragStart = (event) => {
+    const handleDragStart = (evt,event,index,order) => {
         setDraggedEvent(event)
+        setSelectedIndex(index);
+        setSelectedOrder(order)
+        // Now setup our dataTransfer object properly
+// First we'll allow a move action — this is used for the cursor
+        evt.dataTransfer.effectAllowed = 'move';
+// Setup some dummy drag-data to ensure dragging
+        evt.dataTransfer.setData('text/plain', 'some_dummy_data');
+// Now we'll create a dummy image for our dragImage
+        var dragImage = document.createElement('div');
+        dragImage.setAttribute('style', 'border-radius:4px;position: absolute; left: 0px; top: 0px; width: 140px;cursor:grabbing; padding:6px; color:white; height: 58px; background: rgb(66, 133, 244); z-index: -1');
+        document.body.appendChild(dragImage);
+        dragImage.innerHTML=`${event.title}`
+// And finally we assign the dragImage and center it on cursor
+        evt.dataTransfer.setDragImage(dragImage, 20, 20);
     }
 
     const resizeEvent = ({ event, start, end }) => {
@@ -210,20 +292,21 @@ const DepartmentScheduler = props => {
       }
 
 
-      const onDropFromOutside = ({ start, end, allDay }) => {
+      const onDropFromOutside = ({ start, end, allDay,resource }) => {
+        if (!draggedEvent) return;
         const event = {
           id: draggedEvent.id,
           title: draggedEvent.title,
           start,
           end,
           allDay: allDay,
+          resource
         }
-        console.log(draggedEvent)
 
         removeOrderFromList(draggedEvent.order.id)
         console.log("EVENT TO CREATE",event)
         dispatch(createNewEncounter({...event,order:draggedEvent.order}))
-        setDraggedEvent(null)
+        setDraggedEvent({order:{}})
         newEvent(event)
       }
 
@@ -244,57 +327,137 @@ const DepartmentScheduler = props => {
           allDay: event.isAllDay,
           start: event.start,
           end: event.end,
+          resourceId: event.resource
         }
         setEvents([...events,hour])
       }
+      
     if (loading) {
-      return "...loading"
+      return (
+      <div style={{display:"flex",flexDirection:"column",width:"100%",alignItems:"center",alignContent:"center",justifyContent:"center"}}>
+        <img style={{width:"230px",height:"230px",alignSelf:"center",justifySelf:"center",marginTop:"200px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/25ef280441ad6d3a5ccf89960b4e95eb.gif"/>
+      </div>
+      )
     }
     
     return (
         <>
-        <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-        <div style={{width:"180px",marginRight:"15px",display:"flex",flexDirection:"column",overflow:"scroll",height:"500px"}}>
-        {Object.values(orders).map((order,index)=> {
-        return (<div
-                className={"draggable"}
-                style={{
-                  border: '2px solid gray',
-                  borderRadius: '4px',
-                  width: '100%',
-                  height:"30px",
-                  padding:"4px",
-                }}
-                draggable="true"
-                onDragStart={() =>
-                  handleDragStart({ title: order.patient.fullName, order:order })
-                }
-              >
-                {order.patient.fullName}
-              </div>)})}
+        <div style={{display:"flex",flexDirection:"row",width:"100%", margin:"0",marginRight:"0",backgroundColor:"aliceblue",padding:"10px"}}>
+          <div  style={{display:"flex",flexDirection:"column",width:"100%"}}>
+          <div style={{display: calendarLoading ? "none": "flex",flexDirection:"column",margin:"10px",borderRadius:"4px",background:"white",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
+          <Slide direction="left" in={slideIn} timeout={350}>
+          <div style={{display: calendarLoading ? "none": "flex",flexDirection:"row",margin:"10px",alignItems:"center",background:"#fafafa",justifyContent:"space-between",padding:"2px",paddingRight:"13px", borderRadius:"4px",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
+          {calendarLoading ? "" : 
+          <>
+          <DepartmentColorButton style={{width:"fit-content",backgroundColor:"white",margin:"5px"}} onClick={handleOpen}> <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}><span>{departments[departmentIndex].name}</span></div></DepartmentColorButton>
+          <SmallColorButton>switch departments</SmallColorButton>
+          </>
+          }
+          </div>
+          </Slide>
+          <Slide direction="up" in={slideIn} timeout={350}>
+        <div style={{marginRight:"15px",display:"flex",flexDirection:"column",overflow:"scroll",borderRadius:"4px",background:"white",padding:"10px"}}>
+          <div className={classes.rootList} style={{maxHeight:"300px",overflow:"scroll"}}>
+          {Object.values(orders).length === 0 ? <div style={{display:"flex",color:"black", background:"white",margin:"20px",padding:"30px", height:"100%", justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
+            <div style={{display:"flex",flexDirection:"column",color:"black", boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px", background:"white",padding:"10px",borderRadius:"4px", marginBottom:"20px"}}>
+              <span>No remaining unscheduled orders. With the right security, you can place orders from the Orders tab of a patient's chart.</span>
+              <ColorButton>Place Orders<ExitToAppTwoToneIcon style={{marginLeft:"3px"}}/></ColorButton></div>
+            </div> : 
+            <List style={{marginBottom:"20px"}} component="nav" aria-label="main mailbox folders">
+            {Object.values(orders).map((order,index)=> {
+            return (
+            <ListItem
+              className={'order-list-item'}
+              button
+              selected={selectedIndex === index}
+              onClick={(event) => handleListItemClick(event, index, order)}
+            >
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={`${order.type}`} />
+              <div
+                    className={`draggable ${draggedEvent.order.id === order.id ? "dragging" : ""}`}
+                    onDragEnd={()=>{setDraggedEvent({order:{}})}}
+                    style={{
+                      margin:"4px",
+                      borderRadius: '4px',
+                      padding:"4px",
+                      cursor: draggedEvent.order.id === order.id ? "grabbing" : "grab",
+                      width:"fit-content",
+                      boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
+                    }}
+                    draggable="true"
+                    onDragStart={(e) =>
+                      handleDragStart(e,{ title: order.patient.fullName, order:order },index,order)
+                    }
+                  >
+                    {order.patient.fullName}
+                </div>
+            </ListItem>
+                  )})}
+                  </List>
+          }
+              </div>
         </div>
-            <div style={{width:"100%"}}>
+        </Slide>
+        </div>
+        <Slide direction="up" in={selectedOrder.patient}>
+        <div>
+        {selectedOrder.patient ?
+          <SelectedOrderPreviewCard patient={selectedOrder.patient} order={selectedOrder}/> 
+          : ""}
+        </div>
+        </Slide>
+        </div>
+        <div style={{display:"flex",flexDirection:"row",width:"100%", margin:"10px"}}>
+        <Slide direction="up" in={slideIn} timeout={350}>
+            <div style={{marginRight:"20px",borderRadius:"4px"}}>
                 <DndCalendar
-                    style={{ height: 600 }}
+                    style={{ height: 680,width:700,boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",padding:"10px",backgroundColor:"white",borderRadius:"4px" }}
                     localizer={localizer}
                     startAccessor="start"
                     selectable
                     popup={true}
+                    step={60}
                     min={new Date(1970, 1, 1, 8)}
                     max={new Date(1970, 1, 1, 17)}
                     scrollToTime={new Date(1970, 1, 1, 3)}
                     onEventDrop={moveEvent}
                     endAccessor="end"
                     onEventResize={resizeEvent}
-                    defaultView={Views.WEEK}
+                    defaultView={'day'}
+                    views={['day', 'work_week','month']}
                     dragFromOutsideItem = {dragFromOutsideItem}
                     onDropFromOutside={onDropFromOutside}
                     defaultDate={moment().toDate()}
+                    resources={resourceMap}
+                    resourceIdAccessor="resourceId"
+                    resourceTitleAccessor="resourceTitle"
                     // displayDragItemInCell={true}
                     handleDragStart={handleDragStart}
-                    events={events}/>
+                    events={events}
+                    eventPropGetter={
+                      (event, start, end, isSelected) => {
+                        let newStyle = {
+                          backgroundColor: "rgb(66, 133, 244)",
+                          color: 'white',
+                          borderRadius: "4px",
+                          border: "1px solid white",
+                        };
+                  
+                        return {
+                          className: "",
+                          style: newStyle
+                        };
+                      }
+                    }
+                  />
+
 
             </div>
+            </Slide>
+        </div>
         </div>
         <div>
       <Modal
@@ -310,9 +473,9 @@ const DepartmentScheduler = props => {
         }}
       >
         <Slide direction="up" in={open}>
-          <div className={classes.paper}>
+          <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",borderRadius:"4px"}}>
             <h3>Select a department to continue</h3>
-            <form onSubmit={selectDepartment}>
+            <form onSubmit={selectDepartment} style={{display:"flex",flexDirection:"column"}}>
             <FormControl className={classes.margin}>
         <InputLabel htmlFor="demo-customized-select-native">Department</InputLabel>
         <NativeSelect
@@ -329,7 +492,7 @@ const DepartmentScheduler = props => {
         }
           </NativeSelect>
           </FormControl>
-          <ColorButton type="submit">Let's go!</ColorButton>
+          <ColorButton style={{marginTop:"10px"}} type="submit">Let's go!</ColorButton>
           </form>
           </div>
         </Slide>

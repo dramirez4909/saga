@@ -16,11 +16,24 @@
     height: 230px;
     overflow: hidden;
     border-radius: 50%;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    border: 2px solid #fff
+  }
+  .small-circular--portrait {
+    position: relative;
+    opacity: 100%;
+    z-index: 4;
+    width: 150px;
+    height: 150px;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    overflow: hidden;
+    border-radius: 50%;
     border: 2px solid #fff
   }
 
 .user-photo {
     border-radius: 2.5em;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     height: auto;
     align-content: space-between;
     justify-content: left;
@@ -32,6 +45,7 @@
   #user-photo {
   grid-row-start: 2;
   border-radius: 2.5em;
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
   height: auto;
   width:100%;
 }
