@@ -8,7 +8,7 @@
 4. Follow instructions in the [`client/README.md`](./client/README.md) to set up your development Front-End.
 
 ## Deploying to Heroku
-### Prepping Your Heroku Project
+### Prepping Heroku Project
 1. Create a new project on your Heroku Dashboard.
 2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres".
 3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line) if you haven't already.
@@ -20,12 +20,12 @@
     * The `postbuild` script from your `package.json` will _automatically_ move them into the `/static` directory in your flask files.
 
 
-### Prepping your Flask App:
+### Prepping Flask App:
 1. Enter your pipenv: `pipenv shell`
 1. Update your requirements.txt with all of the packages installed in the environemt: `pip freeze > requirements.txt`
 
 
-### Pushing your container
+### Pushing container
 
 1. Login to heroku: `$ heroku login`
 2. Login to the heroku container registry: `$ heroku container:login`
