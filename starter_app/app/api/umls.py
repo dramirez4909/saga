@@ -23,7 +23,7 @@ def user_activities(search_string):
     pageNumber = 0
     AuthClient = Authentication(apikey)
     sabs= ['RXNORM','DRUGBANK']
-    searchType='exact'
+    searchType='approximate'
     tgt = AuthClient.gettgt()
     # ticket = AuthClient.getst(tgt)
     # query = {'string':string,'ticket':ticket, 'pageNumber':pageNumber,'sabs':sabs,'searchType':searchType}
@@ -41,7 +41,7 @@ def user_activities(search_string):
     #     names.append(result['name'])
     # print("THE POINT IS THAT IT WORKS!!!!!!!!!!!!!!!!!",tgt,"ST:",ticket)
     # return {"results": names}
-    while True:
+    while pageNumber < 3:
         ticket = AuthClient.getst(tgt)
         pageNumber += 1
         query = {'string':string,'ticket':ticket, 'pageNumber':pageNumber,'sabs':sabs,'searchType':searchType}
@@ -58,8 +58,8 @@ def user_activities(search_string):
         print("Results for page " + str(pageNumber)+"\n")
 
         for result in jsonData["results"]:
-
           try:
+            print(result)
             print("ui: " + result["ui"])
           except:
             NameError
@@ -83,6 +83,7 @@ def user_activities(search_string):
         ##Either our search returned nothing, or we're at the end
         if jsonData["results"][0]["ui"] == "NONE":
             return {"results":names}
+    return {"results":names}
 
 @umls.route("/search-medications/<search_string>")
 def get_medications(search_string):

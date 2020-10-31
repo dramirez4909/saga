@@ -17,11 +17,6 @@
 #root > div:nth-child(2) > div.makeStyles-content-11 > div:nth-child(2) > div.makeStyles-root-1 > div > div > div:nth-child(2) > div > div.rbc-time-view > div.rbc-time-header > div.rbc-time-header-content > div.rbc-allday-cell > div.rbc-row-content > div > div:nth-child(2) {
     display: none;
 } */
-div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header.rbc-today > a > span {
-    color:white;
-    background-color: rgb(121, 134, 203);
-    border-radius: 50%;
-}
 
 div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header.rbc-today {
     background-color: rgb(121, 134, 203);
@@ -88,24 +83,32 @@ div.rbc-allday-cell {
     cursor: pointer;
 }
 
+div.rbc-time-content > div.rbc-time-gutter.rbc-time-column {
+    background-color: inherit;
+}
+
 .draggable {
     width: 200px;
     height: 30px;
-    background-color:white;
   }
 
 div.rbc-toolbar {
-    background: #f9f9f9;
+    background-color: rgba(124, 80, 206, 0.295);
     padding: 4px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
+div.rbc-time-header > div.rbc-label.rbc-time-header-gutter {
+    background-color: inherit;
+}
+
 div.rbc-toolbar > span.rbc-toolbar-label {
-    background: white;
+    background: inherit;
     margin: 10px;
     border-radius: 4px;
+    color:white;
     margin-left: 20px;
     margin-right: 20px;
     padding:8px;

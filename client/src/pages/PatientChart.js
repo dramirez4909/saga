@@ -27,6 +27,8 @@ import { Fade, Slide } from '@material-ui/core';
 import PatientEncounters from '../components/PatientEncounters';
 import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
+import PatientNotes from '../components/PatientNotes';
+import ThemeContext from '../components/utils/ThemeContext';
 
 const isBrowser = typeof window !== `undefined`
 
@@ -120,6 +122,7 @@ function PatientChart(props) {
     const form = useRef(null)
     const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Notes","Orders"])
     const [currentPatientTab,setCurrentPatientTab] =useState("Chart Review")
+    const themeContext = useContext(ThemeContext)
 
     useScrollPosition(({ prevPos, currPos }) => {
       console.log(currPos.x)
@@ -178,13 +181,14 @@ function PatientChart(props) {
     return (
         <>
         <div>
-          <div style={{position:"sticky",top:"29px",display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:"white",justifyContent:"space-between"}}>
+          <div style={{position:"sticky",top:"29px",display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"space-between"}}>
             <div className={classes.left}>
-              <div style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
-                <span style={{fontSize:"35px",padding:"6px",textDecoration:"none", fontFamily:"Garamond",}}>{patient.firstName + " " + patient.lastName}</span>
+              <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
+                <span style={{fontSize:"35px",padding:"6px",textDecoration:"none", fontFamily:"Garamond",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
+                <div style={{borderRadius:"9px",marginLeft:"9px",display:"flex",color:"lightgrey",fontSize:"20px",padding:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px"}}>[ she / her ]</div>
               </div>
             </div>
-            <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
+            {/* <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
             <div style={{display:"flex",flexDirection:"row", background:"white",alignItems:"center",justifyContent:"space-between", margin:"8px"}}>
                     <div style={{...metricContainerStyle}}>
                         {props.patient.sex === "female" ? 
@@ -197,12 +201,10 @@ function PatientChart(props) {
                         <span style={{...metricTextStyle}}>{props.patient.height}</span>
                     </div>
                     <div style={{...metricContainerStyle}}>
-                        {/* <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/113553339-weights-concept-vector-linear-icon-isolated-on-transparent-background-weights-concept-transparency-c-removebg-preview.png"></img> */}
                         <FitnessCenterIcon style={{height: "32px", width:"32px", color:"rgb(85, 177, 250)"}} />
                         <span style={{...metricTextStyle}}>{props.patient.weight}<span style={{fontSize:"18px", color:"lightgrey"}}>kgs</span></span>
                     </div>
                     <div style={{...metricContainerStyle}}>
-                        {/* <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/heart-removebg-preview.png"></img> */}
                         <FavoriteIcon style={{height: "32px", width:"32px", color:"red"}}/>
                         <span style={{...metricTextStyle}}>{props.patient.beats_per_minute}<span style={{fontSize:"18px", color:"lightgrey"}}>bpm</span></span>
                     </div>
@@ -218,10 +220,10 @@ function PatientChart(props) {
                         }
                     </div>
                 </div>
-                </Fade>
+                </Fade> */}
           </div> 
         <div className={classes.root}>
-        <div className={classes.drawerContainer} style={{display:"flex",flexDirection:"column", alignSelf:"flex-start",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)"}}>
+        <div className={classes.drawerContainer} style={{height:"100vh",display:"flex",flexDirection:"column", alignSelf:"flex-start",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "white"}}>
             <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
@@ -254,12 +256,12 @@ function PatientChart(props) {
           </List>
         </div>
       <div className={classes.content}> 
-            <div style={{background: "rgb(221,224,230)",height:"100vh"}}>
-            <div className={"tabs"} style={{display:"flex",flexDirection:"row",background:"rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px"}}>
+            <div style={{background: "#212121",height:"100vh"}}>
+            <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px"}}>
               {patientTabs.map((tab,index)=>{
                 return (
                 <li style={{borderRadius:"4px",listStyleType:"none",cursor:"pointer",...tabStyle}} className={`${currentPatientTab === tab ? "active" : ""}`} onClick={()=>{setCurrentPatientTab(tab)}}>
-                  <a style={tabStyle}>
+                  <a style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : "black"}}>
                     {tab}
                   </a>
                 </li>
@@ -270,6 +272,7 @@ function PatientChart(props) {
               {currentPatientTab === "Chart Review" ? <ChartReview patient={currentPatient}/> : <></>}
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
+              {currentPatientTab === "Notes" ? <PatientNotes patient={currentPatient}/> : <></>}
             </div>
             <LoginTextField placeholder="enter a diagnosis" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
             <ul>

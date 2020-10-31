@@ -1,7 +1,7 @@
 import React, {useState,useEffect, useContext} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink,Link, Redirect } from 'react-router-dom';
-import { AppBar, Toolbar, Box, IconButton, Avatar, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, Box, IconButton, Avatar, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { logout } from '../store/auth';
 import {openTab} from '../store/activities'
@@ -11,6 +11,10 @@ import BorderColorTwoToneIcon from '@material-ui/icons/BorderColorTwoTone';
 import DashboardTwoToneIcon from '@material-ui/icons/DashboardTwoTone';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import SearchIcon from '@material-ui/icons/Search';
+import ThemeContext from './utils/ThemeContext';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness3Icon from '@material-ui/icons/Brightness3';
+import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -57,7 +61,6 @@ const buttonStyle = {
   padding: "2px",
   alignItems: "center",
   color: "grey",
-  backgroundColor: "hsla(0,0%,100%,.3)",
   borderRadius: "2px",
   margin: "2px",
   cursor: "pointer"
@@ -75,6 +78,7 @@ const Navbar = () => {
   const handleLogOut = ()=> {
       dispatch(logout())
   }
+  const themeContext = useContext(ThemeContext)
   const allActivities = useSelector(state=>state.activities)
   useEffect(()=>{
       if (allActivities.role_activities || allActivities.user_activities){
@@ -90,23 +94,34 @@ const Navbar = () => {
       context.setSelectedTab(activity.name,activity.patient)
   }
 
+  const changeThemes = () =>{
+    if (themeContext.themes === "light") {
+      themeContext.setThemes("dark")
+    } else if (themeContext.themes === "dark") {
+      themeContext.setThemes("light")
+    }
+  }
+
   return (
     <>
-        <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:"white", justifyContent:"space-between"}}>
+        <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", justifyContent:"space-between"}}>
           <div className={classes.left}>
             <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
               <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
             </div>
             {activities.map(activity=>
-            <div key={activity.id} onClick={(e)=>openActivity(activity)} style={{...buttonStyle}}>
+            <div key={activity.id} onClick={(e)=>openActivity(activity)} style={{...buttonStyle,visibility:activity.name === "chart" ? "hidden" : ""}}>
             {activity.name === "My Schedule" ? <ScheduleTwoToneIcon style={{...iconStyle,color:"#b1f3b1"}}/> : <></>}
             {activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
             {activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
-            {activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:"grey"}}/> : <></>}
-            {activity.name === "chart" ? "" : <p style={{margin:0, marginLeft:"4px"}}>{activity.name}</p>}
+            {activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color: themeContext.themes === "light" ? "grey" : "whitesmoke"}}/> : <></>}
+            {activity.name === "chart" ? <></> : <p style={{margin:0, marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white"}}>{activity.name}</p>}
               </div>)}
           </div>
           <div>
+            {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/>lights out</Button>
+            :
+            <Button onClick={changeThemes} size="small" style={{outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/>lights on</Button>}
           </div>
         </div>
     </>

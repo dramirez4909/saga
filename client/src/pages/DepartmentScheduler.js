@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Calendar, momentLocalizer,Views } from 'react-big-calendar' 
 import moment from 'moment'
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -30,12 +30,12 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import LocalHospitalTwoToneIcon from '@material-ui/icons/LocalHospitalTwoTone';
 import SelectedOrderPreviewCard from '../components/SelectedOrderPreviewCard';
 import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
+import ThemeContext from '../components/utils/ThemeContext';
 
 const BootstrapInput = withStyles((theme) => ({
   rootList: {
     width: '100%',
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
   },
   root: {
     'label + &': {
@@ -45,7 +45,6 @@ const BootstrapInput = withStyles((theme) => ({
   input: {
     borderRadius: 4,
     position: 'relative',
-    backgroundColor: theme.palette.background.paper,
     border: '1px solid #ced4da',
     fontSize: 16,
     padding: '10px 26px 10px 12px',
@@ -124,7 +123,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -175,6 +173,7 @@ const DepartmentScheduler = props => {
     const [departments,setDepartments] = useState({})
     const [slideIn,setSlideIn] = useState(false)
     const [resourceMap,setResourceMap] = useState([])
+    const themeContext = useContext(ThemeContext)
 
     const handleChange = (event) => {
       console.log(event.target.value)
@@ -228,7 +227,6 @@ const DepartmentScheduler = props => {
       setResourceMap(resMap)
       setCalendarLoading(false)
     }
-
     useEffect(()=>{
       if (calendarLoading === false) {
         setSlideIn(true)
@@ -342,33 +340,34 @@ const DepartmentScheduler = props => {
     
     return (
         <>
-        <div style={{display:"flex",flexDirection:"row",width:"100%", margin:"0",marginRight:"0",backgroundColor:"aliceblue",padding:"10px"}}>
+        <div style={{display:"flex",flexDirection:"row",width:"100%", margin:"0",marginRight:"0",backgroundColor: themeContext.themes === "dark" ? "#444444" : "aliceblue",padding:"10px"}}>
           <div  style={{display:"flex",flexDirection:"column",width:"100%"}}>
-          <div style={{display: calendarLoading ? "none": "flex",flexDirection:"column",margin:"10px",borderRadius:"4px",background:"white",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
+          <div style={{display: calendarLoading ? "none": "flex",flexDirection:"column",margin:"10px",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
           <Slide direction="left" in={slideIn} timeout={350}>
-          <div style={{display: calendarLoading ? "none": "flex",flexDirection:"row",margin:"10px",alignItems:"center",background:"#fafafa",justifyContent:"space-between",padding:"2px",paddingRight:"13px", borderRadius:"4px",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
+          <div style={{display: calendarLoading ? "none": "flex",flexDirection:"row",margin:"10px",alignItems:"center",background: themeContext.themes === "dark" ? "#666666" : "#fafafa",color:themeContext.themes === "dark" ? "white" : "black",justifyContent:"space-between",padding:"2px",paddingRight:"13px", borderRadius:"4px",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
           {calendarLoading ? "" : 
           <>
-          <DepartmentColorButton style={{width:"fit-content",backgroundColor:"white",margin:"5px"}} onClick={handleOpen}> <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}><span>{departments[departmentIndex].name}</span></div></DepartmentColorButton>
-          <SmallColorButton>switch departments</SmallColorButton>
+          <DepartmentColorButton style={{width:"fit-content",margin:"5px",color:themeContext.themes === "dark" ? "white" : "black"}} onClick={handleOpen}> <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}><span>{departments[departmentIndex].name}</span></div></DepartmentColorButton>
+          <SmallColorButton style={{color: themeContext.themes === "dark" ? "white" : "black"}}>switch departments</SmallColorButton>
           </>
           }
           </div>
           </Slide>
           <Slide direction="up" in={slideIn} timeout={350}>
-        <div style={{marginRight:"15px",display:"flex",flexDirection:"column",overflow:"scroll",borderRadius:"4px",background:"white",padding:"10px"}}>
-          <div className={classes.rootList} style={{maxHeight:"300px",overflow:"scroll"}}>
-          {Object.values(orders).length === 0 ? <div style={{display:"flex",color:"black", background:"white",margin:"20px",padding:"30px", height:"100%", justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-            <div style={{display:"flex",flexDirection:"column",color:"black", boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px", background:"white",padding:"10px",borderRadius:"4px", marginBottom:"20px"}}>
-              <span>No remaining unscheduled orders. With the right security, you can place orders from the Orders tab of a patient's chart.</span>
+        <div style={{marginRight:"15px",display:"flex",flexDirection:"column",overflow:"scroll",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",padding:"10px"}}>
+          <div className={classes.rootList} style={{maxHeight:"300px",overflow:"scroll",backgroundColor: themeContext.themes === "dark" ? "#666666" : "white"}}>
+          {Object.values(orders).length === 0 ? <div style={{display:"flex",color:"black", backgroundColor: themeContext.themes === "dark" ? "#343434" : "white",margin:"20px",padding:"30px", height:"100%", justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
+            <div style={{display:"flex",flexDirection:"column",color:"black", boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",padding:"10px",borderRadius:"4px", marginBottom:"20px"}}>
+              <span style={{color: themeContext.themes === "dark" ? "white" : "#999999"}}>No remaining unscheduled orders. With the right security, you can place orders from the Orders tab of a patient's chart.</span>
               <ColorButton>Place Orders<ExitToAppTwoToneIcon style={{marginLeft:"3px"}}/></ColorButton></div>
             </div> : 
-            <List style={{marginBottom:"20px"}} component="nav" aria-label="main mailbox folders">
+            <List style={{marginBottom:"20px",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}} component="nav" aria-label="main mailbox folders">
             {Object.values(orders).map((order,index)=> {
             return (
             <ListItem
               className={'order-list-item'}
               button
+              style={{color: selectedIndex === index ? themeContext.themes === "dark" ? "black" : "black" : themeContext.themes === "dark" ? "white" : "black"}}
               selected={selectedIndex === index}
               onClick={(event) => handleListItemClick(event, index, order)}
             >
@@ -383,6 +382,9 @@ const DepartmentScheduler = props => {
                       margin:"4px",
                       borderRadius: '4px',
                       padding:"4px",
+                      color: themeContext.themes === "dark" ? "white" : "rgb(66, 133, 244)",
+                      border: themeContext.themes === "dark" ? "1px solid white" : "1px solid rgb(66, 133, 244)",
+                      backgroundColor: themeContext.themes === "dark" ? "rgb(66, 133, 244)" : "white",
                       cursor: draggedEvent.order.id === order.id ? "grabbing" : "grab",
                       width:"fit-content",
                       boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
@@ -412,9 +414,9 @@ const DepartmentScheduler = props => {
         </div>
         <div style={{display:"flex",flexDirection:"row",width:"100%", margin:"10px"}}>
         <Slide direction="up" in={slideIn} timeout={350}>
-            <div style={{marginRight:"20px",borderRadius:"4px"}}>
+            <div style={{marginRight:"20px",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white"}}>
                 <DndCalendar
-                    style={{ height: 680,width:700,boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",padding:"10px",backgroundColor:"white",borderRadius:"4px" }}
+                    style={{ backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",color: themeContext.themes === "dark" ? "white" : "black", height: 680,width:700,boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",padding:"10px",borderRadius:"4px" }}
                     localizer={localizer}
                     startAccessor="start"
                     selectable
@@ -473,7 +475,7 @@ const DepartmentScheduler = props => {
         }}
       >
         <Slide direction="up" in={open}>
-          <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",borderRadius:"4px"}}>
+          <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444"}}>
             <h3>Select a department to continue</h3>
             <form onSubmit={selectDepartment} style={{display:"flex",flexDirection:"column"}}>
             <FormControl className={classes.margin}>
@@ -482,7 +484,7 @@ const DepartmentScheduler = props => {
           id="demo-customized-select-native"
           value={departmentIndex}
           onChange={handleChange}
-          input={<BootstrapInput />}
+          input={<BootstrapInput style={{color:themeContext.themes === "dark" ? "white" : "black", backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}/>}
         > 
         <option aria-label="None" value="" />
         {

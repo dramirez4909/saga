@@ -195,7 +195,8 @@ class Medication(db.Model):
       "last_fill": self.last_fill,
       "name": self.name,
       "instructions": self.instructions,
-      "created_at": self.created_at
+      "created_at": self.created_at,
+      "patient":{"id":self.patient.id}
     }
 
 

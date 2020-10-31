@@ -3,8 +3,20 @@
     width: 62px;
 }
 
+div.MuiDrawer-root.MuiDrawer-docked.makeStyles-drawer-8.makeStyles-drawerOpen-9 > div > div {
+  display: none;
+}
+
 .MuiPaper-root.MuiDrawer-paper.makeStyles-drawerOpen-8.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0 {
   position:relative;
+}
+
+div.makeStyles-content-12 > div.makeStyles-toolbar-11 {
+  display:none;
+}
+
+div.MuiDrawer-root.MuiDrawer-docked.makeStyles-drawer-8.makeStyles-drawerClose-10 > div > div {
+  display: none;
 }
 
 div.makeStyles-drawerClose-9 {
@@ -108,5 +120,102 @@ div.makeStyles-toolbar-10 {
   left: -20px;
 }
 .tabs li a:after {
+  right: -20px;
+}
+
+
+.dark-tabs li { 
+  /* Makes a horizontal row */
+  float: left; 
+	
+  /* So the psueudo elements can be
+     abs. positioned inside */
+  position: relative; 
+}
+.dark-tabs a { 
+  /* Make them block level
+     and only as wide as they need */
+  float: left; 
+  padding: 7px 10px; 
+  text-decoration: none;
+  
+  /* Default colors */ 
+  color: black;
+  background: #212121; 
+  
+  /* Only round the top corners */
+  -webkit-border-top-left-radius: 15px;
+  -webkit-border-top-right-radius: 15px;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-topright: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px; 
+}
+.dark-tabs .active {
+  /* Highest, active tab is on top */
+  z-index: 3;
+}
+.dark-tabs .active a { 
+  /* Colors when tab is active */
+  background: #444444; 
+  color: white; 
+}
+.dark-tabs li:before, .dark-tabs li:after, 
+.dark-tabs li a:before, .dark-tabs li a:after {
+  /* All pseudo elements are 
+     abs. positioned and on bottom */
+  position: absolute;
+  bottom: 0;
+}
+/* Only the first, last, and active
+   tabs need pseudo elements at all */
+.dark-tabs li:last-child:after,   .dark-tabs li:last-child a:after,
+.dark-tabs li:first-child:before, .dark-tabs li:first-child a:before,
+.dark-tabs .active:after,   .dark-tabs .active:before, 
+.dark-tabs .active a:after, .dark-tabs .active a:before {
+  content: "";
+}
+.dark-tabs .active:before, .dark-tabs .active:after {
+  background: #444444; 
+  
+  /* Squares below circles */
+}
+/* Squares */
+.dark-tabs li:before, .dark-tabs li:after {
+  background: #212121;
+  width: 10px;
+  height: 8px;
+}
+.dark-tabs li:before {
+  left: -10px;      
+}
+.dark-tabs li:after { 
+  right: -10px;
+}
+/* Circles */
+.dark-tabs li a:after, .dark-tabs li a:before {
+  width: 20px; 
+  height: 8px;
+  /* Circles are circular */
+  border-bottom-left-radius: 10px;  
+  border-bottom-right-radius: 10px;
+  background: #212121;
+  
+  /* Circles over squares */
+  z-index: 2;
+}
+.dark-tabs .active a:after, .dark-tabs .active a:before {
+  background: #212121;
+}
+/* First and last tabs have different
+   outside color needs */
+.dark-tabs li:first-child.active a:before,
+.dark-tabs li:last-child.active a:after {
+  background: #212121;
+}
+.dark-tabs li a:before {
+  left: -20px;
+}
+.dark-tabs li a:after {
   right: -20px;
 }

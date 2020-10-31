@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button'
 import HomeContext from './utils/HomeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import {openPatientChart} from '../store/activities'
+import ThemeContext from './utils/ThemeContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,7 @@ export default function PatientSearchResults(props) {
   const classes = useStyles();
   const context = useContext(PatientSearchContext)
   const homeContext = useContext(HomeContext)
+  const themeContext = useContext(ThemeContext)
   const dispatch = useDispatch()
   const openTabs = useSelector(state=>state.activities.open_tabs)
   
@@ -54,13 +56,13 @@ export default function PatientSearchResults(props) {
 
   return (
     <div className={classes.root}>
-      <List component="nav">
+      <List component="nav" style={{backgroundColor:themeContext.themes === "dark" ? "#343434" : "white"}}>
         {props.patientSearchResults.map((patient,index) => {
           return(<ListItem
               button
               selected={context.selectedIndex === index}
               onClick={(event) => handleListItemClick(event, index)}
-              style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}
+              style={{display:"flex",flexDirection:"row",justifyContent:"space-between",fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}}
             >
               <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                 <ListItemIcon>
@@ -69,7 +71,7 @@ export default function PatientSearchResults(props) {
                 <div>{patient.firstName + " " + patient.lastName}</div>
               </div>
               <div style={{display:"flex",flexDirection:"row", alignItems:"center"}}>
-              <div style={{color:"grey"}}>DOB: <span style={{color:"green"}}>{`${patient.dob.split(" ")[1]} ${patient.dob.split(" ")[2]} ${patient.dob.split(" ")[3]}`}</span></div>
+              <div style={{color:themeContext.themes === "dark" ? "antiquewhite" : "grey"}}>DOB: <span style={{color:"green"}}>{`${patient.dob.split(" ")[1]} ${patient.dob.split(" ")[2]} ${patient.dob.split(" ")[3]}`}</span></div>
               <ColorButton size="small" onClick={()=>{openChart(patient)}}>Open Chart</ColorButton>
               </div>
             </ListItem>)})}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {withStyles,makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PatientPreviewCard from '../components/PatientPreviewCard'
@@ -7,6 +7,7 @@ import PatientSearchResults from '../components/PatientSearchResults';
 import CloseIcon from '@material-ui/icons/Close';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
+import ThemeContext from '../components/utils/ThemeContext';
 
 
 const useStylesLoginTextField = makeStyles((theme) => ({
@@ -50,6 +51,8 @@ function PatientSearch(props) {
     const [patientSearchResults,setPatientSearchResults]=useState([])
     const [selectedPatient,setSelectedPatient] = useState({})
     const [selectedIndex, setSelectedIndex] = useState();
+    const themeContext = useContext(ThemeContext)
+
     useEffect(()=>{
         const searchPatients= async (searchTerm) => {
             const response = await fetch(`/api/patients/search/${searchTerm}`)
@@ -68,18 +71,11 @@ function PatientSearch(props) {
             <PatientSearchContext.Provider value={{setSelectedIndex,selectedIndex,setSelectedPatient}}>
             <div style={{display:"flex",flexDirection:"row", margin:"20px"}}>
                 <div style={{display:"flex",flexDirection:"column",width:"50%"}}>
-                    <h1>Patient Search</h1>
+                    <h1 style={{color: themeContext.themes === "dark" ? "white" : "black"}}>Patient Search</h1>
                     <div style={{display:"flex",flexDirection:"column"}}>
-                        <LoginTextField placeholder="enter a patient's name, id, or mrn" value={patientSearchTerm} onChange={(e)=>setPatientSearchTerm(e.target.value)}
-                        endAdornment={
-                            <InputAdornment position="end">
-                              <IconButton>
-                                <CloseIcon />
-                              </IconButton>
-                            </InputAdornment>
-                          }></LoginTextField>
-                        <div>
-                            <PatientSearchResults patientSearchResults={patientSearchResults}/>
+                        <LoginTextField  placeholder="enter a patient's name, id, or mrn" value={patientSearchTerm} onChange={(e)=>setPatientSearchTerm(e.target.value)}></LoginTextField>
+                        <div style={{background: themeContext.themes === "dark" ? "#444444" : "white"}}>
+                            {patientSearchResults.length ? <PatientSearchResults patientSearchResults={patientSearchResults}/> : <></>}
                         </div>
                     </div>
                 </div>
