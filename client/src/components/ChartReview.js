@@ -6,6 +6,7 @@ import PatientPhoneNumbers from './PatientPhoneNumbers';
 import PatientAddressInfo from './PatientAddressInfo';
 import PatientMedications from './PatientMedications';
 import ThemeContext from './utils/ThemeContext';
+import PatientProblems from './PatientProblems';
 
 
 const imageStyle={
@@ -27,6 +28,7 @@ function ChartReview(props) {
                <BasicPatientAttributes patient={props.patient}/>
                <div style={{display:"flex",flexDirection:"row"}}>
                    <PatientMedications patient={props.patient}/>
+                   <PatientProblems patient={props.patient}/>
                 </div>
             </div>
         </>

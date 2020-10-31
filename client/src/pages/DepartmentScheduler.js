@@ -343,7 +343,7 @@ const DepartmentScheduler = props => {
         <div style={{display:"flex",flexDirection:"row",width:"100%", margin:"0",marginRight:"0",backgroundColor: themeContext.themes === "dark" ? "#444444" : "aliceblue",padding:"10px"}}>
           <div  style={{display:"flex",flexDirection:"column",width:"100%"}}>
           <div style={{display: calendarLoading ? "none": "flex",flexDirection:"column",margin:"10px",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
-          <Slide direction="left" in={slideIn} timeout={350}>
+          <Slide direction="up" in={slideIn} timeout={350}>
           <div style={{display: calendarLoading ? "none": "flex",flexDirection:"row",margin:"10px",alignItems:"center",background: themeContext.themes === "dark" ? "#666666" : "#fafafa",color:themeContext.themes === "dark" ? "white" : "black",justifyContent:"space-between",padding:"2px",paddingRight:"13px", borderRadius:"4px",boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
           {calendarLoading ? "" : 
           <>

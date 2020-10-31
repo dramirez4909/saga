@@ -16,6 +16,7 @@ from .api.encounters import encounters
 from .api.orders import orders
 from .api.departments import departments
 from .api.medications import medications
+from .api.problems import problems
 
 from .config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
 from .config import Config
@@ -38,6 +39,7 @@ app.register_blueprint(orders,url_prefix='/api/orders')
 app.register_blueprint(encounters,url_prefix='/api/encounters')
 app.register_blueprint(departments,url_prefix='/api/departments')
 app.register_blueprint(medications,url_prefix='/api/medications')
+app.register_blueprint(problems,url_prefix='/api/problems')
 db.init_app(app)
 Migrate(app, db)
 

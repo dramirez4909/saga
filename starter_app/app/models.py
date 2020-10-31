@@ -120,7 +120,7 @@ class Problem(db.Model):
   __tablename__ = "problems"
   id = db.Column(db.Integer, primary_key = True)
   patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"))
-  name = db.Column(db.String(40), nullable = True)
+  name = db.Column(db.String(2000), nullable = True)
   created_at = db.Column(db.DateTime, nullable = True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
 

@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 const SET_PATIENT = "/currentPatient/SET_PATIENT"
 const ADD_ORDER = "/currentPatient/ADD_ORDER"
 const ADD_MED = "/currentPatient/ADD_MED"
+const ADD_PROBLEM = "/currentPatient/ADD_PROBLEM"
 
 
 export const setPatient = (patient) => {
@@ -35,10 +36,33 @@ export const createMedication = (medication) => async (dispatch) => {
     dispatch(addMedication(data.medication))
 }
 
+export const createProblem = (problem) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const jsonProb = JSON.stringify(problem)
+    const res = await fetch('/api/problems/create',{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonProb
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(addProblem(data.problem))
+}
+
 export const addMedication = (medication) => {
     return {
         type: ADD_MED,
         medication
+    }
+}
+
+export const addProblem = (problem) => {
+    return {
+        type: ADD_PROBLEM,
+        problem
     }
 }
 
@@ -62,7 +86,12 @@ export default function currentPatientReducer(state={},action){
         case ADD_MED:
             const meds = [...state.medications]
             newState.medications = meds
-            newState.meds.push(action.medication)
+            newState.medications.push(action.medication)
+            return newState
+        case ADD_PROBLEM: 
+            const probs = [...state.problems]
+            newState.problems = probs
+            newState.problems.push(action.problem)
             return newState
         default:
             return state
