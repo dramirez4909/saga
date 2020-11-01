@@ -7,6 +7,8 @@ import PatientAddressInfo from './PatientAddressInfo';
 import PatientMedications from './PatientMedications';
 import ThemeContext from './utils/ThemeContext';
 import PatientProblems from './PatientProblems';
+import PatientProblemList from './PatientProblemList';
+import PatientMedicationsList from './PatientMedicationsList';
 
 
 const imageStyle={
@@ -25,10 +27,9 @@ function ChartReview(props) {
     return (
         <>
             <div style={{display:"flex",flexDirection:"column", background:themeContext.themes === "dark" ? "#444444" : "white", height:"100vh"}}>
-               <BasicPatientAttributes patient={props.patient}/>
                <div style={{display:"flex",flexDirection:"row"}}>
-                   <PatientMedications patient={props.patient}/>
-                   <PatientProblems patient={props.patient}/>
+                   <PatientMedicationsList patient={props.patient}/>
+                   <PatientProblemList patient={props.patient}/>
                 </div>
             </div>
         </>

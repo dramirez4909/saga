@@ -29,6 +29,9 @@ import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
 import PatientNotes from '../components/PatientNotes';
 import ThemeContext from '../components/utils/ThemeContext';
+import PatientProblems from '../components/PatientProblems';
+import PatientMedications from '../components/PatientMedications';
+import BasicPatientAttributes from '../components/BasicPatientAttributes';
 
 const isBrowser = typeof window !== `undefined`
 
@@ -120,7 +123,7 @@ function PatientChart(props) {
     const [patient,setPatient] = useState(props.patient)
     const [loadingPicture,setLoadingPicture] = useState(false)
     const form = useRef(null)
-    const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Notes","Orders"])
+    const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Orders","Problem List","Meds",,"Notes","Education","Care Plan","Demographics","Story","Allergies","Media"])
     const [currentPatientTab,setCurrentPatientTab] =useState("Chart Review")
     const themeContext = useContext(ThemeContext)
 
@@ -185,7 +188,6 @@ function PatientChart(props) {
             <div className={classes.left}>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
                 <span style={{fontSize:"35px",padding:"6px",textDecoration:"none", fontFamily:"Garamond",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
-                <div style={{borderRadius:"9px",marginLeft:"9px",display:"flex",color:"lightgrey",fontSize:"20px",padding:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px"}}>[ she / her ]</div>
               </div>
             </div>
             {/* <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
@@ -223,11 +225,12 @@ function PatientChart(props) {
                 </Fade> */}
           </div> 
         <div className={classes.root}>
-        <div className={classes.drawerContainer} style={{height:"100vh",display:"flex",flexDirection:"column", alignSelf:"flex-start",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "white"}}>
-            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px"}}>
+        <div className={classes.drawerContainer} style={{height:"100vh",display:"flex",flexDirection:"column", alignSelf:"flex-start",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "ivory"}}>
+            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset" : "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
-          <List>
+            <BasicPatientAttributes patient={currentPatient}/>
+          {/* <List>
               <ListItem button
               selected={selectedIndex === 0}
               onClick={(event) => handleListItemClick(event, 0)}>
@@ -253,7 +256,7 @@ function PatientChart(props) {
                 <ListItemIcon><BorderColorTwoToneIcon /></ListItemIcon>
                 <ListItemText primary={"Orders"} />
               </ListItem>
-          </List>
+          </List> */}
         </div>
       <div className={classes.content}> 
             <div style={{background: "#212121",height:"100vh"}}>
@@ -273,6 +276,8 @@ function PatientChart(props) {
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
               {currentPatientTab === "Notes" ? <PatientNotes patient={currentPatient}/> : <></>}
+              {currentPatientTab === "Problem List" ? <PatientProblems patient={currentPatient}/> : <></>}
+              {currentPatientTab === "Meds" ? <PatientMedications patient={currentPatient}/> : <></>}
             </div>
             <LoginTextField placeholder="enter a diagnosis" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
             <ul>

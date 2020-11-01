@@ -12,11 +12,10 @@
 .circular--portrait {
     position: relative;
     opacity: 100%;
-    width: 230px;
-    height: 230px;
+    width: 215px;
+    height: 215px;
     overflow: hidden;
     border-radius: 50%;
-    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     border: 2px solid #fff
   }
   .small-circular--portrait {

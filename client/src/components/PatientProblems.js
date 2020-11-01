@@ -94,12 +94,12 @@ function PatientProblems(props) {
 
     useEffect(()=>{
         const searchProblems= async (searchTerm) => {
-            const response = await fetch(`/api/umls/search-cui/`)
-            // const response = await fetch(`/api/umls/search-term/mental-health-problems/${searchTerm}`)
+            // const response = await fetch(`/api/umls/search-cui/`)
+            const response = await fetch(`/api/umls/search-term/mental-health-problems/${searchTerm}`)
             const data = await response.json()
             console.log(data)
-            // setSearchingForProblems(false)
-            // setProblemSearchResults(data.results)
+            setSearchingForProblems(false)
+            setProblemSearchResults(data.results)
             return;
         }
         if (problemSearchTerm.length > 0) {

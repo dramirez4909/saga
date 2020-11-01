@@ -445,7 +445,9 @@ class Encounter(db.Model):
       "start": self.start,
       "end":self.end,
       "provider":self.provider.without_encounters(),
-      "resource_id":self.resource_id,
+      "resource":{"id":self.resource_id,"name":self.resource.name},
+      "department":{"id":self.department_id,"name":self.department.name}
+
     }
 
   def without_orders(self):

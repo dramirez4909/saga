@@ -22,14 +22,12 @@ const tabStyle = {
 }
 
 const metricContainerStyle={
-marginRight:"10px",
 display:"flex",
 flexDirection:"column",
-fontSize:"24px",
+fontSize:"18px",
 borderRadius:"9px",
 cursor:"pointer",
 fontWeight:"strong",
-boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
 padding:"4px",
 alignItems:"center",
 '&:hover': {
@@ -54,15 +52,17 @@ function BasicPatientAttributes(props) {
 
     return (
         <>
-            <div style={{display:"flex",flexDirection:"column",borderRadius:"7px",margin:"10px"}}>
-            <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"left", margin:"8px"}}>
-                    <div style={{display:"flex",flexDirection:"column"}} >
+            <div style={{display:"flex",flexDirection:"column",borderRadius:"7px", marginTop:"15px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",marginLeft:"16px", marginRight:"15px",padding:"8px",boxShadow: themeContext.themes === "light" ? "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset" : "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px" }}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                <div style={{display:"flex",flexDirection:"column"}}>
+                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}} >
                         <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                             {props.patient.sex === "female" ? 
                                 <img style={{height:"29px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/female-removebg-preview.png"></img>
                                 :
                                 <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/_Pngtree_vector_male_sign_icon_4184181-removebg-preview.png"></img>}
                         </div>
+                        <div style={{borderRadius:"9px",display:"flex",color: themeContext.themes === "dark" ? "white" : "grey",fontSize:"20px",zIndex:"3",padding:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px"}}>[ she / her ]</div>
                         <div style={{...metricContainerStyle,marginTop:"4px",color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                             {props.patient.smoker ? 
                                 <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/images-removebg-preview.png"></img>
@@ -71,26 +71,31 @@ function BasicPatientAttributes(props) {
                             }
                         </div>
                     </div>
-                    <PatientPhoneNumbers patient={props.patient}/>
-                    <PatientAddressInfo patient={props.patient}/>
                     <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                        <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/my-baby-page-height-38152201fffe401cf5b4a5c923b5ad80.png"></img>
-                        <span style={{...metricTextStyle}}>{props.patient.height}</span>
+                        {/* <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/heart-removebg-preview.png"></img> */}
+                        <FavoriteIcon style={{height: "32px", width:"32px", color:"red"}}/>
+                        <span style={{...metricTextStyle}}>{props.patient.beats_per_minute}<span style={{fontSize:"18px", color:"lightgrey"}}>bpm</span></span>
                     </div>
+                </div>
+                <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
                     <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                         {/* <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/113553339-weights-concept-vector-linear-icon-isolated-on-transparent-background-weights-concept-transparency-c-removebg-preview.png"></img> */}
                         <FitnessCenterIcon style={{height: "32px", width:"32px", color:"rgb(85, 177, 250)"}} />
                         <span style={{...metricTextStyle}}>{props.patient.weight}<span style={{fontSize:"18px", color:"lightgrey"}}>kgs</span></span>
                     </div>
                     <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                        {/* <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/heart-removebg-preview.png"></img> */}
-                        <FavoriteIcon style={{height: "32px", width:"32px", color:"red"}}/>
-                        <span style={{...metricTextStyle}}>{props.patient.beats_per_minute}<span style={{fontSize:"18px", color:"lightgrey"}}>bpm</span></span>
+                        <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/my-baby-page-height-38152201fffe401cf5b4a5c923b5ad80.png"></img>
+                        <span style={{...metricTextStyle}}>{props.patient.height}</span>
                     </div>
                     <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                         <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/unnamed.png"></img>
                         <span style={{...metricTextStyle}}>{props.patient.bmi}</span>
                     </div>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+                    <PatientPhoneNumbers patient={props.patient}/>
+                    <PatientAddressInfo patient={props.patient}/>
+                </div>
                 </div>
             </div>
         </>

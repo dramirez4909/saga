@@ -41,15 +41,14 @@ function PatientAddressInfo(props) {
     const themeContext = useContext(ThemeContext)
     return (
         <>
-                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px", width:"fit-content",padding:"8px",marginRight:"9px"}}>
+                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px", width:"fit-content"}}>
                     <div style={{display:"flex",flexDirection:"row",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"fit-content",borderRadius:"8px"}}>
-                        <ContactMailTwoToneIcon style={{color:"lightgrey", alignSelf:"center",height:"40px",width:"40px"}}/>
+                        <ContactMailTwoToneIcon size="small" style={{color:"lightgrey", alignSelf:"center"}}/>
                         <div style={{display:"flex",flexDirection:"column", width:"fit-content", marginLeft:"9px"}}>
                         { props.patient.address_line_one ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_one}</span> </span> : ""}
                         { props.patient.address_line_two ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_two}</span> </span> : ""}
                         { props.patient.address_line_three ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_three}</span> </span> : ""}
-                        { props.patient.address_city ? <span><span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_city}, {props.patient.address_state}</span> </span> : ""}
-                        { props.patient.address_zip ? <span><span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_zip}</span> </span> : ""}
+                        { props.patient.address_city ? <span><span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_city}, {props.patient.address_state}</span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_zip}</span> </span> : ""}
                         </div>
                     </div>
                 </div>
