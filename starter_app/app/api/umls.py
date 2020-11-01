@@ -273,7 +273,7 @@ def search_cui():
   ##ticket is the only parameter needed for this call - paging does not come into play because we're only asking for one Json object
   ticket = AuthClient.getst(tgt)
   query = {'ticket':ticket}
-  r = requests.get("https://uts-ws.nlm.nih.gov/rest/semantic-network/2020AB/TUI/T191",params=query)
+  r = requests.get(uri+content_endpoint,params=query)
   r.encoding = 'utf-8'
   items  = json.loads(r.text)
   print("items boiiii!!!!!!!!!!!!!",items)
