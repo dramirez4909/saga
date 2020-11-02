@@ -78,9 +78,6 @@ const useStylesLoginTextField = makeStyles((theme) => ({
       width: drawerWidth,
       position:"inherit",
     },
-    drawerContainer: {
-      position:"inherit",
-    },
     content: {
       flexGrow: 1,
     },
@@ -127,20 +124,20 @@ function PatientChart(props) {
     const [currentPatientTab,setCurrentPatientTab] =useState("Chart Review")
     const themeContext = useContext(ThemeContext)
 
-    useScrollPosition(({ prevPos, currPos }) => {
-      console.log(currPos.x)
-      console.log(currPos.y)
-    })
+    // useScrollPosition(({ prevPos, currPos }) => {
+    //   console.log(currPos.x)
+    //   console.log(currPos.y)
+    // })
 
-    const [hideOnScroll, setHideOnScroll] = useState(true)
+    // const [hideOnScroll, setHideOnScroll] = useState(true)
 
-    useScrollPosition(({ prevPos, currPos }) => {
-    const isShow = currPos.y > -15
-    if (isShow !== hideOnScroll) {
-      context.setSideBarDisplay(isShow)
-      setHideOnScroll(isShow)
-    }
-    }, [hideOnScroll])
+    // useScrollPosition(({ prevPos, currPos }) => {
+    // const isShow = currPos.y > -15
+    // if (isShow !== hideOnScroll) {
+    //   context.setSideBarDisplay(isShow)
+    //   setHideOnScroll(isShow)
+    // }
+    // }, [hideOnScroll])
 
     const submit = e => {
         setLoadingPicture(true)
@@ -224,8 +221,8 @@ function PatientChart(props) {
                 </div>
                 </Fade> */}
           </div> 
-        <div className={classes.root}>
-        <div className={classes.drawerContainer} style={{height:"100vh",display:"flex",flexDirection:"column", alignSelf:"flex-start",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "ivory"}}>
+        <div style={{display:"flex",flexDirection:"row"}}>
+        <div style={{display:"flex",flexDirection:"column",bottom:0, height:"100%",alignSelf:"flex-start",paddingBottom:"50px",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "ivory"}}>
             <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset" : "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
@@ -259,7 +256,7 @@ function PatientChart(props) {
           </List> */}
         </div>
       <div className={classes.content}> 
-            <div style={{background: "#212121",height:"100vh"}}>
+            <div style={{background: "#212121"}}>
             <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px"}}>
               {patientTabs.map((tab,index)=>{
                 return (
@@ -271,7 +268,7 @@ function PatientChart(props) {
                 )
               })}
             </div>
-            <div>
+            <div style={{overflow:"scroll"}}>
               {currentPatientTab === "Chart Review" ? <ChartReview patient={currentPatient}/> : <></>}
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
@@ -279,22 +276,14 @@ function PatientChart(props) {
               {currentPatientTab === "Problem List" ? <PatientProblems patient={currentPatient}/> : <></>}
               {currentPatientTab === "Meds" ? <PatientMedications patient={currentPatient}/> : <></>}
             </div>
-            <LoginTextField placeholder="enter a diagnosis" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
-            <ul>
-                {dxSearchResults.map(dx=>{
-                    return(
-                        <li>{dx}</li>
-                    )
-                    })}
-            </ul>
+            </div>
+            </div>
+            </div>
+            </div>
             <form ref={form} onSubmit={submit}>
                 <input type="file" name="file"></input>
                 <input type="submit" name="Sign Up" />
             </form>
-            </div>
-            </div>
-            </div>
-            </div>
         </>
     );
 }

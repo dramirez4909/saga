@@ -51,12 +51,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   paperDark:{
-      position:"initial",
+      position:"fixed",
+      top:"32px",
       backgroundColor:"#444444",
       width: "62px",
   },
   paperLight:{
-    position:"initial",
+    position:"fixed",
+    top:"32px",
     backgroundColor:"white",
     width: "62px",
   },
@@ -222,7 +224,7 @@ const HomePage=(props)=>{
                   </Typography>
                 </Toolbar>
               </AppBar> */}
-              <div style={{display:"flex",flexDirection:"row",backgroundColor:themes === "light" ? "white" : "#444444"}}>
+              <div style={{display:"flex",flexDirection:"row",backgroundColor:themes === "light" ? "white" : "#444444",height:"100vh"}}>
               {/* <Slide direction="right" in={sideBarDisplay} timeout={250} mountOnEnter unmountOnExit> */}
               <Drawer
                 style={{display: sideBarDisplay ? "" : "none", backgroundColor:themes === "light" ? "white" : "#444444"}}

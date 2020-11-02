@@ -121,7 +121,9 @@ function PatientProblems(props) {
                         setProblemSearchResults([])
                         setSearchingForProblems(true)
                         setProblemPerformSearch(!problemPerformSearch)
-                        }}><FindInPageTwoToneIcon style={{marginRight:"4px"}}/>search for mental health condition</ColorButton>
+                        }}
+                        style={{background:"transparent"}}
+                        ><FindInPageTwoToneIcon style={{marginRight:"4px"}}/>search for mental health condition</ColorButton>
                     </div>
                         <div style={{display:"flex",flexDirection:"column",height:"200px",overflow:"scroll",marginLeft:"10px"}}>
                         {searchingForProblems ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/ezgif.com-gif-maker.gif" style={{height:"140px",marginLeft:"10px"}}></img> : <></>}

@@ -9,7 +9,10 @@ import ThemeContext from './utils/ThemeContext';
 import PatientProblems from './PatientProblems';
 import PatientProblemList from './PatientProblemList';
 import PatientMedicationsList from './PatientMedicationsList';
-
+import PatientEncounters from '../components/PatientEncounters';
+import PatientOrders from '../components/PatientOrders';
+import { useSelector } from 'react-redux';
+import PatientNotes from '../components/PatientNotes';
 
 const imageStyle={
     hieght:"32px",
@@ -26,10 +29,16 @@ function ChartReview(props) {
     const themeContext = useContext(ThemeContext)
     return (
         <>
-            <div style={{display:"flex",flexDirection:"column", background:themeContext.themes === "dark" ? "#444444" : "white", height:"100vh"}}>
-               <div style={{display:"flex",flexDirection:"row"}}>
+            <div style={{display:"flex",flexDirection:"column", background:themeContext.themes === "dark" ? "#444444" : "white"}}>
+               <div style={{display:"flex",flexDirection:"column"}}>
                    <PatientMedicationsList patient={props.patient}/>
                    <PatientProblemList patient={props.patient}/>
+                   {/* <ChartReview patient={props.patient}/>
+                   <PatientEncounters patient={props.patient}/>
+                   <PatientOrders patient={props.patient}/>
+                   <PatientNotes patient={props.patient}/>
+                   <PatientProblems patient={props.patient}/>
+                   <PatientMedications patient={props.patient}/> */}
                 </div>
             </div>
         </>
