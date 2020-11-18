@@ -123,6 +123,7 @@ class Problem(db.Model):
   name = db.Column(db.String(2000), nullable = True)
   created_at = db.Column(db.DateTime, nullable = True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
+  type = db.Column(db.String(40), nullable = True)
 
   patient = db.relationship("Patient",back_populates="problems")
   provider = db.relationship("Provider",back_populates="problems")
@@ -131,7 +132,8 @@ class Problem(db.Model):
     return {
       "id": self.id,
       "name": self.name,
-      "created_at": self.created_at
+      "created_at": self.created_at,
+      "type":self.type
     }
 
 class Department(db.Model):

@@ -29,9 +29,10 @@ import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
 import PatientNotes from '../components/PatientNotes';
 import ThemeContext from '../components/utils/ThemeContext';
-import PatientProblems from '../components/PatientProblems';
+import PatientProblems from '../components/PatientMentalProblems';
 import PatientMedications from '../components/PatientMedications';
 import BasicPatientAttributes from '../components/BasicPatientAttributes';
+import AllProblems from '../components/PatientAllProblems';
 
 const isBrowser = typeof window !== `undefined`
 
@@ -120,7 +121,7 @@ function PatientChart(props) {
     const [patient,setPatient] = useState(props.patient)
     const [loadingPicture,setLoadingPicture] = useState(false)
     const form = useRef(null)
-    const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Orders","Problem List","Meds",,"Notes","Education","Care Plan","Demographics","Story","Allergies","Media"])
+    const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Orders","Problem List","Meds","Notes","Allergies","Media"])
     const [currentPatientTab,setCurrentPatientTab] =useState("Chart Review")
     const themeContext = useContext(ThemeContext)
 
@@ -222,7 +223,7 @@ function PatientChart(props) {
                 </Fade> */}
           </div> 
         <div style={{display:"flex",flexDirection:"row"}}>
-        <div style={{display:"flex",flexDirection:"column",bottom:0, height:"100%",alignSelf:"flex-start",paddingBottom:"50px",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "ivory"}}>
+        <div style={{display:"flex",flexDirection:"column",bottom:0, height:"100%",alignSelf:"flex-start",paddingBottom:"50px",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "#f7f7f6"}}>
             <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset" : "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
@@ -273,7 +274,7 @@ function PatientChart(props) {
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
               {currentPatientTab === "Notes" ? <PatientNotes patient={currentPatient}/> : <></>}
-              {currentPatientTab === "Problem List" ? <PatientProblems patient={currentPatient}/> : <></>}
+              {currentPatientTab === "Problem List" ? <AllProblems patient={currentPatient}/> : <></>}
               {currentPatientTab === "Meds" ? <PatientMedications patient={currentPatient}/> : <></>}
             </div>
             </div>

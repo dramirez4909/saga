@@ -11,8 +11,9 @@ import ThemeContext from './utils/ThemeContext';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import AddIcon from '@material-ui/icons/AddCircleTwoTone';
 import IconButton from '@material-ui/core/IconButton';
-import {createMedication} from '../store/current_patient'
+import {createProblem} from '../store/current_patient'
 import PatientMedicationsList from './PatientMedicationsList';
+import PatientPhysicalProblemList from './PatientPhysicalProblemList';
 
 
 const useStylesLoginTextField = makeStyles((theme) => ({
@@ -42,11 +43,10 @@ const useStylesLoginTextField = makeStyles((theme) => ({
 
 const ColorButton = withStyles((theme) => ({
     root: {
-        color: "#ed4959",
         paddingRight: "10px",
         paddingLeft: "10px",
         margin: "4px",
-        backgroundColor:"white",
+        background:"transparent",
         border:"1px solid #ed4959",
         '&:hover': {
             backgroundColor: "#ed4959 !important",
@@ -62,7 +62,7 @@ const SelectMedButton = withStyles((theme) => ({
         paddingRight: "10px",
         paddingLeft: "10px",
         margin: "4px",
-        backgroundColor:"white",
+        backgroundColor:"transparent",
         border:"1px solid #ed4959",
         '&:hover': {
             backgroundColor: "#ed4959 !important",
@@ -72,93 +72,93 @@ const SelectMedButton = withStyles((theme) => ({
     },
     }))(Button);
 
-function PatientMedications(props) { 
+function PatientPhysicalProblems(props) { 
     console.log(props)
     const context = useContext(HomeContext)
     const dispatch = useDispatch()
     const provider_id = useSelector(state=>state.auth.user.id)
     const [medications,setMedications] = useState([])
     const themeContext = useContext(ThemeContext)
-    const [dxSearchTerm,setDxSearchTerm] = useState("")
-    const [dxSearchResults,setDxSearchResults]=useState([]);
-    const [dxPerformSearch,setDxPerformSearch]=useState(false)
-    const [searchingForMeds,setSearchingForMeds]=useState(false)
-    const [selectedMedicationIndex,setSelectedMedicationIndex]=useState()
-    const [displayMedicationQuestions,setDisplayMedicationQuestions] = useState(false)
-    const [newMedInstructions,setNewMedInstructions] = useState("")
+    const [problemSearchTerm,setProblemSearchTerm] = useState("")
+    const [problemSearchResults,setProblemSearchResults]=useState([]);
+    const [problemPerformSearch,setProblemPerformSearch]=useState(false)
+    const [searchingForProblems,setSearchingForProblems]=useState(false)
+    const [selectedProblemIndex,setSelectedProblemIndex]=useState()
+    const [displayProblemQuestions,setDisplayProblemQuestions] = useState(false)
+    const [newProblemInstructions,setNewProblemInstructions] = useState("")
 
-    const addMedication = (medicationName,instructions) => {
-        dispatch(createMedication({medicationName,instructions,patient:props.patient.id,provider_id}))
+    const addProblem = (problemName) => {
+        dispatch(createProblem({problemName,patient:props.patient.id,provider_id,type:"physical"}))
     }
 
     useEffect(()=>{
-        const searchDxs= async (searchTerm) => {
-            const response = await fetch(`/api/umls/search-term/${searchTerm}`)
+        const searchProblems= async (searchTerm) => {
+            // const response = await fetch(`/api/umls/search-cui/`)
+            const response = await fetch(`/api/umls/search-term/non-mental-problems/${searchTerm}`)
             const data = await response.json()
             console.log(data)
-            setSearchingForMeds(false)
-            setDxSearchResults(data.results)
+            setSearchingForProblems(false)
+            setProblemSearchResults(data.results)
             return;
         }
-        if (dxSearchTerm.length > 0) {
-            searchDxs(dxSearchTerm)
+        if (problemSearchTerm.length > 0) {
+            searchProblems(problemSearchTerm)
         }
-    },[dxPerformSearch])
+    },[problemPerformSearch])
 
 
     return (
         <>
                 <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"fit-content",marginLeft:"9px",marginRight:"9px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}}>
-                    <div style={{color:"white", marginTop:"10px",marginBottom:"6px", width:"100%", padding:"4px", fontSize:"16px", backgroundImage: "linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%)"}}>Medications</div>
-                    <PatientMedicationsList patient={{...props.patient}}/>
+                    <div style={{color:"white", marginTop:"10px",marginBottom:"6px", width:"100%", padding:"4px", fontSize:"16px", backgroundImage: "linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%)"}}>Physical Health Issues</div>
+                    <PatientPhysicalProblemList patient={{...props.patient}}/>
                     <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",transition:"all .4s ease-in-out",transitionProperty:"width"}}>
                     <div style={{display:"flex",flexDirection:"column"}}>
-                    <LoginTextField placeholder="enter a medication" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
-                    <ColorButton onClick={()=>{
-                        setDisplayMedicationQuestions(false)
-                        setDxSearchResults([])
-                        setSearchingForMeds(true)
-                        setDxPerformSearch(!dxPerformSearch)
+                    <LoginTextField placeholder="add a health issue" value={problemSearchTerm} onChange={(e)=>setProblemSearchTerm(e.target.value)}></LoginTextField>
+                    <ColorButton style={{color:themeContext.themes === "dark" ? "white" : "#ed4959"}} onClick={()=>{
+                        setDisplayProblemQuestions(false)
+                        setProblemSearchResults([])
+                        setSearchingForProblems(true)
+                        setProblemPerformSearch(!problemPerformSearch)
                         }}
-                        style={{background:"transparent"}}
-                        ><FindInPageTwoToneIcon style={{marginRight:"4px"}}/> search for med</ColorButton>
+                        ><FindInPageTwoToneIcon style={{marginRight:"4px"}}/>search</ColorButton>
                     </div>
                         <div style={{display:"flex",flexDirection:"column",maxHeight:"200px",overflow:"scroll",marginLeft:"10px"}}>
-                        {searchingForMeds ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/ezgif.com-gif-maker.gif" style={{height:"140px",marginLeft:"10px"}}></img> : <></>}
-                        {displayMedicationQuestions ? 
+                        {searchingForProblems ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/ezgif.com-gif-maker.gif" style={{height:"140px",marginLeft:"10px"}}></img> : <></>}
+                        {displayProblemQuestions ? 
                         <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "antiquewhite" : "grey",marginLeft:"10px", borderRadius:"4px",padding:"10px"}}>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                            <div style={{fontSize:"20px"}}>{dxSearchResults[selectedMedicationIndex]}</div>
-                            <Button size="small" onClick={()=>setDisplayMedicationQuestions(false)}>
+                            <div style={{fontSize:"20px"}}>{problemSearchResults[selectedProblemIndex]}</div>
+                            <Button size="small" onClick={()=>setDisplayProblemQuestions(false)}>
                                 back
                             </Button>
                             </div>
                             <form>
                                 <div style={{display:"flex",flexDirection:"column", justifyContent:"center"}}>
                                     <p>Insructions:</p>
-                                    <input value={newMedInstructions} onChange={(e)=>setNewMedInstructions(e.target.value)}></input>
+                                    {/* <input value={newMedInstructions} onChange={(e)=>setNewMedInstructions(e.target.value)}></input> */}
                                 </div>
                                 <IconButton size="large">
                                     <AddIcon style={{color:"lightgreen"}} onClick={()=>{
-                                        setDxSearchResults([])
-                                        setDxSearchTerm("")
-                                        setNewMedInstructions("")
-                                        setDisplayMedicationQuestions(false)
-                                        addMedication(dxSearchResults[selectedMedicationIndex],newMedInstructions)}}/>
+                                        setProblemSearchResults([])
+                                        setProblemSearchTerm("")
+                                        setNewProblemInstructions("")
+                                        setDisplayProblemQuestions(false)
+                                        addProblem(problemSearchResults[selectedProblemIndex],newProblemInstructions)}}/>
                                 </IconButton>
                             </form>
                         </div>
-                        : dxSearchResults.map((dx,index)=>{
+                        : problemSearchResults.map((problem,index)=>{
                         return(
-                            <div onClick={()=>setSelectedMedicationIndex(index)} 
+                            <div onClick={()=>setSelectedProblemIndex(index)} 
                             style={{transition:"all .4s ease-in-out",transitionProperty:"width",display:"flex",
                             flexDirection:"row", alignItems:"center",cursor:"pointer",color:themeContext.themes === "dark" ? "white" : "black",
                             marginTop:"3px",padding:"4px",borderRadius:"3px",
-                            background:themeContext.themes === "dark" ? index === selectedMedicationIndex ? "#999999" : "#343434" : index === selectedMedicationIndex ? "aliceblue" : "ivory"}}>
-                                <IconButton size="small" onClick={(e)=>setDisplayMedicationQuestions(true)}>
+                            background:themeContext.themes === "dark" ? index === selectedProblemIndex ? "#999999" : "#343434" : index === selectedProblemIndex ? "aliceblue" : "ivory"}}>
+                                <IconButton size="small" onClick={(e)=>setDisplayProblemQuestions(true)}>
                                 <AddIcon style={{color:themeContext.themes === "dark" ? "goldenrod" : "goldenrod", borderRadius:"3px",margin:"2px",padding:"2px",cursor:"pointer"}}/>
                                 </IconButton>
-                                {dx}
+                                {problem}
                             </div>
                         )
                         })}
@@ -169,4 +169,4 @@ function PatientMedications(props) {
     );
 }
 
-export default PatientMedications;
+export default PatientPhysicalProblems;

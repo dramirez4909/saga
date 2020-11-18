@@ -89,7 +89,7 @@ def mental_health_problems(search_string):
     string = search_string
     pageNumber = 0
     AuthClient = Authentication(apikey)
-    sabs= ['ICD10']
+    sabs= ['DSM-5']
     searchType='approximate'
     tgt = AuthClient.gettgt()
     # ticket = AuthClient.getst(tgt)
@@ -128,7 +128,6 @@ def mental_health_problems(search_string):
           # w = "/rest/content/"+version + "/CUI/" + "C1163349" + "/atmos"
           # tick = {'ticket':ticket}
           # p = requests.get(uri+w,params=tick)
-          print(p)
           print("ui: " + result["ui"])
         except:
           NameError
@@ -151,7 +150,7 @@ def mental_health_problems(search_string):
           return {"results":names}
     return {"results":names}
   
-@umls.route("/search-term/chronic-problems/<search_string>")
+@umls.route("/search-term/non-mental-problems/<search_string>")
 def chronic_problems(search_string):
     string = search_string
     pageNumber = 0

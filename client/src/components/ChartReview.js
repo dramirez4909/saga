@@ -6,13 +6,15 @@ import PatientPhoneNumbers from './PatientPhoneNumbers';
 import PatientAddressInfo from './PatientAddressInfo';
 import PatientMedications from './PatientMedications';
 import ThemeContext from './utils/ThemeContext';
-import PatientProblems from './PatientProblems';
-import PatientProblemList from './PatientProblemList';
+import PatientProblems from './PatientMentalProblems';
+import PatientMentalProblemList from './PatientMentalProblemList';
+import PatientPhysicalProblemList from './PatientPhysicalProblemList';
 import PatientMedicationsList from './PatientMedicationsList';
 import PatientEncounters from '../components/PatientEncounters';
 import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
 import PatientNotes from '../components/PatientNotes';
+import { Grid } from '@material-ui/core';
 
 const imageStyle={
     hieght:"32px",
@@ -30,16 +32,17 @@ function ChartReview(props) {
     return (
         <>
             <div style={{display:"flex",flexDirection:"column", background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-               <div style={{display:"flex",flexDirection:"column"}}>
-                   <PatientMedicationsList patient={props.patient}/>
-                   <PatientProblemList patient={props.patient}/>
-                   {/* <ChartReview patient={props.patient}/>
-                   <PatientEncounters patient={props.patient}/>
-                   <PatientOrders patient={props.patient}/>
-                   <PatientNotes patient={props.patient}/>
-                   <PatientProblems patient={props.patient}/>
-                   <PatientMedications patient={props.patient}/> */}
-                </div>
+                <Grid container spacing={1}>
+                    <Grid item xs={3}>
+                        <PatientMedicationsList patient={props.patient}/>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <PatientMentalProblemList patient={props.patient}/>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <PatientPhysicalProblemList patient={props.patient}/>
+                    </Grid>
+                </Grid>
             </div>
         </>
     );

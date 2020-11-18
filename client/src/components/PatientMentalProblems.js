@@ -13,7 +13,7 @@ import AddIcon from '@material-ui/icons/AddCircleTwoTone';
 import IconButton from '@material-ui/core/IconButton';
 import {createProblem} from '../store/current_patient'
 import PatientMedicationsList from './PatientMedicationsList';
-import PatientProblemList from './PatientProblemList';
+import PatientMentalProblemList from './PatientMentalProblemList';
 
 
 const useStylesLoginTextField = makeStyles((theme) => ({
@@ -43,11 +43,10 @@ const useStylesLoginTextField = makeStyles((theme) => ({
 
 const ColorButton = withStyles((theme) => ({
     root: {
-        color: "#ed4959",
         paddingRight: "10px",
         paddingLeft: "10px",
         margin: "4px",
-        backgroundColor:"white",
+        background:"transparent",
         border:"1px solid #ed4959",
         '&:hover': {
             backgroundColor: "#ed4959 !important",
@@ -73,7 +72,7 @@ const SelectMedButton = withStyles((theme) => ({
     },
     }))(Button);
 
-function PatientProblems(props) { 
+function PatientPhysicalProblems(props) { 
     console.log(props)
     const context = useContext(HomeContext)
     const dispatch = useDispatch()
@@ -89,13 +88,13 @@ function PatientProblems(props) {
     const [newProblemInstructions,setNewProblemInstructions] = useState("")
 
     const addProblem = (problemName) => {
-        dispatch(createProblem({problemName,patient:props.patient.id,provider_id}))
+        dispatch(createProblem({problemName,patient:props.patient.id,provider_id,type:"mental"}))
     }
 
     useEffect(()=>{
         const searchProblems= async (searchTerm) => {
             // const response = await fetch(`/api/umls/search-cui/`)
-            const response = await fetch(`/api/umls/search-term/mental-health-problems/${searchTerm}`)
+            const response = await fetch(`/api/umls/search-term/non-mental-problems/${searchTerm}`)
             const data = await response.json()
             console.log(data)
             setSearchingForProblems(false)
@@ -110,22 +109,21 @@ function PatientProblems(props) {
 
     return (
         <>
-                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"fit-content",padding:"8px",marginLeft:"9px",marginRight:"9px"}}>
-                    <PatientProblemList patient={{...props.patient}}/>
-                    <div style={{display:"flex",flexDirection:"row",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"fit-content",transition:"all .4s ease-in-out",transitionProperty:"width"}}>
+                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"fit-content",marginLeft:"9px",marginRight:"9px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}}>
+                    <div style={{color:"white",marginTop:"10px",padding:"4px", marginBottom:"6px", width:"100%", fontSize:"16px", backgroundImage: "linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%)"}}>Mental Health Issues</div>
+                    <PatientMentalProblemList patient={{...props.patient}}/>
+                    <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",transition:"all .4s ease-in-out",transitionProperty:"width"}}>
                     <div style={{display:"flex",flexDirection:"column"}}>
-                    <div style={{fontSize:"23px",color:themeContext.themes === "dark" ? "antiquewhite" : "grey"}}>add a mental health condition:</div>
-                    <LoginTextField placeholder="enter a diagnosis" value={problemSearchTerm} onChange={(e)=>setProblemSearchTerm(e.target.value)}></LoginTextField>
-                    <ColorButton onClick={()=>{
+                    <LoginTextField placeholder="add a health issue" value={problemSearchTerm} onChange={(e)=>setProblemSearchTerm(e.target.value)}></LoginTextField>
+                    <ColorButton style={{color:themeContext.themes === "dark" ? "white" : "#ed4959"}} onClick={()=>{
                         setDisplayProblemQuestions(false)
                         setProblemSearchResults([])
                         setSearchingForProblems(true)
                         setProblemPerformSearch(!problemPerformSearch)
                         }}
-                        style={{background:"transparent"}}
-                        ><FindInPageTwoToneIcon style={{marginRight:"4px"}}/>search for mental health condition</ColorButton>
+                        ><FindInPageTwoToneIcon style={{marginRight:"4px"}}/>search</ColorButton>
                     </div>
-                        <div style={{display:"flex",flexDirection:"column",height:"200px",overflow:"scroll",marginLeft:"10px"}}>
+                        <div style={{display:"flex",flexDirection:"column",maxHeight:"200px",overflow:"scroll",marginLeft:"10px"}}>
                         {searchingForProblems ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/ezgif.com-gif-maker.gif" style={{height:"140px",marginLeft:"10px"}}></img> : <></>}
                         {displayProblemQuestions ? 
                         <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "antiquewhite" : "grey",marginLeft:"10px", borderRadius:"4px",padding:"10px"}}>
@@ -137,11 +135,13 @@ function PatientProblems(props) {
                             </div>
                             <form>
                                 <div style={{display:"flex",flexDirection:"column", justifyContent:"center"}}>
-                                    <p>Insructions:</p>
-                                    {/* <input value={newMedInstructions} onChange={(e)=>setNewMedInstructions(e.target.value)}></input> */}
+                                    <p>(optional) Enter an issue note:</p>
+                                    <textarea type="text"></textarea>
                                 </div>
                                 <IconButton size="large">
                                     <AddIcon style={{color:"lightgreen"}} onClick={()=>{
+                                        setProblemSearchResults([])
+                                        setProblemSearchTerm("")
                                         setNewProblemInstructions("")
                                         setDisplayProblemQuestions(false)
                                         addProblem(problemSearchResults[selectedProblemIndex],newProblemInstructions)}}/>
@@ -169,4 +169,4 @@ function PatientProblems(props) {
     );
 }
 
-export default PatientProblems;
+export default PatientPhysicalProblems;
