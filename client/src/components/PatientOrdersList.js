@@ -88,7 +88,7 @@ const ColorButton = withStyles((theme) => ({
         },
     }));
 
-function PatientProblemList(props) { 
+function PatientOrdersList(props) { 
     const classes = useStyles()
     console.log("prs!!",props.patient)
     console.log("ptheseasdfadfddd",{...props.patient})
@@ -120,12 +120,12 @@ function PatientProblemList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
-                        {patient.problems.map((prob,index)=>{
-                            
-                            const noted =prob.created_at.split(" ")
-                            const notedDate = noted.slice(0,4).join(" ")
-                            if (prob.type === "mental"){return(
+            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", maxHeight:"200px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
+                        {patient.orders.map((ord,index)=>{
+                            let status = ord.status
+                            let type = ord.type
+                            let provider = ord.provider.full_name
+                            return(
                                 <>
                             {selectedIndex !== index && selectedIndex !== index - 1 ? <Divider style={{ width: "100%" }}/> : <Divider style={{ width:"100%" }} light />}
                             <ButtonBase
@@ -147,14 +147,14 @@ function PatientProblemList(props) {
                                 style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none", backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}
                             >
                                 <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-                                    <span>{prob.name}</span> <span style={{color:"grey"}}>{notedDate}</span>
+                                <span style={{color:"grey"}}>{type}</span> <span>{status}</span> <span>{provider}</span>
                                 </div>
                                 <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
                             </ListItem>
                             </div>
                             </ButtonBase>
                             </>
-                            )}
+                            )
                         })}
                 
                 </List>
@@ -162,4 +162,4 @@ function PatientProblemList(props) {
     );
 }
 
-export default PatientProblemList;
+export default PatientOrdersList;

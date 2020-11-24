@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   logo: {
-    color: "#0BB5FF",
+    color: "rgb(85, 177, 250)",
     textDecoration: "none",
     fontSize: "18px",
     margin: "2px",

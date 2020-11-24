@@ -120,7 +120,7 @@ function PatientEncountersList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", margin:"6px", maxHeight:"300px", overflow:"scroll"}} component="nav" aria-label="main mailbox folders">
+            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", maxHeight:"200px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
                         {patient.encounters.map((enc,index)=>{
                             let startTime =enc.start.split(" ")
                             startTime = startTime.slice(0,4).join(" ")

@@ -120,7 +120,7 @@ function PatientProblemList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", margin:"6px"}} component="nav" aria-label="main mailbox folders">
+            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
                         {patient.problems.map((prob,index)=>{
                             
                             const noted =prob.created_at.split(" ")
