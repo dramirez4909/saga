@@ -7,10 +7,20 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import SearchIcon from '@material-ui/icons/Search';
 import ContactIcon from '@material-ui/icons/AccountCircleTwoTone';
 import ThemeContext from './utils/ThemeContext'
+import CloseIcon from '@material-ui/icons/Close'
+import { IconButton } from '@material-ui/core';
+import { closeTab } from '../store/activities';
+import { useDispatch } from 'react-redux';
 
 const iconStyle = {
     height: "25px",
     width: "25px",
+  }
+
+const closeTabStyle = {
+    color:"grey",
+    height: "20px",
+    width: "20px",
   }
 
 const tabStyle = {
@@ -22,10 +32,18 @@ const tabStyle = {
 }
 
 
-
 function ActivityTab(props) {
     const context = useContext(HomeContext)
     const themeContext = useContext(ThemeContext)
+    const dispatch = useDispatch()
+
+    const closeThisTab = (e, activityName) => {
+        e.stopPropagation()
+        dispatch(closeTab(activityName,props.index))
+        console.log("openTabs context var after deletion: ",context.openTabs)
+        context.setSelectedTab(context.openTabs[props.index - 1].name,context.openTabs[props.index - 1].patient)
+    }
+
     return (
         <>
             <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient)}} 
@@ -42,7 +60,12 @@ function ActivityTab(props) {
             {props.activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
             {props.activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:themeContext.themes === "light" ? "grey" : "whitesmoke" }}/> : <></>}
             {props.activity.patient ? <ContactIcon style={{...iconStyle,color:"seashell"}}/> : <></>}
-            {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</p>} </a>
+            {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</p>} 
+            {props.activity.name === "dashboard" ? "" : 
+            <IconButton style={{...closeTabStyle}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
+            <CloseIcon></CloseIcon>
+            </IconButton>}
+            </a>
             </li>
         </>
     );

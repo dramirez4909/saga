@@ -178,6 +178,7 @@ const HomePage=(props)=>{
         dispatch(setCurrentPatient(patient))
       }
       setSelectedTabName(tabName)
+      console.log("new selected tab name: ", tabName)
     }
 
     useEffect(()=>{
@@ -196,7 +197,7 @@ const HomePage=(props)=>{
     return (
         <>    
           <ThemeContext.Provider value={{themes,setThemes}}>
-                <HomeContext.Provider value={{setSelectedTab, selectedTabName, setSideBarDisplay}}>
+                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs}}>
                 <DragDropContext>
                 <NavBar>
                 </NavBar>
@@ -293,7 +294,7 @@ const HomePage=(props)=>{
                     <div className={themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                         (   
-                            <ActivityTab key={index} style={{...tabStyle}} activity={activity}/>
+                            <ActivityTab key={index} style={{...tabStyle}} index={index} activity={activity}/>
                         ))}
                     </div>
                     <div className={classes.root}>

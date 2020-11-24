@@ -3,6 +3,16 @@ import Cookies from 'js-cookie'
 const LOAD_ACTIVITES = 'activities/LOAD_ACTIVITIES'
 const OPEN_TAB = 'activities/OPEN_TAB'
 const OPEN_CHART = 'activities/OPEN_CHART'
+const CLOSE_TAB = 'activities/CLOSE_TAB'
+
+export const closeTab = (tabName,index) => {
+    console.log("given index close tab: ",index)
+    return {
+        type:CLOSE_TAB,
+        tabName,
+        index
+    }
+}
 
 export const loadActivities = () => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN");
@@ -52,6 +62,13 @@ export default function activitiesReducer(state = {} ,action) {
             const openTabs = [...state.open_tabs]
             newState.open_tabs = openTabs
             newState.open_tabs.push(action.activity)
+            return newState
+        case CLOSE_TAB: 
+            let tabs = [...state.open_tabs]
+            console.log("the index used to delete a tab",action.index)
+            tabs.splice(action.index,1)
+            console.log("after deletion tabs: ",tabs)
+            newState.open_tabs = tabs
             return newState
         case OPEN_CHART:
             const currentTabs = [...state.open_tabs]

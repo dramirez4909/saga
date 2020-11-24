@@ -88,7 +88,7 @@ const ColorButton = withStyles((theme) => ({
         },
     }));
 
-function PatientProblemList(props) { 
+function PatientEncountersList(props) { 
     const classes = useStyles()
     console.log("prs!!",props.patient)
     console.log("ptheseasdfadfddd",{...props.patient})
@@ -120,12 +120,11 @@ function PatientProblemList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", margin:"6px"}} component="nav" aria-label="main mailbox folders">
-                        {patient.problems.map((prob,index)=>{
-                            
-                            const noted =prob.created_at.split(" ")
-                            const notedDate = noted.slice(0,4).join(" ")
-                            if (prob.type === "mental"){return(
+            <List style={{ width: "100%",boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", margin:"6px", maxHeight:"300px", overflow:"scroll"}} component="nav" aria-label="main mailbox folders">
+                        {patient.encounters.map((enc,index)=>{
+                            let startTime =enc.start.split(" ")
+                            startTime = startTime.slice(0,4).join(" ")
+                            return(
                                 <>
                             {selectedIndex !== index && selectedIndex !== index - 1 ? <Divider style={{ width: "100%" }}/> : <Divider style={{ width:"100%" }} light />}
                             <ButtonBase
@@ -147,14 +146,14 @@ function PatientProblemList(props) {
                                 style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none", backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}
                             >
                                 <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-                                    <span>{prob.name}</span> <span style={{color:"grey"}}>{notedDate}</span>
+                                <span style={{color:"grey"}}>{startTime}</span> <span>{enc.type.name}</span> <span>{enc.provider.full_name}</span> <span>{enc.resource.name}</span> <span></span>
                                 </div>
                                 <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
                             </ListItem>
                             </div>
                             </ButtonBase>
                             </>
-                            )}
+                            )
                         })}
                 
                 </List>
@@ -162,4 +161,4 @@ function PatientProblemList(props) {
     );
 }
 
-export default PatientProblemList;
+export default PatientEncountersList;

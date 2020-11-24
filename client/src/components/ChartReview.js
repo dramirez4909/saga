@@ -15,6 +15,7 @@ import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
 import PatientNotes from '../components/PatientNotes';
 import { Grid } from '@material-ui/core';
+import PatientEncountersList from './PatientEncountersList';
 
 const imageStyle={
     hieght:"32px",
@@ -32,15 +33,18 @@ function ChartReview(props) {
     return (
         <>
             <div style={{display:"flex",flexDirection:"column", background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                <Grid container spacing={1}>
-                    <Grid item xs={3}>
+                <Grid container direction={"row"} spacing={1}>
+                    <Grid item xs={6}>
                         <PatientMedicationsList patient={props.patient}/>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <PatientMentalProblemList patient={props.patient}/>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={6}>
                         <PatientPhysicalProblemList patient={props.patient}/>
+                    </Grid>
+                    <Grid item sm={12} xs={12}>
+                        <PatientEncountersList patient={props.patient}/>
                     </Grid>
                 </Grid>
             </div>
