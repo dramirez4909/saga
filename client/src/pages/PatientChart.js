@@ -156,6 +156,32 @@ function PatientChart(props) {
         })
     }
 
+  const imageStyle={
+      hieght:"28px",
+      width:"28px"
+  }
+  
+  const tabStyle = {
+  '&:hover': {
+    background:"grey"
+  }
+  
+  }
+  
+  const metricContainerStyle={
+  display:"flex",
+  flexDirection:"column",
+  fontSize:"18px",
+  borderRadius:"9px",
+  cursor:"pointer",
+  fontWeight:"strong",
+  padding:"4px",
+  alignItems:"center",
+  '&:hover': {
+      boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
+  }
+  }
+
     useEffect(()=>{
         const searchDxs= async (searchTerm) => {
             const response = await fetch(`/api/umls/search-term/${searchTerm}`)
@@ -185,7 +211,14 @@ function PatientChart(props) {
           <div style={{position:"sticky",top:"29px",display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"space-between"}}>
             <div className={classes.left}>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
-                <span style={{fontSize:"35px",padding:"6px",textDecoration:"none", fontFamily:"Garamond",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
+                <span style={{fontSize:"25px",padding:"3px",textDecoration:"none", fontFamily:"Garamond",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
+                <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+                            {props.patient.sex === "female" ? 
+                                <img style={{height:"24px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/female-removebg-preview.png"></img>
+                                :
+                                <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/_Pngtree_vector_male_sign_icon_4184181-removebg-preview.png"></img>}
+                </div>
+                <div style={{borderRadius:"9px",display:"flex",color: themeContext.themes === "dark" ? "white" : "grey",fontSize:"17px",zIndex:"3",padding:"7px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px"}}>{props.patient.sex === "female" ? "[ she / her ]" : "[ he / him ]"}</div>
               </div>
             </div>
             {/* <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
@@ -223,7 +256,7 @@ function PatientChart(props) {
                 </Fade> */}
           </div> 
         <div style={{display:"flex",flexDirection:"row"}}>
-        <div style={{display:"flex",flexDirection:"column",bottom:0, height:"100%",alignSelf:"flex-start",paddingBottom:"50px",position:"sticky",top:"91px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#666666" : "#f7f7f6"}}>
+        <div style={{display:"flex",flexDirection:"column",bottom:0, height:"100%",alignSelf:"flex-start",paddingBottom:"50px",position:"sticky",top:"85px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
             <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset" : "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
@@ -257,7 +290,6 @@ function PatientChart(props) {
           </List> */}
         </div>
       <div className={classes.content}> 
-            <div style={{background: "#212121"}}>
             <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px"}}>
               {patientTabs.map((tab,index)=>{
                 return (
@@ -269,7 +301,6 @@ function PatientChart(props) {
                 )
               })}
             </div>
-            <div style={{overflow:"scroll"}}>
               {currentPatientTab === "Chart Review" ? <ChartReview patient={currentPatient}/> : <></>}
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
@@ -277,7 +308,8 @@ function PatientChart(props) {
               {currentPatientTab === "Problem List" ? <AllProblems patient={currentPatient}/> : <></>}
               {currentPatientTab === "Meds" ? <PatientMedications patient={currentPatient}/> : <></>}
             </div>
-            </div>
+            <div>
+              Notes
             </div>
             </div>
             </div>

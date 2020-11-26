@@ -62,8 +62,8 @@ function ActivityTab(props) {
             {props.activity.patient ? <ContactIcon style={{...iconStyle,color:"seashell"}}/> : <></>}
             {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</p>} 
             {props.activity.name === "dashboard" ? "" : 
-            <IconButton style={{...closeTabStyle}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
-            <CloseIcon></CloseIcon>
+            <IconButton style={{height:"19px",width:"19px",color:"lightgrey",outline:"none"}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
+            <CloseIcon style={{height:"19px",width:"19px",color:"lightgrey"}} ></CloseIcon>
             </IconButton>}
             </a>
             </li>

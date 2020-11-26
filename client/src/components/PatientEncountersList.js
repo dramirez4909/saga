@@ -17,7 +17,11 @@ import ThemeContext from './utils/ThemeContext';
 import ListItem from '@material-ui/core/ListItem';
 import ButtonBase from "@material-ui/core/ButtonBase";
 import List from '@material-ui/core/List';
-
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -120,7 +124,7 @@ function PatientEncountersList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",borderRadius:"8px", maxHeight:"200px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
+            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white", maxHeight:"500px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
                         {patient.encounters.map((enc,index)=>{
                             let startTime =enc.start.split(" ")
                             startTime = startTime.slice(0,4).join(" ")
@@ -143,11 +147,29 @@ function PatientEncountersList(props) {
                                     handleListItemClick(event, index)
                                 }}
                                 className={"TaskPaperListItem"}
-                                style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none", backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}
+                                style={{ paddingRight: "0px",paddingLeft: "0px",paddingTop: "0px", paddingBottom: "0px", outline: "none", backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}
                             >
-                                <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+                                {/* <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
                                 <span style={{color:"grey"}}>{startTime}</span> <span>{enc.type.name}</span> <span>{enc.provider.full_name}</span> <span>{enc.resource.name}</span> <span></span>
-                                </div>
+                                </div> */}
+                                <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}>
+                                    <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-label="Expand"
+                                      aria-controls="additional-actions1-content"
+                                      id="additional-actions1-header"
+                                      style={{justifyContent:"space-between"}}
+                                    >
+                                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+                                            <span style={{color:"grey"}}>{startTime}</span> <span>{enc.type.name}</span> 
+                                        </div>
+                                    </AccordionSummary>
+                                    <AccordionDetails >
+                                        <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}>
+                                        <span>{enc.provider.full_name}</span> <span>{enc.resource.name}</span> <span></span>
+                                        </div>
+                                    </AccordionDetails>
+                            </Accordion>
                                 <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
                             </ListItem>
                             </div>

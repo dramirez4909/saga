@@ -83,6 +83,11 @@ div.rbc-allday-cell {
     cursor: pointer;
 }
 
+.MuiListItem-gutters {
+    padding-left: 0px; 
+    padding-right: 0px;
+}
+
 div.rbc-time-content > div.rbc-time-gutter.rbc-time-column {
     background-color: inherit;
 }
