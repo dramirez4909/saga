@@ -1,5 +1,5 @@
 import os
-import request
+import requests
 from datetime import datetime
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
