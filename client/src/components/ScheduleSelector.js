@@ -32,6 +32,11 @@ const StyledMenu = withStyles({
     />
   ));
 
+  const iconStyle = {
+    height: "30px",
+    width: "30px",
+  }
+
   const StyledMenuItem = withStyles((theme) => ({
     root: {
       '&:focus': {
@@ -46,8 +51,8 @@ const StyledMenu = withStyles({
   const ColorButton = withStyles((theme) => ({
     root: {
         color: "white",
-        paddingRight: "10px",
-        paddingLeft: "10px",
+        paddingTop:"2px",
+        paddingBottom:"2px",
         margin: "4px",
         outline:"none",
         textDecoration:"none",
@@ -101,7 +106,7 @@ const ScheduleSelector = (props) => {
                   color="primary"
                   onClick={handleClick}
                 >
-                  Department Schedules
+                 <span style={{textTransform:"none",marginRight:"3px"}}>Dept. Schedules </span><img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img>
                 </ColorButton>
                 <StyledMenu
                   id="customized-menu"

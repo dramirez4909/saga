@@ -430,12 +430,12 @@ const DepartmentSchedule = props => {
         <Slide direction="up" in={slideIn} timeout={350}>
             <Grid item sm={8} style={{borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white"}}>
                 <DndCalendar
-                    style={{ backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "black",maxHeight:"700px", height: "100%",width:"100%",borderRadius:"4px" }}
+                    style={{ backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "black",maxHeight:"700px", height: "680px",width:"100%",borderRadius:"4px" }}
                     localizer={localizer}
                     startAccessor="start"
                     selectable
                     popup={true}
-                    step={15}
+                    step={60}
                     min={new Date(1970, 1, 1, 8)}
                     max={new Date(1970, 1, 1, 17)}
                     scrollToTime={new Date(1970, 1, 1, 3)}

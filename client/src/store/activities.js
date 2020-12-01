@@ -72,7 +72,7 @@ export default function activitiesReducer(state = {} ,action) {
     switch (action.type){
         case LOAD_ACTIVITES:
             newState = action.activities
-            newState["open_tabs"] = [{id:0,name:"dashboard"},{id:2,name:"Patient Search"}]
+            newState["open_tabs"] = [{id:0,name:"dashboard"}]
             return action.activities
         case OPEN_TAB:
             const openTabs = [...state.open_tabs]

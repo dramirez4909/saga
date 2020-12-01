@@ -26,6 +26,7 @@ display:"flex",
 flexDirection:"row",
 fontSize:"18px",
 borderRadius:"9px",
+margin:"4px",
 cursor:"pointer",
 fontWeight:"strong",
 padding:"4px",
@@ -52,8 +53,8 @@ function ChartReviewBasicAttributes(props) {
 
     return (
         <>
-            <div style={{display:"flex",flexDirection:"column",borderRadius:"7px", marginTop:"15px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",marginLeft:"16px", marginRight:"15px",padding:"8px",
-            // boxShadow: themeContext.themes === "light" ? "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset" : "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px" 
+            <div style={{display:"flex",flexDirection:"column",borderRadius:"7px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",marginLeft:"10px", marginRight:"5px",
+            boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
             }}>
             <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                 <div style={{display:"flex",flexDirection:"column"}}>

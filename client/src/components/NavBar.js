@@ -1,9 +1,11 @@
-import React, {useState,useEffect, useContext} from 'react';
+import React, {useState,useEffect, useContext,useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink,Link, Redirect } from 'react-router-dom';
 import { AppBar, Toolbar, Box, IconButton, Avatar, Typography, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { logout } from '../store/auth';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem'
 import {openTab} from '../store/activities'
 import HomeContext from '../components/utils/HomeContext'
 import ScheduleTwoToneIcon from '@material-ui/icons/ScheduleTwoTone';
@@ -16,8 +18,96 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
 import ScheduleSelector from './ScheduleSelector';
+import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import ListItemText from '@material-ui/core/ListItemText';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import InputBase from '@material-ui/core/InputBase';
+import PatientSearchResults from '../components/PatientSearchResults';
+import { fade} from '@material-ui/core/styles';
+import MenuIcon from '@material-ui/icons/Menu';
+import PatientSearchContext from './utils/PatientSearchContext'
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    flexGrow: 1,
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '40ch',
+      '&:focus': {
+        width: '50ch',
+      },
+    },
+  },
   appbar: {
     backgroundColor: "rgb(255, 107, 107)",
   },
@@ -30,8 +120,16 @@ const useStyles = makeStyles((theme) => ({
   left: {
     display: 'flex',
   },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
+  },
   logo: {
-    color: "rgb(85, 177, 250)",
+    color: "white",
     textDecoration: "none",
     fontSize: "18px",
     margin: "2px",
@@ -48,6 +146,20 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px",
     margin: "2px",
   },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),},
+  
+  input: {
+      display: 'none',
+    },
+
 }));
 
 const iconStyle = {
@@ -68,13 +180,41 @@ const buttonStyle = {
 }
 
 
-const Navbar = () => {
+const Navbar = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const currentUser = useSelector(state => state.auth.user);
+  const [currentUser,setCurrentUser] = useState(props.currentUser)
+  const [user,setUser] = useState(currentUser)
   const context = useContext(HomeContext)
   const [loading,setLoading] = useState(true)
   const [activities,setActivities] =useState([])
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [modalOpen,setModalOpen] = useState(false)
+  const [loadingPicture,setLoadingPicture] = useState(false)
+  const [patientSearchTerm,setPatientSearchTerm] = useState("")
+  const [patientSearchResults,setPatientSearchResults]=useState([])
+  const [displayPatientSearchResults,setDisplayPatientSearchResults]=useState(false)
+
+  const form = useRef(null)
+
+
+  const handleModalOpen = () => {
+    handleClose();
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const openTabs = useSelector(state=>state.activities.open_tabs)
   const handleLogOut = ()=> {
       dispatch(logout())
@@ -95,6 +235,9 @@ const Navbar = () => {
       context.setSelectedTab(activity.name,activity.patient)
   }
 
+  const handleProfileFormSubmit=(e)=>{
+    e.preventDefault()
+  }
   const changeThemes = () =>{
     if (themeContext.themes === "light") {
       themeContext.setThemes("dark")
@@ -103,33 +246,160 @@ const Navbar = () => {
     }
   }
 
+  useEffect(()=>{
+    const searchPatients= async (searchTerm) => {
+        const response = await fetch(`/api/patients/search/${searchTerm}`)
+        const data = await response.json()
+        setPatientSearchResults(data.patients)
+        return;
+    }
+    if (patientSearchTerm.length > 0) {
+        setDisplayPatientSearchResults(true)
+        searchPatients(patientSearchTerm)
+    }
+  },[patientSearchTerm])
+
+  // useEffect(()=>{
+  //   if (currentUser.picture) {
+  //     setUser(currentUser)
+  //   }
+  //   setLoading(false)
+  // },[currentUser])
+
+  const submit = e => {
+    setLoadingPicture(true)
+    e.preventDefault()
+    const data = new FormData(form.current)
+    fetch(`/api/users/upload-photo/${currentUser.id}`, {
+    method: 'POST',
+    body: data,
+    })
+    .then(res => res.json())
+    .then(json => {
+    console.log(json)
+    setCurrentUser(json.user)
+    setLoadingPicture(false)
+    })
+  }
   return (
     <>
-        <div style={{
-          position:"sticky",top:0,
-          display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", justifyContent:"space-between"}}>
-          <div className={classes.left}>
+    <PatientSearchContext.Provider value={{setDisplayPatientSearchResults,setPatientSearchTerm}}>
+      <div style={{flexGrow:1}}>
+        <AppBar position="static">
+        <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "cornflowerblue"}}>
+            <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+            <div style={{display:"flex",flexDirection:"row"}}>
             <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
               <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
             </div>
-            {/* {activities.map(activity=>
-            <div key={activity.id} onClick={(e)=>openActivity(activity)} style={{...buttonStyle,visibility:activity.name === "chart" ? "hidden" : ""}}>
-            {activity.name === "My Schedule" ? <ScheduleTwoToneIcon style={{...iconStyle,color:"#b1f3b1"}}/> : <></>}
-            {activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
-            {activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
-            {activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color: themeContext.themes === "light" ? "grey" : "whitesmoke"}}/> : <></>}
-            {activity.name === "chart" ? <></> : <p style={{margin:0, marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white"}}>{activity.name}</p>}
-              </div>)} */}
+            </div>
+            <div style={{display:"flex", alignItems:"center", flexDirection:"row"}}>
+            <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Patient Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              value={patientSearchTerm} 
+              onChange={(e)=>setPatientSearchTerm(e.target.value)}
+            />
+            <div style={{background: themeContext.themes === "dark" ? "#444444" : "white"}}>
+              {displayPatientSearchResults ? patientSearchResults.length ? <PatientSearchResults patientSearchResults={patientSearchResults}/> : <></> : <></>}
+            </div>
           </div>
-          <div style={{display:"flex",flexDirection:"row", alignItems:"center"}}>
-            <ScheduleSelector/>
-          <div>
-            {themeContext.themes === "light" ? <IconButton onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>
+              <ScheduleSelector/>
+            {themeContext.themes === "light" ? <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",color:"white",marginRight:"4px",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>
             :
-            <IconButton onClick={changeThemes} size="small" style={{outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>}
-          </div>
-          </div>
+            <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>}
+
+            {currentUser.picture ? <Avatar onClick={handleClick} style={{boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} src={`${currentUser.picture}`}/> 
+            : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar>}
+              <StyledMenu
+                id="customized-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <StyledMenuItem onClick={handleModalOpen}> 
+                  <ListItemText primary="Profile" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText primary="Settings" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText primary="Logout" />
+                </StyledMenuItem>
+            </StyledMenu>
+            </div>
+            </div>
+            </Toolbar>
+          </AppBar>
         </div>
+      <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={modalOpen}
+        onClose={handleModalClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={modalOpen}>
+        <div className={classes.paper} style={{outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",maxWidth:"600px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+        <div style={{outline:"none",width:"100%",maxWidth:"600px",display:"flex",flexDirection:"column"}}>
+        <h3>{currentUser.first_name + " " + currentUser.last_name}</h3>
+          
+            <form onSubmit={(e)=>{handleProfileFormSubmit(e)}}>
+              <div style={{display:"flex",flexDirection:"row"}}>
+                <div>
+                <form ref={form} onSubmit={submit}>
+                  <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
+                    <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.9) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset"}}>
+                      {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={currentUser.picture ? currentUser.picture : ""}/>}
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",justifyContent:"center",width:"100%",margin:"5px"}}>
+                    <input
+                    accept="image/*"
+                    className={classes.input}
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    name="file"
+                  />
+                  <label htmlFor="contained-button-file">
+                    <Button variant="contained" color="primary" component="span" fullWidth>
+                      Select New
+                      <PhotoCamera style={{marginLeft:"4px"}}></PhotoCamera>
+                    </Button>
+                  </label>
+                    {/* <input type="file" name="file"></input> */}
+                  <Button style={{backgroundColor:"cornflowerblue",color:"white"}} type="submit" name="Sign Up" >Update Photo</Button>
+                  </div>
+                  </div>
+                </form>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",width:"100%",margin:"20px"}}>
+                  <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",fontSize:"18px"}}>username: <div></div><div>{currentUser.username}</div></div>
+                  <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",fontSize:"18px"}}>email: <div></div><div>{currentUser.email}</div></div>
+                </div>
+              </div>
+            </form>
+          </div>
+          </div>
+        </Fade>
+      </Modal>
+    </div>
+    </PatientSearchContext.Provider>
     </>
   )
 }

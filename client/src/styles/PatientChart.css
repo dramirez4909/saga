@@ -9,6 +9,10 @@
   display:none;
 }
 
+div.MuiPaper-elevation1 {
+  box-shadow: none;
+}
+
 .circular--portrait {
     position: relative;
     opacity: 100%;

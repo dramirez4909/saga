@@ -53,8 +53,12 @@ div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header 
     color:black
 }
 
-div.MuiButtonBase-root.MuiListItem-root.MuiListItem-gutters.MuiListItem-button.Mui-selected {
+/* div.MuiButtonBase-root.MuiListItem-root.MuiListItem-gutters.MuiListItem-button.Mui-selected {
     background: #f9f9f9;
+} */
+
+#root > div:nth-child(3) > div > div > div:nth-child(2) > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-sm-8 > div > div.rbc-time-view.rbc-time-view-resources > div.rbc-time-header > div.rbc-label.rbc-time-header-gutter{
+    background-color: transparent;
 }
 
 div.order-list-item.MuiButtonBase-root.MuiListItem-root.MuiListItem-gutters.MuiListItem-button {

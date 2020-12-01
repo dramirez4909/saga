@@ -53,7 +53,7 @@ function ActivityTab(props) {
                 borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
                 borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : ""
             }}
-                >   
+                > 
             <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-dashboard-layout-100.png" style={{...iconStyle}}></img> : <></> }
             {props.activity.name === "My Schedule" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
             {props.activity.name === "Place Orders" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}

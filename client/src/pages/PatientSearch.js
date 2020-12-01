@@ -68,7 +68,7 @@ function PatientSearch(props) {
 
     return (
         <>  
-            <PatientSearchContext.Provider value={{setSelectedIndex,selectedIndex,setSelectedPatient}}>
+            
             <div style={{display:"flex",flexDirection:"row", margin:"20px"}}>
                 <div style={{display:"flex",flexDirection:"column",width:"50%"}}>
                     <h1 style={{color: themeContext.themes === "dark" ? "white" : "black"}}>Patient Search</h1>
@@ -83,7 +83,6 @@ function PatientSearch(props) {
                     {!selectedPatient.firstName ? "" : <PatientPreviewCard patient={selectedPatient}/>}
                 </div>
             </div>
-            </PatientSearchContext.Provider>
         </>
     );
 }

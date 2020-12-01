@@ -151,6 +151,7 @@ const HomePage=(props)=>{
   const [sideBarDisplay,setSideBarDisplay] = useState(true)
   const classes = useStyles();
   const theme = useTheme();
+  const currentUser = useSelector(state => state.auth.user)
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch()
   const [themes,setThemes] = useState("dark")
@@ -195,7 +196,7 @@ const HomePage=(props)=>{
           <ThemeContext.Provider value={{themes,setThemes}}>
                 <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs}}>
                 <DragDropContext>
-                <NavBar>
+                <NavBar currentUser={currentUser}>
                 </NavBar>
               <CssBaseline />
               {/* <AppBar

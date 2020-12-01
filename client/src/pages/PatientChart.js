@@ -77,14 +77,16 @@ const useStylesLoginTextField = makeStyles((theme) => ({
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      position:"inherit",
     },
     drawerPaper: {
       width: drawerWidth,
-      position:"inherit",
+    },
+    drawerContainer: {
+      overflow: 'auto',
     },
     content: {
       flexGrow: 1,
+      padding: theme.spacing(3),
     },
   }));
 
@@ -226,21 +228,21 @@ function PatientChart(props) {
     }
     return (
         <>
-        <div style={{display:"flex", margin:"30px",justifyContent:"center",width:"100%",maxWidth:"1300px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-          {/* <div style={{display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"space-between"}}>
+        <div style={{display:"flex",marginTop:"20px",marginLeft:"10px",marginRight:"10px",justifyContent:"center",width:"100%",maxWidth:"1100px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",flexDirection:"column"}}>
+          <div style={{display:"flex",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"center"}}>
             <div>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
-                <span style={{fontSize:"25px",padding:"3px",textDecoration:"none", fontFamily:"Garamond",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
+                <span style={{fontSize:"25px",padding:"3px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
                 <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                             {props.patient.sex === "female" ? 
                                 <img style={{height:"24px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/female-removebg-preview.png"></img>
                                 :
                                 <img style={{...imageStyle}} src="https://saga-health.s3-us-west-1.amazonaws.com/_Pngtree_vector_male_sign_icon_4184181-removebg-preview.png"></img>}
                 </div>
-                <div style={{borderRadius:"9px",display:"flex",color: themeContext.themes === "dark" ? "white" : "grey",fontSize:"17px",zIndex:"3",padding:"7px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px"}}>{props.patient.sex === "female" ? "[ she / her ]" : "[ he / him ]"}</div>
+                <div style={{borderRadius:"9px",display:"flex",color: themeContext.themes === "dark" ? "white" : "grey",fontSize:"17px",zIndex:"3",padding:"3px"}}>{props.patient.sex === "female" ? "[ she / her ]" : "[ he / him ]"}</div>
               </div>
             </div>
-            </div> */}
+            </div>
             {/* <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
             <div style={{display:"flex",flexDirection:"row", background:"white",alignItems:"center",justifyContent:"space-between", margin:"8px"}}>
                     <div style={{...metricContainerStyle}}>
@@ -274,23 +276,24 @@ function PatientChart(props) {
                     </div>
                 </div>
                 </Fade> */}
-        <div style={{display:"flex",flexDirection:"row",justifyContent:"center",width:"100%"}}>
-        <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"center"}}>
+        <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
+        <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+          {/* <span style={{fontSize:"34px",color:themeContext.themes === "dark" ? "white" : "grey"}}>{patient.fullName}</span> */}
             <div style={{display:"flex",flexDirection:"row"}}>
             <div>
-            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.9) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset"}}>
+            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
             </div>
-            <ChartReviewBasicAttributes patient={currentPatient}/>
+              <ChartReviewBasicAttributes patient={currentPatient}/>
             </div>
-            <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+            <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
                     <PatientPhoneNumbers patient={props.patient}/>
                     <PatientAddressInfo patient={props.patient}/>
             </div>
         </div>
-      <div className={classes.content} style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%"}}> 
-            <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
+      <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%"}}> 
+            {/* <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
               {patientTabs.map((tab,index)=>{
                 return (
                 <li style={{borderRadius:"4px",listStyleType:"none",cursor:"pointer",...tabStyle}} className={`${currentPatientTab === tab ? "active" : ""}`} onClick={()=>{setCurrentPatientTab(tab)}}>
@@ -300,7 +303,7 @@ function PatientChart(props) {
                 </li>
                 )
               })}
-            </div>
+            </div> */}
               {currentPatientTab === "Chart Review" ? <ChartReview patient={currentPatient}/> : <></>}
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}

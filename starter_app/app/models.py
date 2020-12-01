@@ -651,14 +651,18 @@ class User(db.Model,UserMixin):
         "username": self.username,
         "email": self.email,
         "provider": self.provider[0].to_dict(),
-        "roles": [role.to_dict() for role in self.roles]
+        "roles": [role.to_dict() for role in self.roles],
+        "picture": self.profile_picture_path,
+        "first_name": self.first_name,
+        "last_name": self.last_name,
       }
     else:
       return {
         "id": self.id,
         "username": self.username,
         "email": self.email,
-        "roles": [role.to_dict() for role in self.roles]
+        "roles": [role.to_dict() for role in self.roles],
+        "picture": self.profile_picture_path,
       }
   
   @property

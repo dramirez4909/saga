@@ -120,7 +120,7 @@ function PatientOrdersList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white", maxHeight:"200px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
+            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
                         {patient.orders.map((ord,index)=>{
                             let status = ord.status
                             let type = ord.type

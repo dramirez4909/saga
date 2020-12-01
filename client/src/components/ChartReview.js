@@ -122,7 +122,7 @@ function ChartReview(props) {
                         
                     </Grid> */}
                     <Grid container item lg={6} md={12} sm={12} xs={12}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{overflow:"scroll",maxHeight:"70vh"}}>
                             <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
                             <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white"}}>
                             <AccordionSummary
@@ -187,36 +187,6 @@ function ChartReview(props) {
                                 style={{justifyContent:"space-between", height:"30px"}}
                             >
                                 <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center",justifyContent:"space-between"}}>
-                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
-                            <img style={{height:"34px",width:"34px", marginLeft:"5px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/64x64.png"></img>
-                            <div style={{color: themeContext.themes === "dark" ? "white" : "rgb(85, 177, 250)", width:"100%", padding:"4px", fontSize:"16px"}}> Orders</div>
-                            </div>
-                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
-                                <IconButton style={{height:"34px",width:"34px", marginRight:"4px"}}>
-                                    <AddIcon style={{height:"24px",width:"24px",color:themeContext.themes === "dark" ? "white" : "lightgrey"}}></AddIcon>
-                                </IconButton>
-                            </div>
-                            </div>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <PatientOrdersList patient={props.patient}/>
-                            </AccordionDetails>
-                            </Accordion>
-                            </div>
-                        </Grid>  
-                    </Grid>
-                    <Grid container item lg={6} md={12} sm={12} xs={12}>
-                        <Grid item xs={12}>
-                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
-                            <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white"}}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{color: themeContext.themes === "dark" ? "white" : "#444444"}}/>}
-                                aria-label="Expand"
-                                aria-controls="additional-actions1-content"
-                                id="additional-actions1-header"
-                                style={{justifyContent:"space-between", height:"30px"}}
-                            >
-                                <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center",justifyContent:"space-between"}}>
                                     <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
                                         <img style={{height:"34px",width:"34px", marginLeft:"5px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-brain-100+(1).png"></img>
                                     <div style={{color: themeContext.themes === "dark" ? "white" : "rgb(85, 177, 250)", width:"100%", padding:"4px", fontSize:"16px"}}> Mental Health History</div>
@@ -234,6 +204,37 @@ function ChartReview(props) {
                             </Accordion>
                             </div>
 
+                        </Grid>  
+                    </Grid>
+                    <Grid container item lg={6} md={12} sm={12} xs={12}>
+                        <Grid item xs={12} style={{overflow:"scroll",maxHeight:"70vh"}}>
+
+                        <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
+                            <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white"}}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon style={{color: themeContext.themes === "dark" ? "white" : "#444444"}}/>}
+                                aria-label="Expand"
+                                aria-controls="additional-actions1-content"
+                                id="additional-actions1-header"
+                                style={{justifyContent:"space-between", height:"30px"}}
+                            >
+                                <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center",justifyContent:"space-between"}}>
+                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
+                            <img style={{height:"34px",width:"34px", marginLeft:"5px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/64x64.png"></img>
+                            <div style={{color: themeContext.themes === "dark" ? "white" : "rgb(85, 177, 250)", width:"100%", padding:"4px", fontSize:"16px"}}> Orders</div>
+                            </div>
+                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
+                                <IconButton style={{height:"34px",width:"34px", marginRight:"4px"}}>
+                                    <AddIcon style={{height:"24px",width:"24px",color:themeContext.themes === "dark" ? "white" : "lightgrey"}}></AddIcon>
+                                </IconButton>
+                            </div>
+                            </div>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <PatientOrdersList patient={props.patient}/>
+                            </AccordionDetails>
+                            </Accordion>
+                            </div>
 
                             <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
                             <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white"}}>
