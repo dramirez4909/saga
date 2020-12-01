@@ -9,7 +9,7 @@ patients = Blueprint('patients', __name__)
 @patients.route("/search/<search_term>")
 def find_patients(search_term):
     patients = db.session.query(Patient).filter((Patient.firstName.ilike(f"{search_term}%")|Patient.lastName.ilike(f"{search_term}%"))).all()
-    format_patients = [patient.to_dict() for patient in patients]
+    format_patients = [{"firstName":patient.firstName, "lastName": patient.lastName, "dob":patient.dob, "id":patient.id} for patient in patients]
     return {"patients":format_patients}
 
 @patients.route("/id/<id>")

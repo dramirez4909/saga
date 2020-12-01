@@ -4,6 +4,7 @@ const LOAD_ACTIVITES = 'activities/LOAD_ACTIVITIES'
 const OPEN_TAB = 'activities/OPEN_TAB'
 const OPEN_CHART = 'activities/OPEN_CHART'
 const CLOSE_TAB = 'activities/CLOSE_TAB'
+const OPEN_DEPARTMENT_SCHEDULE = 'activities/OPEN_DEPARTMENT_SCHEDULE'
 
 export const closeTab = (tabName,index) => {
     console.log("given index close tab: ",index)
@@ -37,6 +38,21 @@ export const openPatientChart = (patientId) => async (dispatch) => {
     dispatch(openChart(data.patient))
 }
 
+// export const openDepartmentSchedule = (departmentId) => async (dispatch) => {
+//     const res = await fetch(`/api/orders/department/${departmentId}`)
+//     const data = await res.json()
+//     console.log(data)
+    
+//     dispatch(openDepartmentSched(department))
+// }
+
+export const openDepartmentSchedule = (department) => {
+    return {
+        type: OPEN_DEPARTMENT_SCHEDULE,
+        department
+    }
+}
+
 export const openChart=(patient)=>{
     return {
         type:OPEN_CHART,
@@ -56,7 +72,7 @@ export default function activitiesReducer(state = {} ,action) {
     switch (action.type){
         case LOAD_ACTIVITES:
             newState = action.activities
-            newState["open_tabs"] = [{id:0,name:"dashboard"}]
+            newState["open_tabs"] = [{id:0,name:"dashboard"},{id:2,name:"Patient Search"}]
             return action.activities
         case OPEN_TAB:
             const openTabs = [...state.open_tabs]
@@ -74,6 +90,11 @@ export default function activitiesReducer(state = {} ,action) {
             const currentTabs = [...state.open_tabs]
             newState.open_tabs = currentTabs
             newState.open_tabs.push({id:5, patient:action.patient, name:action.patient.lastName + ", " + action.patient.firstName})
+            return newState
+        case OPEN_DEPARTMENT_SCHEDULE:
+            const opentabs = [...state.open_tabs]
+            newState.open_tabs = opentabs
+            newState.open_tabs.push({id:6, department:action.department, name:action.department.name})
             return newState
         // case UPDATE_CHART_ORDERS: 
         //     const tabs = [...state.opentabs]

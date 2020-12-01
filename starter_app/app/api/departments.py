@@ -11,3 +11,9 @@ def get_departments():
     departments = db.session.query(Department).all()
     format_departments = [department.to_dict() for department in departments]
     return {"departments":format_departments}
+
+@departments.route("/list")
+def department_list():
+    departments = db.session.query(Department).all()
+    format_departments = [{"id": department.id, "name": department.name} for department in departments]
+    return {"departments":format_departments}

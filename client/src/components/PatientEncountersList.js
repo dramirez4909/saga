@@ -124,13 +124,19 @@ function PatientEncountersList(props) {
 
     return (
         <>
-            <List style={{ width: "100%",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white", maxHeight:"500px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
+            <div style={{display:"flex",flexDirection:"column", width: "100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", maxHeight:"500px", overflow:"scroll",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
                         {patient.encounters.map((enc,index)=>{
-                            let startTime =enc.start.split(" ")
-                            startTime = startTime.slice(0,4).join(" ")
+                            let date = enc.start.split(" ")
+                            date = date.slice(0,4).join(" ")
+                            const eventEnd = enc.end + "-500"
+                            const eventStart = enc.start + "-500"
+                            let end = new Date(eventEnd)
+                            let start = new Date(eventStart)
+                            let startTime = `${start.getHours()}:${start.getMinutes() === 0 ? "00" : start.getMinutes()}`
+                            let endTime = `${end.getHours()}:${end.getMinutes() === 0 ? "00" : end.getMinutes()}`
                             return(
                                 <>
-                            {selectedIndex !== index && selectedIndex !== index - 1 ? <Divider style={{ width: "100%" }}/> : <Divider style={{ width:"100%" }} light />}
+                            {/* {selectedIndex !== index && selectedIndex !== index - 1 ? <Divider style={{ width: "100%" }}/> : <Divider style={{ width:"100%" }} light />} */}
                             <ButtonBase
                                 style={{
                                     width: "100%",
@@ -140,7 +146,7 @@ function PatientEncountersList(props) {
                                 TouchRippleProps={{ classes: {...rippleClasses}}}
                             >
                                 <div style={{width:"100%"}} className={classes.colorSplash}>
-                            <ListItem
+                            {/* <div
                                 key={`list-item-${index}`}
                                 selected={selectedIndex === index}
                                 onClick={(event) => {
@@ -148,37 +154,45 @@ function PatientEncountersList(props) {
                                 }}
                                 className={"TaskPaperListItem"}
                                 style={{ paddingRight: "0px",paddingLeft: "0px",paddingTop: "0px", paddingBottom: "0px", outline: "none", backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}
-                            >
+                            > */}
                                 {/* <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
                                 <span style={{color:"grey"}}>{startTime}</span> <span>{enc.type.name}</span> <span>{enc.provider.full_name}</span> <span>{enc.resource.name}</span> <span></span>
                                 </div> */}
-                                <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}>
+                                <Accordion style={{width:"100%",margin:"0px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white"}} square={true}>
                                     <AccordionSummary
-                                      expandIcon={<ExpandMoreIcon />}
+                                      expandIcon={<ExpandMoreIcon style={{height:"15px",width:"15px", padding:"0px",color: themeContext.themes === "dark" ? "white" : "#444444"}}/>}
                                       aria-label="Expand"
                                       aria-controls="additional-actions1-content"
                                       id="additional-actions1-header"
-                                      style={{justifyContent:"space-between"}}
+                                      style={{justifyContent:"space-between", minHeight:"0px", height:"30px"}}
                                     >
                                         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-                                            <span style={{color:"grey"}}>{startTime}</span> <span>{enc.type.name}</span> 
+                                        <span>{enc.type.name}</span> <span style={{color:"grey"}}>{date}</span>
                                         </div>
                                     </AccordionSummary>
                                     <AccordionDetails >
-                                        <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}>
-                                        <span>{enc.provider.full_name}</span> <span>{enc.resource.name}</span> <span></span>
+                                        <div style={{paddingRight:"14px",paddingLeft:"14px",paddingTop:"10px",paddingBottom:"10px",backgroundColor: themeContext.themes === "dark" ? "#222222" : "cornflowerblue",color: themeContext.themes === "dark" ? "cornflowerblue" : "white",flexDirection:"column",width:"100%"}}>
+                                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Encounter Provider: </div> <div>{enc.provider.full_name}</div> </div>
+                                        <Divider style={{ width: "100%", backgroundColor:"pink" }} light={true} />
+                                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Date: </div> <div>{date}</div> </div>
+                                        <Divider style={{ width: "100%", backgroundColor:"lightgreen"}} light={true} />
+                                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Duration: </div> <div>{startTime} - {endTime}</div> </div>
+                                        <Divider style={{ width: "100%", backgroundColor:"white"}} />
+                                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Location: </div> <div>{enc.department.name}</div> </div>
+                                        <Divider style={{ width: "100%", backgroundColor:"yellow" }} light={true}/>
+                                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Room: </div> <div>{enc.resource.name}</div> </div>
                                         </div>
                                     </AccordionDetails>
                             </Accordion>
-                                <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
-                            </ListItem>
+                                {/* <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span> */}
                             </div>
+                            {/* </div> */}
                             </ButtonBase>
                             </>
                             )
                         })}
                 
-                </List>
+                </div>
         </>
     );
 }

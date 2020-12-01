@@ -98,25 +98,69 @@ div.rbc-time-content > div.rbc-time-gutter.rbc-time-column {
   }
 
 div.rbc-toolbar {
-    background-color: rgba(124, 80, 206, 0.295);
     padding: 4px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
-div.rbc-time-header > div.rbc-label.rbc-time-header-gutter {
+
+.rbc-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+    font-size: 16px;
+}
+
+/* div.rbc-time-header > div.rbc-label.rbc-time-header-gutter {
     background-color: inherit;
+} */
+
+div.rbc-toolbar > span > button {
+    color: white;
+    background-color: grey;
+    font-weight: 500;
+    outline: none;
+}
+
+.rbc-toolbar button:active:hover, .rbc-toolbar button:active:focus, .rbc-toolbar button.rbc-active, .rbc-toolbar button.rbc-active:focus {
+    color:black
+}
+
+#root > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-sm-8 > div > div.rbc-time-view.rbc-time-view-resources > div.rbc-time-header > div.rbc-label.rbc-time-header-gutter {
+    background:transparent;
+}
+
+.rbc-time-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+    width: 100%;
+    border: none;
+    min-height: 0;
+}
+
+div.rbc-time-content {
+    display: flex;
+    flex: 1 0;
+    align-items: flex-start;
+    width: 100%;
+    border-top: none;
+    overflow-y: auto;
+    position: relative;
 }
 
 div.rbc-toolbar > span.rbc-toolbar-label {
-    background: inherit;
-    margin: 10px;
+    background-color:grey;
+    height:100%;
+    padding:5px 10px;
+    flex-grow: 0;
+    font-weight: 900;
     border-radius: 4px;
     color:white;
     margin-left: 20px;
     margin-right: 20px;
-    padding:8px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 

@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard'
 import LoginPage from './pages/LoginPage'
 import NavBar from './components/NavBar'
 import Home from './pages/HomePage'
-import { CssBaseline } from '@material-ui/core';
+import { CircularProgress, CssBaseline } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {setUser} from './store/auth'
@@ -34,7 +34,6 @@ function App() {
             //   dispatch(loadDepartmentOrders())
             // }
           }
-          if (res.data.user.provider) dispatch(loadProviderEncounters(res.data.user.id))
         }
       }
       setLoading(false);
@@ -45,7 +44,11 @@ function App() {
   const currentUser = useSelector(state => state.auth.user);
 
   if (loading) {
-    return <p>loading...</p>
+    return (
+    <div style={{display:"flex",flexDirection:"column",width:"100%",alignItems:"center",alignContent:"center",justifyContent:"center"}}>
+      <CircularProgress style={{width:"230px",height:"230px",alignSelf:"center",justifySelf:"center",marginTop:"200px"}} />
+    </div>
+    )
   }
 
   console.log("____Rendering app_____")

@@ -54,16 +54,16 @@ function ActivityTab(props) {
                 borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : ""
             }}
                 >   
-            <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <DashboardTwoToneIcon style={{...iconStyle,color:"#FFC8DD"}}/> : <></> }
-            {props.activity.name === "My Schedule" ? <ScheduleTwoToneIcon style={{...iconStyle,color:"#b1f3b1"}}/> : <></>}
-            {props.activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
-            {props.activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
-            {props.activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color:themeContext.themes === "light" ? "grey" : "whitesmoke" }}/> : <></>}
-            {props.activity.patient ? <ContactIcon style={{...iconStyle,color:"seashell"}}/> : <></>}
+            <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-dashboard-layout-100.png" style={{...iconStyle}}></img> : <></> }
+            {props.activity.name === "My Schedule" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
+            {props.activity.name === "Place Orders" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
+            {props.activity.department ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img> : <></>}
+            {props.activity.name === "Patient Search" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
+            {props.activity.patient ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/folder-open-flat.svg" style={{...iconStyle }}></img> : <></>}
             {props.activity.name === "dashboard" ? "" : <p style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</p>} 
             {props.activity.name === "dashboard" ? "" : 
             <IconButton style={{height:"19px",width:"19px",color:"lightgrey",outline:"none"}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
-            <CloseIcon style={{height:"19px",width:"19px",color:"lightgrey"}} ></CloseIcon>
+            <CloseIcon style={{height:"19px",width:"19px",color:themeContext.themes === "dark" ? "white" : "grey"}} ></CloseIcon>
             </IconButton>}
             </a>
             </li>

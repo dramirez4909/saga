@@ -73,7 +73,7 @@ export const addOrder = (order) => {
     }
 }
 
-export default function currentPatientReducer(state={},action){
+export default function currentPatientReducer(state={orders:[],medications:[],problems:[],encounters:[]},action){
     const newState = Object.assign({},state)
     switch (action.type) {
         case SET_PATIENT:

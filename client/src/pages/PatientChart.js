@@ -23,7 +23,7 @@ import '../styles/PatientChart.css'
 import ChartReview from '../components/ChartReview';
 import FavoriteIcon from '@material-ui/icons/FavoriteTwoTone';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { Fade, Slide } from '@material-ui/core';
+import { CircularProgress, Fade, Slide } from '@material-ui/core';
 import PatientEncounters from '../components/PatientEncounters';
 import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
@@ -33,6 +33,10 @@ import PatientProblems from '../components/PatientMentalProblems';
 import PatientMedications from '../components/PatientMedications';
 import BasicPatientAttributes from '../components/BasicPatientAttributes';
 import AllProblems from '../components/PatientAllProblems';
+import ChartReviewBasicAttributes from '../components/ChartReviewBasicAttributes';
+import PatientPhoneNumbers from '../components/PatientPhoneNumbers';
+import PatientAddressInfo from '../components/PatientAddressInfo';
+import '../styles/PatientChartRibbon.css'
 
 const isBrowser = typeof window !== `undefined`
 
@@ -120,6 +124,7 @@ function PatientChart(props) {
     const [dxSearchResults,setDxSearchResults]=useState([]);
     const [patient,setPatient] = useState(props.patient)
     const [loadingPicture,setLoadingPicture] = useState(false)
+    const [loading,setLoading] = useState(true)
     const form = useRef(null)
     const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Orders","Problem List","Meds","Notes","Allergies","Media"])
     const [currentPatientTab,setCurrentPatientTab] =useState("Chart Review")
@@ -199,17 +204,31 @@ function PatientChart(props) {
         console.log(e)
     }
 
+    useEffect(()=>{
+      if (props.patient.id === currentPatient.id) {
+        setLoading(false)
+      }
+    },[currentPatient])
+
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const handleListItemClick = (event, index) => {
       setSelectedIndex(index);
     };
-    console.log("Patient",props.patient)
+    console.log("Patient AHHHH!",props.patient)
+
+    if (loading) {
+      return (
+      <div style={{display:"flex",flexDirection:"column",width:"100%",alignItems:"center",alignContent:"center",justifyContent:"center"}}>
+        <CircularProgress style={{width:"230px",height:"230px",alignSelf:"center",justifySelf:"center",marginTop:"200px"}} />
+      </div>
+      )
+    }
     return (
         <>
-        <div>
-          <div style={{position:"sticky",top:"29px",display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"space-between"}}>
-            <div className={classes.left}>
+        <div style={{display:"flex", margin:"30px",justifyContent:"center",width:"100%",maxWidth:"1300px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+          {/* <div style={{display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"space-between"}}>
+            <div>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
                 <span style={{fontSize:"25px",padding:"3px",textDecoration:"none", fontFamily:"Garamond",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
                 <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
@@ -221,6 +240,7 @@ function PatientChart(props) {
                 <div style={{borderRadius:"9px",display:"flex",color: themeContext.themes === "dark" ? "white" : "grey",fontSize:"17px",zIndex:"3",padding:"7px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px"}}>{props.patient.sex === "female" ? "[ she / her ]" : "[ he / him ]"}</div>
               </div>
             </div>
+            </div> */}
             {/* <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
             <div style={{display:"flex",flexDirection:"row", background:"white",alignItems:"center",justifyContent:"space-between", margin:"8px"}}>
                     <div style={{...metricContainerStyle}}>
@@ -254,43 +274,23 @@ function PatientChart(props) {
                     </div>
                 </div>
                 </Fade> */}
-          </div> 
-        <div style={{display:"flex",flexDirection:"row"}}>
-        <div style={{display:"flex",flexDirection:"column",bottom:0, height:"100%",alignSelf:"flex-start",paddingBottom:"50px",position:"sticky",top:"85px",borderRight:"1px solid rgba(0, 0, 0, 0.12)",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset" : "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset"}}>
+        <div style={{display:"flex",flexDirection:"row",justifyContent:"center",width:"100%"}}>
+        <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"center"}}>
+            <div style={{display:"flex",flexDirection:"row"}}>
+            <div>
+            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.9) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
-            <BasicPatientAttributes patient={currentPatient}/>
-          {/* <List>
-              <ListItem button
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}>
-                <ListItemIcon><TableChartIcon /></ListItemIcon>
-                <ListItemText primary={"Chart Review"} />
-              </ListItem>
-              <ListItem button
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}>
-                <ListItemIcon><NoteAddTwoToneIcon /></ListItemIcon>
-                <ListItemText primary={"Notes"} />
-              </ListItem>
-          <Divider />
-              <ListItem button
-              selected={selectedIndex === 2}
-              onClick={(event) => handleListItemClick(event, 2)}>
-                <ListItemIcon><EventNoteTwoToneIcon /></ListItemIcon>
-                <ListItemText primary={"Encounters"} />
-              </ListItem>
-              <ListItem button
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}>
-                <ListItemIcon><BorderColorTwoToneIcon /></ListItemIcon>
-                <ListItemText primary={"Orders"} />
-              </ListItem>
-          </List> */}
+            </div>
+            <ChartReviewBasicAttributes patient={currentPatient}/>
+            </div>
+            <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+                    <PatientPhoneNumbers patient={props.patient}/>
+                    <PatientAddressInfo patient={props.patient}/>
+            </div>
         </div>
-      <div className={classes.content}> 
-            <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px"}}>
+      <div className={classes.content} style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%"}}> 
+            <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
               {patientTabs.map((tab,index)=>{
                 return (
                 <li style={{borderRadius:"4px",listStyleType:"none",cursor:"pointer",...tabStyle}} className={`${currentPatientTab === tab ? "active" : ""}`} onClick={()=>{setCurrentPatientTab(tab)}}>
@@ -308,15 +308,15 @@ function PatientChart(props) {
               {currentPatientTab === "Problem List" ? <AllProblems patient={currentPatient}/> : <></>}
               {currentPatientTab === "Meds" ? <PatientMedications patient={currentPatient}/> : <></>}
             </div>
-            <div>
-              Notes
+            {/* <div style={{minWidth:"400px",marginTop:"0px",position:"sticky",top:"85px",}}>
+             Care Timeline 
+            </div> */}
             </div>
             </div>
-            </div>
-            <form ref={form} onSubmit={submit}>
+            {/* <form ref={form} onSubmit={submit}>
                 <input type="file" name="file"></input>
                 <input type="submit" name="Sign Up" />
-            </form>
+            </form> */}
         </>
     );
 }

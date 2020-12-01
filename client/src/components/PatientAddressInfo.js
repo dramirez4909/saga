@@ -15,6 +15,10 @@ import ContactMailIcon from '@material-ui/icons/ContactMail';
 import ContactMailTwoToneIcon from '@material-ui/icons/ContactMailTwoTone';
 import ThemeContext from './utils/ThemeContext';
 
+const imageStyle={
+    hieght:"32px",
+    width:"32px"
+  }
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -43,7 +47,7 @@ function PatientAddressInfo(props) {
         <>
                 <div style={{display:"flex",flexDirection:"column",borderRadius:"9px", width:"fit-content"}}>
                     <div style={{display:"flex",flexDirection:"row",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"fit-content",borderRadius:"8px"}}>
-                        <ContactMailTwoToneIcon size="small" style={{color:"lightgrey", alignSelf:"center"}}/>
+                        <img style={{...imageStyle}}src="https://saga-health.s3-us-west-1.amazonaws.com/mail-flat.svg"></img>
                         <div style={{display:"flex",flexDirection:"column", width:"fit-content", marginLeft:"9px"}}>
                         { props.patient.address_line_one ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_one}</span> </span> : ""}
                         { props.patient.address_line_two ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_two}</span> </span> : ""}

@@ -99,19 +99,40 @@ class Order(db.Model):
     if self.encounter:
       return{
         "id":self.id,
-        "patient": self.patient.without_orders(),
-        "encounter": self.encounter.without_orders(),
+        "patient": self.patient.name_and_id(),
+        "encounter": self.encounter_id,
         "status": self.status,
-        "provider": self.provider.without_orders(),
+        "provider": self.provider.name_and_id(),
         "type":self.type.name,
         "department":{"id":self.department_id}
       }
     else: 
       return{
         "id":self.id,
-        "patient": self.patient.without_orders(),
+        "patient": self.patient.name_and_id(),
         "status": self.status,
-        "provider": self.provider.without_orders(),
+        "provider": self.provider.name_and_id(),
+        "type":self.type.name,
+        "department":{"id":self.department_id}
+      }
+    
+  def basic(self):
+    if self.encounter:
+      return{
+        "id":self.id,
+        "patient": self.patient.name_and_id(),
+        "encounter": self.encounter_id,
+        "status": self.status,
+        "provider": self.provider.name_and_id(),
+        "type":self.type.name,
+        "department":{"id":self.department_id}
+      }
+    else: 
+      return{
+        "id":self.id,
+        "patient": {"lastName": self.patient.lastName, "firstName":self.patient.firstName, "fullName": self.patient.firstName + " " + self.patient.lastName},
+        "status": self.status,
+        "provider": self.provider.name_and_id(),
         "type":self.type.name,
         "department":{"id":self.department_id}
       }
@@ -135,6 +156,15 @@ class Problem(db.Model):
       "created_at": self.created_at,
       "type":self.type
     }
+  
+  def basic(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+      "created_at": self.created_at,
+      "type":self.type
+    }
+
 
 class Department(db.Model):
   __tablename__ = "departments"
@@ -179,6 +209,15 @@ class Note(db.Model):
       "created_at": self.created_at,
       "provider_id": self.provider_id
     }
+  
+  def basic(self):
+    return {
+      "id": self.id,
+      "patient_id": self.patient_id,
+      "content": self.content,
+      "created_at": self.created_at,
+      "provider_id": self.provider_id
+    }
 
 class Medication(db.Model):
   __tablename__ = "medications"
@@ -200,6 +239,16 @@ class Medication(db.Model):
       "created_at": self.created_at,
       "patient":{"id":self.patient.id}
     }
+  
+  def basic(self):
+    return {
+      "id": self.id,
+      "last_fill": self.last_fill,
+      "name": self.name,
+      "instructions": self.instructions,
+      "created_at": self.created_at,
+      "patient":{"id":self.patient.id}
+    }
 
 
 class Allergy(db.Model):
@@ -213,6 +262,14 @@ class Allergy(db.Model):
   patient = db.relationship("Patient",back_populates="allergies")
 
   def to_dict(self):
+    return {
+      "id": self.id,
+      "noted": self.noted,
+      "name": self.name,
+      "details": self.details
+    }
+  
+  def basic(self):
     return {
       "id": self.id,
       "noted": self.noted,
@@ -347,22 +404,23 @@ class Patient(db.Model):
       "address_state":self.address_state,
       "address_city":self.address_city,
       "address_zip":self.address_zip,
-      "orders":[order.to_dict() for order in self.orders],
-      "medications": [medication.to_dict() for medication in self.medications],
-      "allergies": [allergy.to_dict() for allergy in self.allergies],
-      "notes": [note.to_dict() for note in self.notes],
-      "problems": [problem.to_dict() for problem in self.problems],
-      "encounters": [encounter.without_patient() for encounter in self.encounters],
+      "orders":[order.basic() for order in self.orders],
+      "medications": [medication.basic() for medication in self.medications],
+      "allergies": [allergy.basic() for allergy in self.allergies],
+      "notes": [note.basic() for note in self.notes],
+      "problems": [problem.basic() for problem in self.problems],
+      "encounters": [encounter.basic() for encounter in self.encounters],
       "providers": [provider.name_and_id() for provider in self.providers],
       "bmi": self.bmi,
       "picture":self.picture
     }
 
-  def to_dictionary(self):
+  def name_and_id(self):
     return {
       "id": self.id,
       "firstName": self.firstName,
       "lastName": self.lastName,
+      "fullName":f"{self.lastName}, {self.firstName}",
     }
 
 class Provider(db.Model):
@@ -386,7 +444,6 @@ class Provider(db.Model):
       "first_name": self.user.first_name,
       "last_name": self.user.last_name,
       "full_name": f"{self.user.first_name} {self.user.last_name}",
-      "patients": [patient.to_dict() for patient in self.patients],
     }
 
   def name_and_id(self):
@@ -395,7 +452,6 @@ class Provider(db.Model):
       "first_name": self.user.first_name,
       "last_name": self.user.last_name,
       "full_name": f"{self.user.first_name} {self.user.last_name}",
-      "encounters": [encounter.to_dict() for encounter in self.encounters]
     }
 
   def without_encounters(self):
@@ -465,6 +521,22 @@ class Encounter(db.Model):
       "start": self.start,
       "end":self.end
     }
+  
+  def basic(self):
+    return {
+      "id": self.id,
+      "patient_full_name": self.patient.firstName + " " + self.patient.lastName,
+      "date": self.date,
+      "status": self.status,
+      "resource":{"id":self.resource_id,"name":self.resource.name},
+      "resource_id":self.resource_id,
+      "start": self.start,
+      "end":self.end,
+      "provider":self.provider.name_and_id(),
+      "type": self.type.to_dict(),
+      "patient": self.patient.name_and_id(),
+      "department":{"id":self.department.id,"name":self.department.name},
+    }
 
   def to_dict(self):
     if self.department:
@@ -532,6 +604,12 @@ class Resource(db.Model):
       "encounters": [encounter.to_dict() for encounter in self.encounters],
       "department_id":self.department_id,
       "department": {"id":self.department_id, "name":self.department.name}
+    }
+  
+  def name_and_id(self):
+    return {
+      "id": self.id,
+      "name": self.name,
     }
 
 

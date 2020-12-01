@@ -15,6 +15,7 @@ import ThemeContext from './utils/ThemeContext';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
+import ScheduleSelector from './ScheduleSelector';
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -104,24 +105,29 @@ const Navbar = () => {
 
   return (
     <>
-        <div style={{position:"sticky",top:0,display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", justifyContent:"space-between"}}>
+        <div style={{
+          position:"sticky",top:0,
+          display:"flex",boxShadow: "0 2px 2px -2px rgba(0,0,0,.2)",zIndex:5,flexDirection:"row",margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", justifyContent:"space-between"}}>
           <div className={classes.left}>
             <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
               <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
             </div>
-            {activities.map(activity=>
+            {/* {activities.map(activity=>
             <div key={activity.id} onClick={(e)=>openActivity(activity)} style={{...buttonStyle,visibility:activity.name === "chart" ? "hidden" : ""}}>
             {activity.name === "My Schedule" ? <ScheduleTwoToneIcon style={{...iconStyle,color:"#b1f3b1"}}/> : <></>}
             {activity.name === "Place Orders" ? <BorderColorTwoToneIcon style={{...iconStyle,color:"#BDE0FE"}}/> : <></>}
             {activity.name === "Dep. Schedule" ? <CalendarTodayIcon style={{...iconStyle,color:"#BAA4C7"}}/> : <></>}
             {activity.name === "Patient Search" ? <SearchIcon style={{...iconStyle,color: themeContext.themes === "light" ? "grey" : "whitesmoke"}}/> : <></>}
             {activity.name === "chart" ? <></> : <p style={{margin:0, marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white"}}>{activity.name}</p>}
-              </div>)}
+              </div>)} */}
           </div>
+          <div style={{display:"flex",flexDirection:"row", alignItems:"center"}}>
+            <ScheduleSelector/>
           <div>
-            {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>
+            {themeContext.themes === "light" ? <IconButton onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>
             :
-            <Button onClick={changeThemes} size="small" style={{outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></Button>}
+            <IconButton onClick={changeThemes} size="small" style={{outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>}
+          </div>
           </div>
         </div>
     </>

@@ -39,9 +39,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import {setCurrentPatient} from '../store/current_patient'
-import DepartmentScheduler from './DepartmentScheduler'
-import ProviderSchedule from './ProviderSchedule'
+// import DepartmentScheduler from './DepartmentScheduler'
+// import ProviderSchedule from './ProviderSchedule'
 import ThemeContext from '../components/utils/ThemeContext'
+import DepartmentSchedule from './DepartmentSchedule'
 
 
 const drawerWidth = 240;
@@ -110,7 +111,6 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -145,10 +145,6 @@ const tabStyle = {
     '&:hover': {
         transform: "scale(1.15)",
     }
-}
-
-let tabContentStyle = {
-  height:"100vh"
 }
 
 const HomePage=(props)=>{
@@ -227,7 +223,7 @@ const HomePage=(props)=>{
               </AppBar> */}
               <div style={{display:"flex",flexDirection:"row",backgroundColor:themes === "light" ? "white" : "#444444",height:"100vh"}}>
               {/* <Slide direction="right" in={sideBarDisplay} timeout={250} mountOnEnter unmountOnExit> */}
-              <Drawer
+              {/* <Drawer
                 style={{display: sideBarDisplay ? "" : "none", backgroundColor:themes === "light" ? "white" : "#444444"}}
                 PaperProps={themes === "dark" ? { classes:{root:classes.paperDark}} : { classes:{root:classes.paperLight}}}
                 variant="permanent"
@@ -286,28 +282,27 @@ const HomePage=(props)=>{
                       <ListItemText style={{color:themes === "dark" ? "white" : "#444444"}} primary='Preferences' />
                     </ListItem>
                 </List>
-              </Drawer>
+              </Drawer> */}
               {/* </Slide> */}
               <div className={classes.content}>
-                <div className={classes.toolbar} />
-                <div style={{display:"flex",flexDirection:"column",height:"100%",backgroundColor:themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
+                <div style={{display:"flex",flexDirection:"column",backgroundColor:themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
                     <div className={themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                         (   
                             <ActivityTab key={index} style={{...tabStyle}} index={index} activity={activity}/>
                         ))}
                     </div>
-                    <div className={classes.root}>
+                    <div style={{background:themes === "dark" ? "#444444" : "white", display:"flex"}}>
                     {tabs.map(( activity, index)=>
                     (
-                        <Fade in={activity.name === selectedTabName} timeout={150} mountOnEnter unmountOnExit>
-                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column", ...tabContentStyle,backgroundColor:themes === "dark" ? "#444444" : "white"}}>
+                        <Fade in={activity.name === selectedTabName} timeout={350} mountOnEnter unmountOnExit>
+                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
-                            {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>}
-                            {activity.name === "Place Orders" ? <Orders/> : <></>}
-                            {activity.name === "Dep. Schedule" ? <DepartmentScheduler/> : <></>}
+                            {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
+                            {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
+                            {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
                         </Fade>
                         ))}

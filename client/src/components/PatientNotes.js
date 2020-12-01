@@ -318,7 +318,8 @@ function PatientNotes(props) {
     setTitle(e.target.value)
   }
 
-  const boards = useSelector(state => state.currentPatient.encounters);
+  // const boards = useSelector(state => state.currentPatient.encounters);
+  const boards = []
 
   if (boards === undefined) {
     return null;

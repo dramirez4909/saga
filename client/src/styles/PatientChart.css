@@ -12,11 +12,19 @@
 .circular--portrait {
     position: relative;
     opacity: 100%;
-    width: 215px;
-    height: 215px;
+    width: 200px;
+    height: 200px;
     overflow: hidden;
     border-radius: 50%;
-    border: 2px solid #fff
+    /* border: 2px solid #fff */
+  }
+  div.MuiAccordionDetails-root {
+    display: flex;
+    padding:0;
+  }
+
+  nav.MuiList-padding {
+    padding-bottom: 0px
   }
   .small-circular--portrait {
     position: relative;
@@ -35,7 +43,7 @@
     box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     height: auto;
     align-content: space-between;
-    justify-content: left;
+    /* justify-content: left; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -44,7 +52,7 @@
   #user-photo {
   grid-row-start: 2;
   border-radius: 2.5em;
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
   height: auto;
   width:100%;
 }
