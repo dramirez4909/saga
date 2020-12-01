@@ -2,6 +2,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
 from app.models import User, db
 
+
 session = Blueprint('session', __name__)
 
 @session.route("/current_user")
