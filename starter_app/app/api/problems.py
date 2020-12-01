@@ -5,6 +5,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
 from app.models import User, Activity, Security_Point, Role, db, Encounter,Provider, Order, Order_Type, Problem
 from lxml.html import fromstring
+
 uri="https://utslogin.nlm.nih.gov"
 #option 1 - username/pw authentication at /cas/v1/tickets
 #auth_endpoint = "/cas/v1/tickets/"
