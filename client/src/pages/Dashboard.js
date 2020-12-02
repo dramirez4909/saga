@@ -5,6 +5,9 @@ import {logout} from '../store/auth'
 import DashboardComponent from '../components/DashboardComponent'
 import ThemeContext from '../components/utils/ThemeContext';
 import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
+import json2mq from 'json2mq';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 const Dashboard=(props)=>{
     const [loading,setLoading] = useState(true)
     const [activities,setActivities] =useState([])
@@ -13,6 +16,16 @@ const Dashboard=(props)=>{
 
     const handleLogOut = ()=> {
         dispatch(logout())
+    }
+
+    function JavaScriptMedia() {
+    const matches = useMediaQuery(
+    json2mq({
+      minWidth: 600,
+    }),
+  );
+
+  return <span>{`{ minWidth: 600 } matches: ${matches}`}</span>;
     }
 
     const changeThemes = () =>{
@@ -40,6 +53,7 @@ const Dashboard=(props)=>{
         <div style={{margin:"20px"}}>
         <h1>Dashboard</h1>
         <Button onClick={handleLogOut}>Log out</Button>
+        <JavaScriptMedia/>
         </div>
         <div>
             {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>
