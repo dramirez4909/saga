@@ -36,6 +36,8 @@ import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import NewMedicationForm from './NewMedicationForm';
+import NewMentalProblemForm from './newMentalProblemForm';
+import NewPhysicalProblemForm from './NewPhysicalProblemForm';
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -165,7 +167,7 @@ function ChartReview(props) {
                             <div style={{color: themeContext.themes === "dark" ? "white" : "rgb(85, 177, 250)", width:"100%", padding:"4px", fontSize:"16px"}}> Physical Health History</div>
                             </div>
                             <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
-                                <IconButton style={{height:"34px",width:"34px", marginRight:"4px"}}>
+                                <IconButton onClick={(e)=>handleFormModalOpen(e,"NewPhysicalProblemForm")} style={{height:"34px",width:"34px", marginRight:"4px"}}>
                                     <AddIcon style={{height:"24px",width:"24px",color:themeContext.themes === "dark" ? "white" : "lightgrey"}}></AddIcon>
                                 </IconButton>
                             </div>
@@ -193,7 +195,7 @@ function ChartReview(props) {
                                 </div>
                                 <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
                                     <IconButton style={{height:"34px",width:"34px", marginRight:"4px"}}>
-                                        <AddIcon style={{height:"24px",width:"24px",color:themeContext.themes === "dark" ? "white" : "lightgrey"}}></AddIcon>
+                                        <AddIcon onClick={(e)=>handleFormModalOpen(e,"NewMentalProblemForm")} style={{height:"24px",width:"24px",color:themeContext.themes === "dark" ? "white" : "lightgrey"}}></AddIcon>
                                     </IconButton>
                                 </div>
                             </div>
@@ -287,6 +289,9 @@ function ChartReview(props) {
         }
           </NativeSelect> */}
           {modalForm === "NewMedicationForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
+          {modalForm === "NewOrderForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
+          {modalForm === "NewMentalProblemForm" ? <NewMentalProblemForm patient={props.patient}></NewMentalProblemForm> : <></> }
+          {modalForm === "NewPhysicalProblemForm" ? <NewPhysicalProblemForm patient={props.patient}></NewPhysicalProblemForm> : <></> }
           </div>
         </Slide>
       </Modal>

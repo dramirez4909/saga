@@ -96,6 +96,19 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: 'inherit',
   },
+  mobileInputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '5ch',
+      '&:focus': {
+        width: '10ch',
+      },
+    },
+  },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -421,7 +434,7 @@ const Navbar = (props) => {
               placeholder="Patient Search…"
               classes={{
                 root: classes.inputRoot,
-                input: classes.inputInput,
+                input: classes.mobileInputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
               value={patientSearchTerm} 
@@ -431,9 +444,9 @@ const Navbar = (props) => {
               {displayPatientSearchResults ? patientSearchResults.length ? <PatientSearchResults patientSearchResults={patientSearchResults}/> : <></> : <></>}
             </div>
           </div>
-            {themeContext.themes === "light" ? <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",color:"white",marginRight:"4px",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>
+            {/* {themeContext.themes === "light" ? <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",color:"white",marginRight:"4px",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>
             :
-            <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>}
+            <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>} */}
 
             {currentUser.picture ? <Avatar onClick={handleClick} style={{boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} src={`${currentUser.picture}`}/> 
             : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar>}
