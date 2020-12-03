@@ -7,6 +7,7 @@ import ThemeContext from '../components/utils/ThemeContext';
 import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
 import json2mq from 'json2mq';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {Breakpoint} from 'react-socks'
 
 const Dashboard=(props)=>{
     const [loading,setLoading] = useState(true)
@@ -53,7 +54,7 @@ const Dashboard=(props)=>{
         <div style={{margin:"20px"}}>
         <h1>Dashboard</h1>
         <Button onClick={handleLogOut}>Log out</Button>
-        <JavaScriptMedia/>
+            <div>hello</div>
         </div>
         <div>
             {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>

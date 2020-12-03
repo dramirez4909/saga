@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, NavLink, Switch } from 'react-router-dom'
 import { ProtectedRoute } from '../components/utils/routes'
@@ -43,7 +43,11 @@ import {setCurrentPatient} from '../store/current_patient'
 // import ProviderSchedule from './ProviderSchedule'
 import ThemeContext from '../components/utils/ThemeContext'
 import DepartmentSchedule from './DepartmentSchedule'
-
+import {Breakpoint} from 'react-socks'
+  import { fromPairs } from 'lodash'
+import { BottomNavigation } from '@material-ui/core'
+import MobileBottomNav from '../components/MobileBottomNav'
+import MobileBottomMenu from '../components/MobileBottomMenu'
 
 const drawerWidth = 240;
 
@@ -155,6 +159,7 @@ const HomePage=(props)=>{
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch()
   const [themes,setThemes] = useState("dark")
+  const context = useContext(ThemeContext)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -191,113 +196,39 @@ const HomePage=(props)=>{
         }
     }
 
+    const globalTheme = createMuiTheme => ({
+      overrides: {
+        MuiCssBaseline: {
+          '@global': {
+            html: {
+              WebkitFontSmoothing: 'auto',
+            },
+          },
+        },
+      },
+    });
+
     return (
         <>    
-          <ThemeContext.Provider value={{themes,setThemes}}>
                 <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs}}>
-                <DragDropContext>
+                <Breakpoint medium up>
                 <NavBar currentUser={currentUser}>
                 </NavBar>
-              <CssBaseline />
-              {/* <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                  [classes.appBarShift]: open,
-                })}
-              >
-                <Toolbar>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(classes.menuButton, {
-                      [classes.hide]: open,
-                    })}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                  <Typography variant="h6" noWrap>
-                    Mini variant drawer
-                  </Typography>
-                </Toolbar>
-              </AppBar> */}
-              <div style={{display:"flex",flexDirection:"row",backgroundColor:themes === "light" ? "white" : "#444444",height:"100vh"}}>
-              {/* <Slide direction="right" in={sideBarDisplay} timeout={250} mountOnEnter unmountOnExit> */}
-              {/* <Drawer
-                style={{display: sideBarDisplay ? "" : "none", backgroundColor:themes === "light" ? "white" : "#444444"}}
-                PaperProps={themes === "dark" ? { classes:{root:classes.paperDark}} : { classes:{root:classes.paperLight}}}
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                  [classes.drawerOpen]: open,
-                  [classes.drawerClose]: !open,
-                })}
-                classes={{
-                  paper: clsx({
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                  }),
-                }}
-              >
-                <div className={classes.toolbar} style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                  <IconButton onClick={handleDrawerClose}>
-                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                  </IconButton>
-                </div>
-                <Divider />
-                <List style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                    <ListItem button onClick={open ? handleDrawerClose : handleDrawerOpen} style={{color:themes === "dark" ? "white" : "#444444"}}>
-                      <ListItemIcon style={{color:themes === "dark" ? "white" : "#444444"}}> { open ? <ChevronLeftIcon /> : <ChevronRightIcon />} </ListItemIcon>
-                      <ListItemText />
-                    </ListItem>
-                </List>
-                <Divider />
-                <List style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                    <ListItem button>
-                      <ListItemIcon style={{color:themes === "dark" ? "white" : "#444444"}}> <FaceIcon /> </ListItemIcon>
-                      <ListItemText style={{color:themes === "dark" ? "white" : "#444444"}} primary='My Profile' />
-                    </ListItem>
-                </List>
-                <List style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                    <ListItem button >
-                      <ListItemIcon style={{color:themes === "dark" ? "white" : "#444444"}}> <TelegramIcon style={{color:"rgb(85, 177, 250)"}}/> </ListItemIcon>
-                      <ListItemText style={{color:themes === "dark" ? "white" : "#444444"}} primary='Messenger' />
-                    </ListItem>
-                </List>
-                <Divider />
-                <List style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                    <ListItem button>
-                      <ListItemIcon style={{color:themes === "dark" ? "white" : "#444444"}}> <EncryptionIcon /> </ListItemIcon>
-                      <ListItemText style={{color:themes === "dark" ? "white" : "#444444"}} primary='Lock Session' />
-                    </ListItem>
-                </List>
-                <List style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                    <ListItem button>
-                      <ListItemIcon style={{color:themes === "dark" ? "white" : "#444444"}}> <ExitToAppTwoToneIcon style={{transform: "scaleX(-1)"}}/> </ListItemIcon>
-                      <ListItemText style={{color:themes === "dark" ? "white" : "#444444"}} primary='Logout' />
-                    </ListItem>
-                </List>
-                <List style={{backgroundColor:themes === "light" ? "white" : "#444444"}}>
-                    <ListItem button>
-                      <ListItemIcon style={{color:themes === "dark" ? "white" : "#444444"}}> <SettingsIcon /> </ListItemIcon>
-                      <ListItemText style={{color:themes === "dark" ? "white" : "#444444"}} primary='Preferences' />
-                    </ListItem>
-                </List>
-              </Drawer> */}
-              {/* </Slide> */}
+              <div style={{display:"flex",flexDirection:"row",backgroundColor:context.themes === "light" ? "white" : "#444444",height:"100%"}}>
+
               <div className={classes.content}>
-                <div style={{display:"flex",flexDirection:"column",backgroundColor:themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
-                    <div className={themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
+                <div style={{display:"flex",flexDirection:"column",backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
+                    <div className={context.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                         (   
                             <ActivityTab key={index} style={{...tabStyle}} index={index} activity={activity}/>
                         ))}
                     </div>
-                    <div style={{background:themes === "dark" ? "#444444" : "white", display:"flex"}}>
+                    <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
                     {tabs.map(( activity, index)=>
                     (
                         <Fade in={activity.name === selectedTabName} timeout={350} mountOnEnter unmountOnExit>
-                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
+                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
                             {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
                             {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
@@ -311,9 +242,42 @@ const HomePage=(props)=>{
                 </div>
             </div>
             </div>
-                </DragDropContext>
+            </Breakpoint>
+            <Breakpoint small down>
+                <NavBar currentUser={currentUser}>
+                </NavBar>
+              <div style={{display:"flex",flexDirection:"row",backgroundColor:context.themes === "light" ? "white" : "#444444",height:"100%"}}>
+
+              <div className={classes.content}>
+                <div style={{display:"flex",flexDirection:"column",backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
+                    {/* <div className={context.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
+                    {tabs.map((activity, index)=>
+                        (   
+                            <ActivityTab key={index} style={{...tabStyle}} index={index} activity={activity}/>
+                        ))}
+                    </div> */}
+                    <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
+                    {tabs.map(( activity, index)=>
+                    (
+                        <Fade in={activity.name === selectedTabName} timeout={350} mountOnEnter unmountOnExit>
+                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
+                            {activity.name === "dashboard" ? <Dashboard/> : <></>}
+                            {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
+                            {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
+                            {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
+                            {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
+                            {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
+                        </div>
+                        </Fade>
+                        ))}
+                </div>
+                </div>
+            </div>
+            </div>
+            <MobileBottomMenu/>
+            <MobileBottomNav ></MobileBottomNav>
+            </Breakpoint>
             </HomeContext.Provider>
-            </ThemeContext.Provider>
         </>
     )
 }

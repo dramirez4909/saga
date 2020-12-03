@@ -25,6 +25,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import InputBase from '@material-ui/core/InputBase';
+import {Breakpoint} from 'react-socks'
 import PatientSearchResults from '../components/PatientSearchResults';
 import { fade} from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -284,6 +285,7 @@ const Navbar = (props) => {
   return (
     <>
     <PatientSearchContext.Provider value={{setDisplayPatientSearchResults,setPatientSearchTerm}}>
+      <Breakpoint medium up>
       <div style={{flexGrow:1}}>
         <AppBar position="static">
         <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "cornflowerblue"}}>
@@ -399,6 +401,123 @@ const Navbar = (props) => {
         </Fade>
       </Modal>
     </div>
+    </Breakpoint>
+    <Breakpoint small down>
+    <div style={{flexGrow:1}}>
+        <AppBar position="static">
+        <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "cornflowerblue"}}>
+            <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+            <div style={{display:"flex",flexDirection:"row"}}>
+            <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
+              <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
+            </div>
+            </div>
+            <div style={{display:"flex", alignItems:"center", flexDirection:"row"}}>
+            <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Patient Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              value={patientSearchTerm} 
+              onChange={(e)=>setPatientSearchTerm(e.target.value)}
+            />
+            <div style={{background: themeContext.themes === "dark" ? "#444444" : "white"}}>
+              {displayPatientSearchResults ? patientSearchResults.length ? <PatientSearchResults patientSearchResults={patientSearchResults}/> : <></> : <></>}
+            </div>
+          </div>
+            {themeContext.themes === "light" ? <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",color:"white",marginRight:"4px",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>
+            :
+            <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>}
+
+            {currentUser.picture ? <Avatar onClick={handleClick} style={{boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} src={`${currentUser.picture}`}/> 
+            : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar>}
+              <StyledMenu
+                id="customized-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <StyledMenuItem onClick={handleModalOpen}> 
+                  <ListItemText primary="Profile" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText primary="Settings" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText primary="Logout" />
+                </StyledMenuItem>
+            </StyledMenu>
+            </div>
+            </div>
+            </Toolbar>
+          </AppBar>
+        </div>
+      <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={modalOpen}
+        onClose={handleModalClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={modalOpen}>
+        <div className={classes.paper} style={{outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",maxWidth:"600px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+        <div style={{outline:"none",width:"100%",maxWidth:"600px",display:"flex",flexDirection:"column"}}>
+        <h3>{currentUser.first_name + " " + currentUser.last_name}</h3>
+          
+            <form onSubmit={(e)=>{handleProfileFormSubmit(e)}}>
+              <div style={{display:"flex",flexDirection:"row"}}>
+                <div>
+                <form ref={form} onSubmit={submit}>
+                  <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
+                    <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.9) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset"}}>
+                      {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={currentUser.picture ? currentUser.picture : ""}/>}
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",justifyContent:"center",width:"100%",margin:"5px"}}>
+                    <input
+                    accept="image/*"
+                    className={classes.input}
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    name="file"
+                  />
+                  <label htmlFor="contained-button-file">
+                    <Button variant="contained" color="primary" component="span" fullWidth>
+                      Select New
+                      <PhotoCamera style={{marginLeft:"4px"}}></PhotoCamera>
+                    </Button>
+                  </label>
+                    {/* <input type="file" name="file"></input> */}
+                  <Button style={{backgroundColor:"cornflowerblue",color:"white"}} type="submit" name="Sign Up" >Update Photo</Button>
+                  </div>
+                  </div>
+                </form>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",width:"100%",margin:"20px"}}>
+                  <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",fontSize:"18px"}}>username: <div></div><div>{currentUser.username}</div></div>
+                  <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",fontSize:"18px"}}>email: <div></div><div>{currentUser.email}</div></div>
+                </div>
+              </div>
+            </form>
+          </div>
+          </div>
+        </Fade>
+      </Modal>
+    </div>
+    </Breakpoint>
     </PatientSearchContext.Provider>
     </>
   )

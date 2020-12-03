@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard'
 import LoginPage from './pages/LoginPage'
 import NavBar from './components/NavBar'
 import Home from './pages/HomePage'
-import { CircularProgress, CssBaseline } from '@material-ui/core';
+import { CircularProgress, CssBaseline, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {setUser} from './store/auth'
@@ -14,9 +14,13 @@ import {loadActivities} from './store/activities'
 import HomeContext from './components/utils/HomeContext'
 import { loadProviderEncounters , loadDepartmentEncounters} from './store/encounters';
 import { loadDepartmentOrders} from './store/orders';
+import ThemeContext from './components/utils/ThemeContext';
+import {BreakpointProvider} from 'react-socks'
+
 
 function App() {
   const [loading, setLoading] = useState(true)
+  const [themes,setThemes] = useState("light")
   const dispatch = useDispatch()
   useEffect(()=>{
     const loadUser = async () => {
@@ -50,11 +54,37 @@ function App() {
     </div>
     )
   }
+  const darkTheme = createMuiTheme({
+    overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          body: {
+            backgroundColor: '#444444',
+          },
+        },
+      },
+    },
+  })
+  
+  const lightTheme = createMuiTheme({
+    overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          body: {
+            backgroundColor: 'white',
+          },
+        },
+      },
+    },
+  })
 
   console.log("____Rendering app_____")
     return (
     <>
+    <ThemeProvider theme={themes === "light" ? lightTheme : darkTheme}>
+    <BreakpointProvider>
     <CssBaseline/>
+    <ThemeContext.Provider value={{themes,setThemes}}>
     <BrowserRouter>
         <Switch>
             <AuthRoute exact path='/signup' component={SignUpPage} currentUserId={currentUser.id}/>
@@ -64,6 +94,9 @@ function App() {
             <AuthRoute exact path='/' component={LoginPage} currentUserId={currentUser.id}/>
         </Switch>
     </BrowserRouter>
+    </ThemeContext.Provider>
+    </BreakpointProvider>
+    </ThemeProvider>
     </>
   );
 }

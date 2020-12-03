@@ -228,3 +228,39 @@ div.makeStyles-toolbar-10 {
 .dark-tabs li a:after {
   right: -20px;
 }
+
+
+@media (max-width: 767px) {
+  body {
+    display: flex;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    flex-direction: column;
+    margin: 0;
+  }
+  #root {
+    display: flex;
+    /* min-height: -webkit-fill-available; */
+    flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    height:100vh;
+    overflow: hidden;
+  }
+  #footer-menu{
+    display:none;
+  }
+}
+
+.breakoint__small-down {
+  display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+}
+

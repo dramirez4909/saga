@@ -25,17 +25,3 @@
     text-decoration: underline;
 }
 
-html, 
-body,
-.grid {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-}
-.grid {
-    /* background-color:hsla(217, 45%, 64%, .2); */
-    background-image:
-    repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%),
-    repeating-linear-gradient(#f9f9f9 0 1px, transparent 1px 100%);
-    background-size: 20% 9px;
-}
