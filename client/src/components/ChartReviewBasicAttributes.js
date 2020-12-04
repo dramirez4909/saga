@@ -54,7 +54,7 @@ function ChartReviewBasicAttributes(props) {
     return (
         <>
             <div style={{display:"flex",flexDirection:"column",borderRadius:"7px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",marginLeft:"10px", marginRight:"5px",
-            boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
+            // boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
             }}>
             <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                 <div style={{display:"flex",flexDirection:"column"}}>

@@ -95,7 +95,7 @@ const NewPhysicalProblemForm = (props) => {
         <>
             <div>
                     <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"400px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}}>
-                    <div style={{color:"white", marginTop:"0px",marginBottom:"6px", width:"100%", padding:"4px", fontSize:"36px", backgroundImage: "linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%)"}}>New Mental Health Issue</div>
+                    <div style={{color:"white", marginTop:"0px",marginBottom:"6px", width:"100%", padding:"4px", fontSize:"36px", backgroundImage: "linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%)"}}>New Physical Health Issue</div>
                     <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",transition:"all .4s ease-in-out",transitionProperty:"width"}}>
                     <div style={{display:"flex",flexDirection:"column"}}>
                     <Input placeholder="enter a medication" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}

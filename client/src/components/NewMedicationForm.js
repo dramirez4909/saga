@@ -15,6 +15,30 @@ import {createMedication} from '../store/current_patient'
 import InputAdornment from '@material-ui/core/InputAdornment';
 import PatientMedicationsList from './PatientMedicationsList';
 import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
+import { green } from '@material-ui/core/colors';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import PatientChartContext from './utils/PatientChartContext';
+
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 
 const useStylesLoginTextField = makeStyles((theme) => ({
     root: {
@@ -41,6 +65,15 @@ const useStylesLoginTextField = makeStyles((theme) => ({
     return <TextField InputProps={{ classes, disableUnderline: true }} {...props} />;
   }
 
+  const useStyles = makeStyles((theme) => ({
+    popover: {
+      pointerEvents: 'none',
+    },
+    paper: {
+      padding: theme.spacing(1),
+    },
+  }));
+
   const ColorButton = withStyles((theme) => ({
     root: {
         color: "#ed4959",
@@ -58,7 +91,9 @@ const useStylesLoginTextField = makeStyles((theme) => ({
     }))(Button);
 
 const NewMedicationForm = (props) => {
+    const classes = useStyles();
     const context = useContext(HomeContext)
+    const chartContext = useContext(PatientChartContext)
     const dispatch = useDispatch()
     const provider_id = useSelector(state=>state.auth.user.id)
     const [medications,setMedications] = useState([])
@@ -70,6 +105,32 @@ const NewMedicationForm = (props) => {
     const [selectedMedicationIndex,setSelectedMedicationIndex]=useState()
     const [displayMedicationQuestions,setDisplayMedicationQuestions] = useState(false)
     const [newMedInstructions,setNewMedInstructions] = useState("")
+    const [blueCheck,setBlueCheck] =useState(true)
+    const [yellowCheck,setYellowCheck] =useState(true)
+    const [greenCheck,setGreenCheck] =useState(true)
+    const [greenAnchorEl, setGreenAnchorEl] = React.useState(null);
+    const greenOpen = Boolean(greenAnchorEl);
+
+    const handleGreenPopoverOpen = (event) => {
+        // setGreenAnchorEl(event.currentTarget);
+      };
+    
+      const handleGreenPopoverClose = () => {
+        setGreenAnchorEl(null);
+      };
+
+    const handleBlueCheck = (event) => {
+        setBlueCheck(!blueCheck)
+      };
+
+    const handleYellowCheck = (event) => {
+        setYellowCheck(!yellowCheck)
+      };
+    
+
+    const handleGreenCheck = (event) => {
+        setGreenCheck(!greenCheck)
+      };
 
     const addMedication = (medicationName,instructions) => {
         dispatch(createMedication({medicationName,instructions,patient:props.patient.id,provider_id}))
@@ -92,12 +153,64 @@ const NewMedicationForm = (props) => {
 
     return (
         <>
-            <div>
-                    <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"400px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}}>
-                    <div style={{color:"white", marginTop:"0px",marginBottom:"6px", width:"100%", padding:"4px", fontSize:"36px", backgroundImage: "linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%)"}}>New Medication</div>
-                    <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",transition:"all .4s ease-in-out",transitionProperty:"width"}}>
-                    <div style={{display:"flex",flexDirection:"column"}}>
-                    <Input placeholder="enter a medication" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}
+                    <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",padding:"10px"}}>
+                        <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
+                            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                                <div style={{color:"white", padding:"4px", borderRadius:"4px",fontSize:"18px", backgroundImage: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"}}>New Medication</div> 
+                                <div style={{color:themeContext.themes === "dark" ? "white" : "#444444", fontSize:"18px",marginLeft:"5px", fontWeight:"bold"}}>
+                                    <span style={{fontWeight:"normal"}}>for: </span>{props.patient.firstName + " " + props.patient.lastName}
+                                </div>
+                            </div>
+                            <div>
+                                    <IconButton onClick={chartContext.handleFormModalClose} style={{color:themeContext.themes === "dark" ? "#ed6969" : "#444444", outline:"none"}}>
+                                        <CloseIcon></CloseIcon>
+                                    </IconButton>
+                                </div>
+                        </div>
+                    <div style={{display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                    <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",transition:"all .4s ease-in-out",transitionProperty:"width",width:"100%"}}>
+                        {/* <div style={{borderRadius:"4px",background:"darkgrey",padding:"10px",color:"white"}}>
+                            Saga works with the Unified Medical Language System (UMLS) to help providers search over every prescribable drug in existence.
+                        </div> */}
+                        {/* <div style={{display:"flex",flexDirection:"row",justifyContent:"center",fontSize:"18px"}}>Source Vocabularies: </div> */}
+                        <div style={{borderRadius:"8px",padding:"10px",color:themeContext.themes === "dark" ? "white" : "cornflowerblue",marginTop:"4px",fontSize:"18px",display:"flex",justifyContent:"center",textAlign:"center"}}>
+                            Select the medication source vocabularies to include in your search.
+                        </div>
+                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                        <div>
+                            <FormControlLabel
+                              aria-owns={greenOpen ? 'mouse-over-popover' : undefined}
+                              aria-haspopup="true"
+                              onMouseEnter={handleGreenPopoverOpen}
+                              onMouseLeave={handleGreenPopoverClose}
+                              control={<GreenCheckbox checked={greenCheck} onChange={handleGreenCheck} name="checkedG" />} label="DrugBank"/>
+                            <Popover
+                              id="mouse-over-popover"
+                              className={classes.popover}
+                              classes={{
+                                paper: classes.paper,
+                              }}
+                              open={greenOpen}
+                              anchorEl={greenAnchorEl}
+                              anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                              }}
+                              transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                              }}
+                              onClose={handleGreenPopoverClose}
+                              disableRestoreFocus
+                            >
+                              {/* <Typography>RxNorm now includes the United States Pharmacopeia (USP) Compendial Nomenclature from the United States Pharmacopeial Convention. USP is a cumulative data set of all Active Pharmaceutical Ingredients (API).</Typography> */}
+                            </Popover>
+    </div>
+                        <FormControlLabel control={<GreenCheckbox checked={blueCheck} onChange={handleBlueCheck} name="checkedH" />} label="RxNorm"/>
+                        <FormControlLabel control={<GreenCheckbox checked={yellowCheck} onChange={handleYellowCheck} name="checkedI" />} label="SNOMED-CT"/>
+                        </div>
+                    {displayMedicationQuestions ? "" : <div style={{display:"flex",flexDirection:"column"}}>
+                    <Input placeholder="e.g. Tylenol, Vyvanse, Melatonin 5mg, Vitamin D etc..." autoFocus={true} style={{color:themeContext.themes === "dark" ? "white" : "black"}} value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}
                      endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -110,36 +223,41 @@ const NewMedicationForm = (props) => {
                                 }}
                             edge="end"
                             style={{outline:"none"}}
+                            autoCapitalize={true}
+                            focusRipple={true}
                           >
                             <SearchIcon />
                           </IconButton>
                         </InputAdornment>}
                         
                     ></Input>
-                    </div>
-                        <div style={{display:"flex",flexDirection:"column",maxHeight:"200px",overflow:"scroll",marginLeft:"10px"}}>
+                    </div>}
+                        <div style={{display:"flex",flexDirection:"column",maxHeight:"300px",overflow:"scroll",marginLeft:"10px"}}>
                         {searchingForMeds ? <CircularProgress style={{justifySelf:"center",alignSelf:"center",margin:"30px"}}/> : <></>}
                         {displayMedicationQuestions ? 
-                        <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "antiquewhite" : "grey",marginLeft:"10px", borderRadius:"4px",padding:"10px"}}>
+                        <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "white" : "black", borderRadius:"4px",padding:"10px"}}>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                            <div style={{fontSize:"20px"}}>{dxSearchResults[selectedMedicationIndex]}</div>
-                            <Button size="small" onClick={()=>setDisplayMedicationQuestions(false)}>
+                            <div style={{fontSize:"24px",marginBottom:"3px"}}>{dxSearchResults[selectedMedicationIndex]}</div>
+                            <Button size="medium" onClick={()=>setDisplayMedicationQuestions(false)}>
                                 back
                             </Button>
                             </div>
                             <form>
                                 <div style={{display:"flex",flexDirection:"column", justifyContent:"center"}}>
-                                    <p>Insructions:</p>
-                                    <input value={newMedInstructions} onChange={(e)=>setNewMedInstructions(e.target.value)}></input>
+                                    <p style={{marginBottom:"0px",fontSize:"18px",color:themeContext.themes === "dark" ? "white" : "cornflowerblue"}}>Patient Insructions:</p>
+                                    <TextareaAutosize rowsMax={8} rows={4} rowsMin={4} value={newMedInstructions} onChange={(e)=>setNewMedInstructions(e.target.value)}></TextareaAutosize>
                                 </div>
-                                <IconButton size="large">
-                                    <AddIcon style={{color:"lightgreen"}} onClick={()=>{
+                                <Button size="large" variant="outlined" fullWidth={"true"} style={{marginTop:"5px",justifySelf:"center", alginSelf:"center",outline:"none"}}
+                                    onClick={()=>{
+                                        console.log("new med riht her ",dxSearchResults[selectedMedicationIndex],newMedInstructions)
+                                        addMedication(dxSearchResults[selectedMedicationIndex],newMedInstructions)
                                         setDxSearchResults([])
                                         setDxSearchTerm("")
                                         setNewMedInstructions("")
-                                        setDisplayMedicationQuestions(false)
-                                        addMedication(dxSearchResults[selectedMedicationIndex],newMedInstructions)}}/>
-                                </IconButton>
+                                        setDisplayMedicationQuestions(false)}}>
+                                    <AddIcon size={"large"} style={{color:green[600],marginRight:"3px" }}/>
+                                        Add Medication
+                                </Button>
                             </form>
                         </div>
                         : dxSearchResults.map((dx,index)=>{
@@ -158,8 +276,11 @@ const NewMedicationForm = (props) => {
                         })}
                         </div>
                     </div>
+                    <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",width:"100%"}}>
+                    <img style={{height:"180px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/medication-drugs-pills-pharmacy-drug-bottles-flat-illustration_102902-333-removebg-preview+(1).png"></img>
+                    </div>
+                    </div>
                 </div>
-            </div>
         </>
     )
 }

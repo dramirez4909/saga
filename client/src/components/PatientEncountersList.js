@@ -173,13 +173,13 @@ function PatientEncountersList(props) {
                                     <AccordionDetails >
                                         <div style={{paddingRight:"14px",paddingLeft:"14px",paddingTop:"10px",paddingBottom:"10px",backgroundColor: themeContext.themes === "dark" ? "#222222" : "cornflowerblue",color: themeContext.themes === "dark" ? "white" : "white",flexDirection:"column",width:"100%"}}>
                                         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Encounter Provider: </div> <div>{enc.provider.full_name}</div> </div>
-                                        <Divider style={{ width: "100%", backgroundColor:"white" }} light={true} />
+                                        {/* <Divider style={{ width: "100%", backgroundColor:"white" }} light={true} /> */}
                                         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Date: </div> <div>{date}</div> </div>
-                                        <Divider style={{ width: "100%", backgroundColor:"white"}} light={true} />
+                                        {/* <Divider style={{ width: "100%", backgroundColor:"white"}} light={true} /> */}
                                         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Duration: </div> <div>{startTime} - {endTime}</div> </div>
-                                        <Divider style={{ width: "100%", backgroundColor:"white"}} />
+                                        {/* <Divider style={{ width: "100%", backgroundColor:"white"}} /> */}
                                         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Location: </div> <div>{enc.department.name}</div> </div>
-                                        <Divider style={{ width: "100%", backgroundColor:"white" }} light={true}/>
+                                        {/* <Divider style={{ width: "100%", backgroundColor:"white" }} light={true}/> */}
                                         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}><div>Room: </div> <div>{enc.resource.name}</div> </div>
                                         </div>
                                     </AccordionDetails>
