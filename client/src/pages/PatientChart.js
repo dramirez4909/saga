@@ -35,6 +35,7 @@ import BasicPatientAttributes from '../components/BasicPatientAttributes';
 import AllProblems from '../components/PatientAllProblems';
 import ChartReviewBasicAttributes from '../components/ChartReviewBasicAttributes';
 import PatientPhoneNumbers from '../components/PatientPhoneNumbers';
+import HomeIcon from '@material-ui/icons/Home';
 import PatientAddressInfo from '../components/PatientAddressInfo';
 import '../styles/PatientChartRibbon.css'
 
@@ -228,11 +229,10 @@ function PatientChart(props) {
     }
     return (
         <>
-        <div style={{display:"flex",marginTop:"20px",marginLeft:"10px",marginRight:"10px",justifyContent:"center",width:"100%",maxWidth:"1100px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",flexDirection:"column"}}>
-          <div style={{display:"flex",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",justifyContent:"center"}}>
+        <div style={{display:"flex",marginTop:"10px",marginRight:"10px",justifyContent:"center",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",flexDirection:"row"}}>
+          {/* <div style={{display:"flex",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
             <div>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
-                <span style={{fontSize:"25px",padding:"3px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>{patient.firstName + " " + patient.lastName}</span>
                 <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                             {props.patient.sex === "female" ? 
                                 <img style={{height:"24px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/female-removebg-preview.png"></img>
@@ -242,7 +242,7 @@ function PatientChart(props) {
                 <div style={{borderRadius:"9px",display:"flex",color: themeContext.themes === "dark" ? "white" : "grey",fontSize:"17px",zIndex:"3",padding:"3px"}}>{props.patient.sex === "female" ? "[ she / her ]" : "[ he / him ]"}</div>
               </div>
             </div>
-            </div>
+            </div> */}
             {/* <Fade in={!hideOnScroll} timeout={250} mountOnEnter unmountOnExit>
             <div style={{display:"flex",flexDirection:"row", background:"white",alignItems:"center",justifyContent:"space-between", margin:"8px"}}>
                     <div style={{...metricContainerStyle}}>
@@ -276,23 +276,29 @@ function PatientChart(props) {
                     </div>
                 </div>
                 </Fade> */}
-        <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
+        <div style={{display:"flex",flexDirection:"column",borderRight:themeContext.themes === "dark" ? "1px solid white" : "1px solid black"}}>
+          <span style={{fontFamily:"inherit",borderBottom:themeContext.themes === "dark" ? "1px solid white" : "1px solid black",letterSpacing:"2px",textTransform:"uppercase",fontSize:"25px",padding:"8px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"200"}}>{patient.firstName + " " + patient.lastName}</span>
+
         <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
           {/* <span style={{fontSize:"34px",color:themeContext.themes === "dark" ? "white" : "grey"}}>{patient.fullName}</span> */}
-            <div style={{display:"flex",flexDirection:"row"}}>
-            <div>
-            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
+            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",background:themeContext.themes === "dark" ? "#222222" : "rgb(221, 224, 230)",borderLeft:themeContext.themes === "dark" ? "1px solid white" : "1px solid black"}}>
+            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginLeft:"10px",marginTop:"10px",marginBottom:"10px",border:"3px solid white",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
             </div>
-              <ChartReviewBasicAttributes patient={currentPatient}/>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
+            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",paddingTop:"10px",borderTop:themeContext.themes === "dark" ? "1px solid white" : "1px solid black"}}>
+                <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
                     <PatientPhoneNumbers patient={props.patient}/>
                     <PatientAddressInfo patient={props.patient}/>
+                </div>
+                <div>
+                  <ChartReviewBasicAttributes patient={props.patient}></ChartReviewBasicAttributes>
+                </div>
+
             </div>
         </div>
-      <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%"}}> 
+        </div>
+      <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"740px",borderRight:themeContext.themes === "dark" ? "1px solid white" : "1px solid black"}}> 
             {/* <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
               {patientTabs.map((tab,index)=>{
                 return (
@@ -314,6 +320,8 @@ function PatientChart(props) {
             {/* <div style={{minWidth:"400px",marginTop:"0px",position:"sticky",top:"85px",}}>
              Care Timeline 
             </div> */}
+            <div style={{padding:"20px"}}>
+              hey jo! how you farm over there
             </div>
             </div>
             {/* <form ref={form} onSubmit={submit}>

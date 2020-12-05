@@ -15,6 +15,7 @@ import {openDepartmentSchedule} from '../store/activities'
 const StyledMenu = withStyles({
     paper: {
       border: '1px solid #d3d4d5',
+      outline:"none",
     },
   })((props) => (
     <Menu
@@ -33,12 +34,13 @@ const StyledMenu = withStyles({
   ));
 
   const iconStyle = {
-    height: "30px",
-    width: "30px",
+    height: "35px",
+    width: "35px",
   }
 
   const StyledMenuItem = withStyles((theme) => ({
     root: {
+      outline:"none",
       '&:focus': {
         backgroundColor: "grey",
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
@@ -51,12 +53,15 @@ const StyledMenu = withStyles({
   const ColorButton = withStyles((theme) => ({
     root: {
         color: "white",
-        paddingTop:"2px",
-        paddingBottom:"2px",
+        paddingTop:"0px",
+        paddingBottom:"0px",
+        letterSpacing:"1.8px",
         margin: "4px",
+        borderRadius:"20px",
+        paddingLeft:"0px",
         outline:"none",
         textDecoration:"none",
-        backgroundColor:"grey",
+        backgroundColor:"darkgrey",
         '&:hover': {
             backgroundColor: "#b1f3b1 !important",
         },
@@ -106,7 +111,7 @@ const ScheduleSelector = (props) => {
                   color="primary"
                   onClick={handleClick}
                 >
-                 <span style={{textTransform:"none",marginRight:"3px"}}>Dept. Schedules </span><img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img>
+                 <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle, marginRight:"4px" }}></img><span style={{textTransform:"uppercase",marginRight:"3px"}}>Dept. Schedules </span>
                 </ColorButton>
                 <StyledMenu
                   id="customized-menu"

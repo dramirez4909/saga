@@ -155,6 +155,10 @@ div.rbc-time-content {
     position: relative;
 }
 
+#root > div > div.breakpoint__medium-up > div:nth-child(1) > header > div > div > div:nth-child(2) > div:nth-child(2) > button {
+    outline:none;
+}
+
 div.rbc-toolbar > span.rbc-toolbar-label {
     background-color:grey;
     height:100%;
@@ -172,6 +176,10 @@ div.rbc-toolbar > span.rbc-toolbar-label {
     background: transparent;
     color: transparent;
   }
+
+div.MuiAccordionSummary-root.Mui-expanded {
+    min-height: 40px;
+}
   
 /* 
 @keyframes drag_style {

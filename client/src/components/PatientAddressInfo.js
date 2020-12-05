@@ -45,7 +45,7 @@ function PatientAddressInfo(props) {
     const themeContext = useContext(ThemeContext)
     return (
         <>
-                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px", width:"fit-content", boxShadow: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
+                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px", width:"fit-content"}}>
                     <div style={{display:"flex",flexDirection:"row",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"fit-content",borderRadius:"8px"}}>
                         <img style={{...imageStyle}}src="https://saga-health.s3-us-west-1.amazonaws.com/mail-flat.svg"></img>
                         <div style={{display:"flex",flexDirection:"column", width:"fit-content", marginLeft:"9px"}}>

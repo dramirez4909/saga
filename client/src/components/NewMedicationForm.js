@@ -109,6 +109,7 @@ const NewMedicationForm = (props) => {
     const [yellowCheck,setYellowCheck] =useState(true)
     const [greenCheck,setGreenCheck] =useState(true)
     const [greenAnchorEl, setGreenAnchorEl] = React.useState(null);
+    const [displayImage,setDisplayImage] = useState(true)
     const greenOpen = Boolean(greenAnchorEl);
 
     const handleGreenPopoverOpen = (event) => {
@@ -153,16 +154,16 @@ const NewMedicationForm = (props) => {
 
     return (
         <>
-                    <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",padding:"10px"}}>
-                        <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
-                            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-                                <div style={{color:"white", padding:"4px", borderRadius:"4px",fontSize:"18px", backgroundImage: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"}}>New Medication</div> 
-                                <div style={{color:themeContext.themes === "dark" ? "white" : "#444444", fontSize:"18px",marginLeft:"5px", fontWeight:"bold"}}>
+                    <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+                        <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",backgroundColor:themeContext.themes === "dark" ? "#444444" : "black",paddingLeft:"8px",paddingRight:"8px",paddingTop:"4px",paddingBottom:"4px"}}>
+                            <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "black",display:"flex",flexDirection:"row",alignItems:"center",padding:"4px",borderRadius:"4px"}}>
+                            <div style={{color:themeContext.themes === "dark" ? "white" : "white", padding:"4px",background:"grey", borderRadius:"4px",fontSize:"18px"}}>New Medication</div> 
+                                <div style={{color:themeContext.themes === "dark" ? "white" : "white", fontSize:"18px",marginLeft:"5px"}}>
                                     <span style={{fontWeight:"normal"}}>for: </span>{props.patient.firstName + " " + props.patient.lastName}
                                 </div>
                             </div>
                             <div>
-                                    <IconButton onClick={chartContext.handleFormModalClose} style={{color:themeContext.themes === "dark" ? "#ed6969" : "#444444", outline:"none"}}>
+                                    <IconButton onClick={chartContext.handleFormModalClose} style={{color:themeContext.themes === "dark" ? "#ed6969" : "#ed6969", outline:"none"}}>
                                         <CloseIcon></CloseIcon>
                                     </IconButton>
                                 </div>
@@ -173,10 +174,10 @@ const NewMedicationForm = (props) => {
                             Saga works with the Unified Medical Language System (UMLS) to help providers search over every prescribable drug in existence.
                         </div> */}
                         {/* <div style={{display:"flex",flexDirection:"row",justifyContent:"center",fontSize:"18px"}}>Source Vocabularies: </div> */}
-                        <div style={{borderRadius:"8px",padding:"10px",color:themeContext.themes === "dark" ? "white" : "cornflowerblue",marginTop:"4px",fontSize:"18px",display:"flex",justifyContent:"center",textAlign:"center"}}>
+                        <div style={{borderRadius:"8px",color:themeContext.themes === "dark" ? "white" : "cornflowerblue",marginTop:"20px",fontSize:"18px",display:"flex",justifyContent:"center",textAlign:"center"}}>
                             Select the medication source vocabularies to include in your search.
                         </div>
-                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                        <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                         <div>
                             <FormControlLabel
                               aria-owns={greenOpen ? 'mouse-over-popover' : undefined}
@@ -209,8 +210,8 @@ const NewMedicationForm = (props) => {
                         <FormControlLabel control={<GreenCheckbox checked={blueCheck} onChange={handleBlueCheck} name="checkedH" />} label="RxNorm"/>
                         <FormControlLabel control={<GreenCheckbox checked={yellowCheck} onChange={handleYellowCheck} name="checkedI" />} label="SNOMED-CT"/>
                         </div>
-                    {displayMedicationQuestions ? "" : <div style={{display:"flex",flexDirection:"column"}}>
-                    <Input placeholder="e.g. Tylenol, Vyvanse, Melatonin 5mg, Vitamin D etc..." autoFocus={true} style={{color:themeContext.themes === "dark" ? "white" : "black"}} value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}
+                    {displayMedicationQuestions ? "" : <div style={{display:"flex",flexDirection:"column",paddingLeft:"15px",paddingRight:"15px"}}>
+                    <Input placeholder="e.g. Tylenol, Vyvanse, Melatonin 5mg, Vitamin D etc..." autoFocus={true} style={{color:themeContext.themes === "dark" ? "white" : "black",fontSize:"23px"}} value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}
                      endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -219,6 +220,7 @@ const NewMedicationForm = (props) => {
                                 setDisplayMedicationQuestions(false)
                                 setDxSearchResults([])
                                 setSearchingForMeds(true)
+                                setDisplayImage(false)
                                 setDxPerformSearch(!dxPerformSearch)
                                 }}
                             edge="end"
@@ -232,8 +234,8 @@ const NewMedicationForm = (props) => {
                         
                     ></Input>
                     </div>}
-                        <div style={{display:"flex",flexDirection:"column",maxHeight:"300px",overflow:"scroll",marginLeft:"10px"}}>
-                        {searchingForMeds ? <CircularProgress style={{justifySelf:"center",alignSelf:"center",margin:"30px"}}/> : <></>}
+                        <div style={{display:"flex",flexDirection:"column",maxHeight:"300px",overflow:"scroll"}}>
+                        {searchingForMeds ? <CircularProgress style={{justifySelf:"center",alignSelf:"center",margin:"30px", height:"50px",width:"50px"}}/> : <></>}
                         {displayMedicationQuestions ? 
                         <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "white" : "black", borderRadius:"4px",padding:"10px"}}>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
@@ -251,6 +253,7 @@ const NewMedicationForm = (props) => {
                                     onClick={()=>{
                                         console.log("new med riht her ",dxSearchResults[selectedMedicationIndex],newMedInstructions)
                                         addMedication(dxSearchResults[selectedMedicationIndex],newMedInstructions)
+                                        setDisplayImage(true)
                                         setDxSearchResults([])
                                         setDxSearchTerm("")
                                         setNewMedInstructions("")
@@ -264,12 +267,11 @@ const NewMedicationForm = (props) => {
                         return(
                             <div onClick={()=>setSelectedMedicationIndex(index)} 
                             style={{transition:"all .4s ease-in-out",transitionProperty:"width",display:"flex",
-                            flexDirection:"row", alignItems:"center",cursor:"pointer",color:themeContext.themes === "dark" ? "white" : "black",
+                            flexDirection:"row", justifyContent:"center", alignItems:"center",cursor:"pointer",color:themeContext.themes === "dark" ? "white" : "black",
                             marginTop:"3px",padding:"4px",borderRadius:"3px",
-                            background:themeContext.themes === "dark" ? index === selectedMedicationIndex ? "#999999" : "#343434" : index === selectedMedicationIndex ? "aliceblue" : "ivory"}}>
-                                <IconButton size="small" onClick={(e)=>setDisplayMedicationQuestions(true)}>
-                                <AddIcon style={{color:themeContext.themes === "dark" ? "goldenrod" : "goldenrod", borderRadius:"3px",margin:"2px",padding:"2px",cursor:"pointer"}}/>
-                                </IconButton>
+                            fontSize:"18px",
+                            background:themeContext.themes === "dark" ? index === selectedMedicationIndex ? "#999999" : "#343434" : index === selectedMedicationIndex ? "yellowgreen" : "white"}}>
+                                <AddIcon onClick={(e)=>setDisplayMedicationQuestions(true)} size="medium" style={{color:themeContext.themes === "dark" ? "yellowgreen" : "yellowgreen",cursor:"pointer"}}/>
                                 {dx}
                             </div>
                         )
@@ -277,7 +279,7 @@ const NewMedicationForm = (props) => {
                         </div>
                     </div>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",width:"100%"}}>
-                    <img style={{height:"180px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/medication-drugs-pills-pharmacy-drug-bottles-flat-illustration_102902-333-removebg-preview+(1).png"></img>
+                    {displayImage ? <img style={{height:"180px",marginTop:"-30px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/medication-drugs-pills-pharmacy-drug-bottles-flat-illustration_102902-333-removebg-preview+(1).png"></img> : ""}
                     </div>
                     </div>
                 </div>
