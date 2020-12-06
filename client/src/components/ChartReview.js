@@ -65,9 +65,9 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2, 4, 3),
     },
     accordion : {
-        transition: "all .3s ease-in-out",
-        '&hover': {
-            transform:"scale(1.3)"
+        transition: "all .1s ease-in-out",
+        '&:hover': {
+            boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px"
         }
     }
   }));
@@ -110,32 +110,10 @@ function ChartReview(props) {
     return (
         <>
             <PatientChartContext.Provider value={{handleFormModalClose}}>
-            {/* <ChartReviewInfo {...defaultProps} patient={props.patient}/> */}
-            <div style={{padding:"15px",display:"flex", background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                <Grid container spacing={1}>
-                    {/* <Grid container item md={6} sm={6} xs={6}>
-                        <Grid item xs={12}>
-                            <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center",justifyContent:"space-between"}}>
-                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
-                            <img style={{height:"47px",width:"47px", marginLeft:"5px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/256x256.png"></img>
-                            <div style={{color: themeContext.themes === "dark" ? "white" : "black", width:"100%", padding:"4px", fontSize:"16px"}}> Physical Health Problems</div>
-                            </div>
-                            <div style={{display:"flex",flexDirection:"row", alignContent:"center",alignItems:"center"}}>
-                                <IconButton style={{height:"47px",width:"47px", marginRight:"10px"}}>
-                                    <AddIcon style={{height:"24px",width:"24px",color:"white"ext.themes === "dark" ? "white" : "lightgrey"}}></AddIcon>
-                                </IconButton>
-                            </div>
-                            </div>
-                            <PatientPhysicalProblemList patient={props.patient}/>
-                            </div>
-                        </Grid>
-                        
-                    </Grid> */}
-                    <Grid container item lg={6} md={12} sm={12} xs={12}>
-                        <Grid item xs={12} style={{overflow:"scroll",maxHeight:"70vh"}}>
-                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
-                            <Accordion style={{width:"100%",margin:"0px",backgroundColor:"rgb(156, 203, 87)",
+            {/* <div style={{padding:"15px",display:"flex", background:themeContext.themes === "dark" ? "#444444" : "white"}}> */}
+                    {/* <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start",width:"100%"}}> */}
+                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
+                            <Accordion className={classes.accordion} style={{margin:"0px",backgroundColor:"rgb(156, 203, 87)",
                             // backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",
                             color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #9ccb57",overflow:"hidden"}}>
                             <AccordionSummary
@@ -157,13 +135,13 @@ function ChartReview(props) {
                             </div>
                             </div>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails style={{maxHeight:"80vh",overflow:"scroll"}}>
                                 <PatientMedicationsList patient={props.patient}/>
                             </AccordionDetails>
                             </Accordion>
                             </div>
 
-                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
+                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
                             <Accordion style={{width:"100%",margin:"0px",backgroundColor: "#ed6969"
                             // themeContext.themes === "dark" ? "#444444" : "white"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #ed6969",overflow:"hidden"}}>
@@ -186,13 +164,13 @@ function ChartReview(props) {
                             </div>
                             </div>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails style={{maxHeight:"35vh",overflow:"scroll"}}>
                                 <PatientPhysicalProblemList patient={props.patient}/>
                             </AccordionDetails>
                             </Accordion>
                             </div>
 
-                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
+                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
                             <Accordion style={{width:"100%",margin:"0px",backgroundColor: "cornflowerblue"
                             // themeContext.themes === "dark" ? "#444444" : "white"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid cornflowerblue",overflow:"hidden"}}>
@@ -215,18 +193,15 @@ function ChartReview(props) {
                                 </div>
                             </div>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails style={{maxHeight:"35vh",overflow:"scroll"}}>
                                 <PatientMentalProblemList patient={props.patient}/>
                             </AccordionDetails>
                             </Accordion>
                             </div>
+                    {/* </div> */}
+                    {/* <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}> */}
 
-                        </Grid>  
-                    </Grid>
-                    <Grid container item lg={6} md={12} sm={12} xs={12}>
-                        <Grid item xs={12} style={{overflow:"scroll",maxHeight:"70vh"}}>
-
-                        <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
+                        <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
                             <Accordion style={{width:"100%",margin:"0px",backgroundColor: "#a998f4"
                             // themeContext.themes === "dark" ? "#444444" : "white"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #a998f4",overflow:"hidden"}}>
@@ -249,13 +224,13 @@ function ChartReview(props) {
                             </div>
                             </div>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails style={{maxHeight:"80vh",overflow:"scroll"}}>
                                 <PatientOrdersList patient={props.patient}/>
                             </AccordionDetails>
                             </Accordion>
                             </div>
 
-                            <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"100%"}}>
+                            <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
                             <Accordion style={{width:"100%",margin:"0px",backgroundColor: "#f9dc5f"
                             // themeContext.themes === "dark" ? "#444444" : "white"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #f9dc5f",overflow:"hidden"}}>
@@ -271,14 +246,12 @@ function ChartReview(props) {
                                     <div style={{color: themeContext.themes === "dark" ? "white" : "white", width:"100%", padding:"4px", fontSize:"16px"}}> Encounters</div>
                                 </div>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails style={{maxHeight:"80vh",overflow:"scroll"}}>
                                 <PatientEncountersList patient={props.patient}/>
                             </AccordionDetails>
                             </Accordion>
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                            {/* </div>
+                        </div> */}
                 <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -287,13 +260,13 @@ function ChartReview(props) {
         open={formModalOpen}
         onClose={handleFormModalClose}
         closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        // BackdropComponent={Backdrop}
+        // BackdropProps={{
+        //   timeout: 200
+        // }}
       >
         <Slide direction="up" in={formModalOpen}>
-          <div className={classes.paper} style={{display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden",maxWidth:"700px",width:"100%",border:"3px solid black"}}>
+          <div className={classes.paper} style={{overflow:"hidden",display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden"}}>
         {/* <InputLabel htmlFor="demo-customized-select-native">Department</InputLabel> */}
         {/* <NativeSelect
           id="demo-customized-select-native"

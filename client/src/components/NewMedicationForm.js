@@ -155,10 +155,10 @@ const NewMedicationForm = (props) => {
     return (
         <>
                     <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                        <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",backgroundColor:themeContext.themes === "dark" ? "#444444" : "black",paddingLeft:"8px",paddingRight:"8px",paddingTop:"4px",paddingBottom:"4px"}}>
-                            <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "black",display:"flex",flexDirection:"row",alignItems:"center",padding:"4px",borderRadius:"4px"}}>
-                            <div style={{color:themeContext.themes === "dark" ? "white" : "white", padding:"4px",background:"grey", borderRadius:"4px",fontSize:"18px"}}>New Medication</div> 
-                                <div style={{color:themeContext.themes === "dark" ? "white" : "white", fontSize:"18px",marginLeft:"5px"}}>
+                        <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",paddingLeft:"8px",paddingRight:"8px",paddingTop:"12px",paddingBottom:"12px",borderBottom: themeContext.themes === "dark" ? "": ""}}>
+                            <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",display:"flex",flexDirection:"row",alignItems:"center",padding:"4px"}}>
+                            <div style={{color:themeContext.themes === "dark" ? "white" : "black", padding:"4px", borderRadius:"4px",fontSize:"18px"}}>New Medication</div> 
+                                <div style={{color:themeContext.themes === "dark" ? "white" : "cornflowerblue", fontSize:"18px",marginLeft:"5px"}}>
                                     <span style={{fontWeight:"normal"}}>for: </span>{props.patient.firstName + " " + props.patient.lastName}
                                 </div>
                             </div>
@@ -168,8 +168,8 @@ const NewMedicationForm = (props) => {
                                     </IconButton>
                                 </div>
                         </div>
-                    <div style={{display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-                    <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",transition:"all .4s ease-in-out",transitionProperty:"width",width:"100%"}}>
+                    <div style={{display:"flex",flexDirection:"column",justifyContent:"space-between",backgroundColor:themeContext.themes === "dark" ? "#444444" : "#f9fbfb"}}>
+                    <div style={{display:"flex",flexDirection:"column",padding:"4px",transition:"all .4s ease-in-out",transitionProperty:"width",width:"100%"}}>
                         {/* <div style={{borderRadius:"4px",background:"darkgrey",padding:"10px",color:"white"}}>
                             Saga works with the Unified Medical Language System (UMLS) to help providers search over every prescribable drug in existence.
                         </div> */}

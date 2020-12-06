@@ -27,6 +27,18 @@ div.MuiPaper-elevation1 {
     padding:0;
   }
 
+  body > div.makeStyles-modal-44 > div{
+    background-color: rgba(0,0,0,0.2)
+  }
+
+  div.MuiAccordionSummary-root {
+    padding:0px;
+  }
+
+  body > div.makeStyles-modal-44 > div:nth-child(1){
+    background-color:rgba(0, 0, 0, 0.2);
+  }
+
   nav.MuiList-padding {
     padding-bottom: 0px
   }
