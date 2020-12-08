@@ -40,6 +40,8 @@ import NewMentalProblemForm from './newMentalProblemForm';
 import NewPhysicalProblemForm from './NewPhysicalProblemForm';
 import NewOrderForm from './NewOrderForm';
 import PatientChartContext from './utils/PatientChartContext';
+import encountersReducer from '../store/encounters';
+import ChartReviewTabs from './ChartReviewTabs'
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -95,9 +97,15 @@ function ChartReview(props) {
 
     const [formModalOpen, setFormModalOpen] = useState(false);
     const [modalForm, setModalForm] = useState("")
+    const [medsExpanded,setMedsExpanded] = useState(true)
+    const [physicalProblemsExpanded,setPhysicalProblemsExpanded] = useState(true)
+    const [mentalProblemsExpanded,setMentalProblemsExpanded] = useState(true)
+    const [ordersExpanded,setOrdersExpanded] = useState(true)
+    const [encountersExpanded,setEncountersExpanded] = useState(true)
 
-    const handleFormModalOpen = (e,modalForm) => {
-        e.stopPropagation()
+    
+
+    const handleFormModalOpen = (modalForm) => {
         setModalForm(modalForm)
         setFormModalOpen(true);
     };
@@ -107,17 +115,21 @@ function ChartReview(props) {
         setFormModalOpen(false);
     };
 
+    const updateMentalProblems = () => {
+        setMentalProblemsExpanded(!mentalProblemsExpanded)
+    }
+
     return (
         <>
-            <PatientChartContext.Provider value={{handleFormModalClose}}>
-            {/* <div style={{padding:"15px",display:"flex", background:themeContext.themes === "dark" ? "#444444" : "white"}}> */}
-                    {/* <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start",width:"100%"}}> */}
-                            <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
-                            <Accordion className={classes.accordion} style={{margin:"0px",backgroundColor:"rgb(156, 203, 87)",
-                            // backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",
+            <PatientChartContext.Provider value={{handleFormModalOpen,handleFormModalClose,setModalForm,setFormModalOpen}}>
+                <ChartReviewTabs />
+                            {/* <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
+                            <Accordion expanded={medsExpanded} className={classes.accordion} style={{margin:"0px",backgroundColor:"rgb(156, 203, 87)",
                             color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #9ccb57",overflow:"hidden"}}>
                             <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{color: "white"}}/>}
+                                expandIcon={<ExpandMoreIcon 
+                                    onClick={(e)=>{setMedsExpanded(!medsExpanded)}} 
+                                    style={{color: "white"}}/>}
                                 aria-label="Expand"
                                 aria-controls="additional-actions1-content"
                                 id="additional-actions1-header"
@@ -142,11 +154,13 @@ function ChartReview(props) {
                             </div>
 
                             <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
-                            <Accordion style={{width:"100%",margin:"0px",backgroundColor: "#ed6969"
-                            // themeContext.themes === "dark" ? "#444444" : "white"
+                            <Accordion expanded={physicalProblemsExpanded}
+                            style={{width:"100%",margin:"0px",backgroundColor: "#ed6969"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #ed6969",overflow:"hidden"}}>
                             <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{color: "white"}}/>}
+                                expandIcon={<ExpandMoreIcon 
+                                    onClick={(e)=>{setPhysicalProblemsExpanded(!physicalProblemsExpanded)}} 
+                                    style={{color: "white"}}/>}
                                 aria-label="Expand"
                                 aria-controls="additional-actions1-content"
                                 id="additional-actions1-header"
@@ -171,11 +185,13 @@ function ChartReview(props) {
                             </div>
 
                             <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
-                            <Accordion style={{width:"100%",margin:"0px",backgroundColor: "cornflowerblue"
-                            // themeContext.themes === "dark" ? "#444444" : "white"
+                            <Accordion expanded={mentalProblemsExpanded}
+                            style={{width:"100%",margin:"0px",backgroundColor: "cornflowerblue"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid cornflowerblue",overflow:"hidden"}}>
                             <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{color: "white"}}/>}
+                                expandIcon={<ExpandMoreIcon 
+                                    onClick={updateMentalProblems} 
+                                    style={{color: "white"}}/>}
                                 aria-label="Expand"
                                 aria-controls="additional-actions1-content"
                                 id="additional-actions1-header"
@@ -198,15 +214,15 @@ function ChartReview(props) {
                             </AccordionDetails>
                             </Accordion>
                             </div>
-                    {/* </div> */}
-                    {/* <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start"}}> */}
 
                         <div style={{display:"flex",marginBottom:"8px",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
-                            <Accordion style={{width:"100%",margin:"0px",backgroundColor: "#a998f4"
-                            // themeContext.themes === "dark" ? "#444444" : "white"
+                            <Accordion expanded={ordersExpanded}
+                            style={{width:"100%",margin:"0px",backgroundColor: "#a998f4"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #a998f4",overflow:"hidden"}}>
                             <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{color: "white"}}/>}
+                                expandIcon={<ExpandMoreIcon 
+                                    onClick={(e)=>setOrdersExpanded(!ordersExpanded)} 
+                                    style={{color: "white"}}/>}
                                 aria-label="Expand"
                                 aria-controls="additional-actions1-content"
                                 id="additional-actions1-header"
@@ -231,11 +247,12 @@ function ChartReview(props) {
                             </div>
 
                             <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"25%",marginLeft:"2px",marginRight:"2px"}}>
-                            <Accordion style={{width:"100%",margin:"0px",backgroundColor: "#f9dc5f"
-                            // themeContext.themes === "dark" ? "#444444" : "white"
+                            <Accordion expanded={encountersExpanded}
+                            style={{width:"100%",margin:"0px",backgroundColor: "#f9dc5f"
                             ,color: themeContext.themes === "light" ? "white" : "white",borderRadius:"25px",border:"2px solid #f9dc5f",overflow:"hidden"}}>
                             <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{color: "white"}}/>}
+                                expandIcon={<ExpandMoreIcon 
+                                    style={{color: "white"}}/>}
                                 aria-label="Expand"
                                 aria-controls="additional-actions1-content"
                                 id="additional-actions1-header"
@@ -250,9 +267,8 @@ function ChartReview(props) {
                                 <PatientEncountersList patient={props.patient}/>
                             </AccordionDetails>
                             </Accordion>
-                            {/* </div>
-                        </div> */}
-                <div>
+                <div> */}
+    <div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -288,7 +304,6 @@ function ChartReview(props) {
         </Slide>
       </Modal>
     </div>
-            </div>
             </PatientChartContext.Provider>
         </>
     );

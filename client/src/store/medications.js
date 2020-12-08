@@ -4,7 +4,7 @@ import {addMedicaiton} from './current_patient'
 const CREATE_MEDICATION = '/medications/CREATE_MEDICATION'
 
 
-export const createMedication = (medicaiton) => async (dispatch) => {
+export const createMedication = (medication) => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN")
     const jsonMed = JSON.stringify(medication)
     const res = await fetch('/api/medications/create',{

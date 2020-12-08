@@ -133,13 +133,14 @@ const NewMedicationForm = (props) => {
         setGreenCheck(!greenCheck)
       };
 
-    const addMedication = (medicationName,instructions) => {
-        dispatch(createMedication({medicationName,instructions,patient:props.patient.id,provider_id}))
+    const addMedication = (medicationName,instructions,cui) => {
+        dispatch(createMedication({medicationName,instructions,patient:props.patient.id,provider_id,cui}))
     }
 
     useEffect(()=>{
         const searchDxs= async (searchTerm) => {
             const response = await fetch(`/api/umls/search-term/${searchTerm}`)
+            // const response = await fetch(`/api/umls/search-cui`)
             const data = await response.json()
             console.log(data)
             setSearchingForMeds(false)
@@ -163,7 +164,9 @@ const NewMedicationForm = (props) => {
                                 </div>
                             </div>
                             <div>
-                                    <IconButton onClick={chartContext.handleFormModalClose} style={{color:themeContext.themes === "dark" ? "#ed6969" : "#ed6969", outline:"none"}}>
+                                    <IconButton 
+                                    // onClick={chartContext.handleFormModalClose}
+                                     style={{color:themeContext.themes === "dark" ? "#ed6969" : "#ed6969", outline:"none"}}>
                                         <CloseIcon></CloseIcon>
                                     </IconButton>
                                 </div>
@@ -239,7 +242,7 @@ const NewMedicationForm = (props) => {
                         {displayMedicationQuestions ? 
                         <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "white" : "black", borderRadius:"4px",padding:"10px"}}>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                            <div style={{fontSize:"24px",marginBottom:"3px"}}>{dxSearchResults[selectedMedicationIndex]}</div>
+                            <div style={{fontSize:"24px",marginBottom:"3px"}}>{dxSearchResults[selectedMedicationIndex].name}</div>
                             <Button size="medium" onClick={()=>setDisplayMedicationQuestions(false)}>
                                 back
                             </Button>
@@ -251,8 +254,8 @@ const NewMedicationForm = (props) => {
                                 </div>
                                 <Button size="large" variant="outlined" fullWidth={"true"} style={{marginTop:"5px",justifySelf:"center", alginSelf:"center",outline:"none"}}
                                     onClick={()=>{
-                                        console.log("new med riht her ",dxSearchResults[selectedMedicationIndex],newMedInstructions)
-                                        addMedication(dxSearchResults[selectedMedicationIndex],newMedInstructions)
+                                        console.log("new med riht her ",dxSearchResults[selectedMedicationIndex].name,newMedInstructions)
+                                        addMedication(dxSearchResults[selectedMedicationIndex].name,newMedInstructions,dxSearchResults[selectedMedicationIndex].cui)
                                         setDisplayImage(true)
                                         setDxSearchResults([])
                                         setDxSearchTerm("")
@@ -264,6 +267,7 @@ const NewMedicationForm = (props) => {
                             </form>
                         </div>
                         : dxSearchResults.map((dx,index)=>{
+                          if (dx.name === "NO RESULTS") return;
                         return(
                             <div onClick={()=>setSelectedMedicationIndex(index)} 
                             style={{transition:"all .4s ease-in-out",transitionProperty:"width",display:"flex",
@@ -271,8 +275,8 @@ const NewMedicationForm = (props) => {
                             marginTop:"3px",padding:"4px",borderRadius:"3px",
                             fontSize:"18px",
                             background:themeContext.themes === "dark" ? index === selectedMedicationIndex ? "#999999" : "#343434" : index === selectedMedicationIndex ? "yellowgreen" : "white"}}>
-                                <AddIcon onClick={(e)=>setDisplayMedicationQuestions(true)} size="medium" style={{color:themeContext.themes === "dark" ? "yellowgreen" : "yellowgreen",cursor:"pointer"}}/>
-                                {dx}
+                                <AddIcon onClick={(e)=>setDisplayMedicationQuestions(true)} size="medium" style={{color:index === selectedMedicationIndex ? "white" : "yellowgreen",cursor:"pointer"}}/>
+                                {dx.name}
                             </div>
                         )
                         })}

@@ -13,6 +13,16 @@ div.MuiPaper-elevation1 {
   box-shadow: none;
 }
 
+#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > header > div > div.MuiTabs-scroller.MuiTabs-scrollable > span {
+  height:100%;
+  background-color: cornflowerblue;
+}
+
+button.MuiTab-textColorPrimary.Mui-selected {
+  color: white
+}
+
+
 .circular--portrait {
     position: relative;
     opacity: 100%;

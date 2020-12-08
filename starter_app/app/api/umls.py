@@ -19,11 +19,12 @@ parser.add_argument("-s", "--string", required =  True, dest="string", help = "e
 
 @umls.route("/search-term/<search_string>")
 def user_medications(search_string):
+    search_type ="exact"
     string = search_string
     pageNumber = 0
     AuthClient = Authentication(apikey)
     sabs= ['RXNORM','DRUGBANK']
-    searchType='approximate'
+    searchType=search_type
     tgt = AuthClient.gettgt()
     # ticket = AuthClient.getst(tgt)
     # query = {'string':string,'ticket':ticket, 'pageNumber':pageNumber,'sabs':sabs,'searchType':searchType}
@@ -41,7 +42,7 @@ def user_medications(search_string):
     #     names.append(result['name'])
     # print("THE POINT IS THAT IT WORKS!!!!!!!!!!!!!!!!!",tgt,"ST:",ticket)
     # return {"results": names}
-    while pageNumber < 3:
+    while pageNumber < 5:
       ticket = AuthClient.getst(tgt)
       pageNumber += 1
       query = {'string':string,'ticket':ticket, 'pageNumber':pageNumber,'sabs':sabs,'searchType':searchType}
@@ -71,7 +72,7 @@ def user_medications(search_string):
           NameError
         try:
           print("name: " + result["name"])
-          names.append(result['name'])
+          names.append({"name":result['name'],"cui":result['ui']})
         except:
           NameError
         try:
@@ -241,12 +242,12 @@ def chronic_problems(search_string):
 
   ############################
   ### Print out fields ####
-@umls.route('/search-cui/')
-def search_cui():
+@umls.route('/search-cui/<cui>')
+def search_cui(cui):
   #username = args.username
   #password = args.password
   version = "current"
-  identifier = 'C0005684'
+  identifier = cui
   source = 'MTH'
   AuthClient = Authentication(apikey)
 
@@ -264,7 +265,7 @@ def search_cui():
 
   ##if we don't specify a source vocabulary, assume we're retrieving UMLS CUIs
   # if source is None:
-  content_endpoint = "/rest/content/"+str(version)+"/CUI/"+str(identifier)
+  content_endpoint = "/rest/content/"+str(version)+"/CUI/"+str(identifier)+"/definitions"
 
   # else:
   # content_endpoint = "/rest/content/"+str(version)+"/source/"+str(source)+"/"+str(identifier)
@@ -278,59 +279,46 @@ def search_cui():
   print("items boiiii!!!!!!!!!!!!!",items)
   jsonData = items["result"]
   print("RAW JSON DATA BABY:",jsonData)
-  classType = jsonData["classType"]
-  name = jsonData["name"]
-  ui = jsonData["ui"]
-  AtomCount = jsonData["atomCount"]
-  Definitions = jsonData["definitions"]
-  Atoms = jsonData["atoms"]
-  DefaultPreferredAtom = jsonData["defaultPreferredAtom"]
-
+  return {"definitions":jsonData}
   # print out the shared data elements that are common to both the 'Concept' and 'SourceAtomCluster' class
-  print ("classType: " + classType)
-  print ("ui: " + ui)
-  print ("Name: " + name)
-  print ("AtomCount: " + str(AtomCount))
-  print ("Atoms: " + Atoms)
-  print ("Default Preferred Atom: " + DefaultPreferredAtom)
 
   ## These data elements may or may not exist depending on what class ('Concept' or 'SourceAtomCluster') you're dealing with so we check for each one.
-  try:
-    jsonData["definitions"]
-    print ("definitions: " + jsonData["definitions"])
-  except:
-        pass
+  # try:
+  #   jsonData["definitions"]
+  #   print ("definitions: " + jsonData["definitions"])
+  # except:
+  #       pass
 
-  try:
-    jsonData["parents"]
-    print ("parents: " + jsonData["parents"])
-  except:
-        pass
+  # try:
+  #   jsonData["parents"]
+  #   print ("parents: " + jsonData["parents"])
+  # except:
+  #       pass
 
-  try:
-    jsonData["children"]
-    print ("children: " + jsonData["children"])
-  except:
-        pass
+  # try:
+  #   jsonData["children"]
+  #   print ("children: " + jsonData["children"])
+  # except:
+  #       pass
 
-  try:
-    jsonData["relations"]
-    print ("relations: " + jsonData["relations"])
-  except:
-        pass
+  # try:
+  #   jsonData["relations"]
+  #   print ("relations: " + jsonData["relations"])
+  # except:
+  #       pass
 
-  try:
-    jsonData["descendants"]
-    print ("descendants: " + jsonData["descendants"])
-  except:
-        pass
+  # try:
+  #   jsonData["descendants"]
+  #   print ("descendants: " + jsonData["descendants"])
+  # except:
+  #       pass
 
-  try:
-    jsonData["semanticTypes"]
-    print("Semantic Types:")
-    for stys in jsonData["semanticTypes"]:
-        print("uri: "+ stys["uri"])
-        print("name: "+ stys["name"])
+  # try:
+  #   jsonData["semanticTypes"]
+  #   print("Semantic Types:")
+  #   for stys in jsonData["semanticTypes"]:
+  #       print("uri: "+ stys["uri"])
+  #       print("name: "+ stys["name"])
         
-  except:
-        pass
+  # except:
+  #       pass

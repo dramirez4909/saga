@@ -19,7 +19,7 @@ medications = Blueprint('medications', __name__)
 def create_medication():
     data = request.json
     print("!!!!!!!!!!!!!!!!!!!!!!!!!",data)
-    medication = Medication(patient_id=data["patient"],instructions=data['instructions'],provider_id=data['provider_id'],name=data['medicationName'], created_at=datetime.now())
+    medication = Medication(patient_id=data["patient"],instructions=data['instructions'],provider_id=data['provider_id'],name=data['medicationName'], created_at=datetime.now(),cui=data['cui'])
     db.session.add(medication)
     db.session.commit()
     format_medication = medication.to_dict()

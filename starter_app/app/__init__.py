@@ -17,6 +17,7 @@ from .api.orders import orders
 from .api.departments import departments
 from .api.medications import medications
 from .api.problems import problems
+from .api.providers import providers
 
 from .config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
 from .config import Config
@@ -32,6 +33,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(session, url_prefix='/api/session')
+app.register_blueprint(providers, url_prefix='/api/providers')
 app.register_blueprint(activity, url_prefix='/api/activity')
 app.register_blueprint(umls,url_prefix='/api/umls')
 app.register_blueprint(patients,url_prefix='/api/patients')

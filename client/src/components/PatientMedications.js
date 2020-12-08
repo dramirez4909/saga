@@ -1,18 +1,83 @@
-import React, { useContext,useState, useEffect } from 'react';
-import {openPatientChart} from '../store/activities'
-import { useDispatch, useSelector } from 'react-redux';
-import HomeContext from './utils/HomeContext';
+import React, { useContext, useState } from 'react';
+import FavoriteIcon from '@material-ui/icons/FavoriteTwoTone';
+import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
+import BasicPatientAttributes from './BasicPatientAttributes';
+import PatientPhoneNumbers from './PatientPhoneNumbers';
+import PatientAddressInfo from './PatientAddressInfo';
+import ThemeContext from './utils/ThemeContext';
+import PatientProblems from './PatientMentalProblems';
+import PatientMentalProblemList from './PatientMentalProblemList';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import InputBase from '@material-ui/core/InputBase';
+import FormControl from '@material-ui/core/FormControl';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import PatientPhysicalProblemList from './PatientPhysicalProblemList';
+import PatientMedicationsList from './PatientMedicationsList';
+import PatientEncounters from '../components/PatientEncounters';
+import PatientOrders from '../components/PatientOrders';
+import { useSelector } from 'react-redux';
+import PatientNotes from '../components/PatientNotes';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, TextField } from '@material-ui/core';
+import PatientEncountersList from './PatientEncountersList';
+import PatientOrdersList from './PatientOrdersList';
+import AddIcon from '@material-ui/icons/Add';
+import ChartReviewInfo from './ChartReviewInfo'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Slide from '@material-ui/core/Slide';
+import Button from '@material-ui/core/Button';
+import { List } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import SelectedOrderPreviewCard from '../components/SelectedOrderPreviewCard';
 import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import { Grid, Container, Card, InputBase, TextField } from '@material-ui/core';
-import ThemeContext from './utils/ThemeContext';
-import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
-import AddIcon from '@material-ui/icons/AddCircleTwoTone';
-import IconButton from '@material-ui/core/IconButton';
-import {createMedication} from '../store/current_patient'
-import PatientMedicationsList from './PatientMedicationsList';
+import InputLabel from '@material-ui/core/InputLabel';
+import NewMedicationForm from './NewMedicationForm';
+import NewMentalProblemForm from './newMentalProblemForm';
+import NewPhysicalProblemForm from './NewPhysicalProblemForm';
+import NewOrderForm from './NewOrderForm';
+import PatientChartContext from './utils/PatientChartContext';
+import encountersReducer from '../store/encounters';
+import ChartReviewTabs from './ChartReviewTabs'
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color: "white",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        margin: "4px",
+        backgroundColor:"grey",
+        '&:hover': {
+            backgroundColor: "#b1f3b1 !important",
+        },
+    },
+    }))(Button);
+
+const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+    accordion : {
+        transition: "all .1s ease-in-out",
+        '&:hover': {
+            boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px"
+        }
+    }
+  }));
+  
+
+const imageStyle={
+    hieght:"32px",
+    width:"32px"
+  }
 
 
 const useStylesLoginTextField = makeStyles((theme) => ({
@@ -40,22 +105,6 @@ const useStylesLoginTextField = makeStyles((theme) => ({
     return <TextField InputProps={{ classes, disableUnderline: true }} {...props} />;
   }
 
-const ColorButton = withStyles((theme) => ({
-    root: {
-        color: "#ed4959",
-        paddingRight: "10px",
-        paddingLeft: "10px",
-        margin: "4px",
-        backgroundColor:"white",
-        border:"1px solid #ed4959",
-        '&:hover': {
-            backgroundColor: "#ed4959 !important",
-            color:"white",
-            border:"1px solid #ed4959",
-        },
-    },
-    }))(Button);
-
 const SelectMedButton = withStyles((theme) => ({
     root: {
         color: "#ed4959",
@@ -73,12 +122,13 @@ const SelectMedButton = withStyles((theme) => ({
     }))(Button);
 
 function PatientMedications(props) { 
+    const classes = useStyles()
     console.log(props)
-    const context = useContext(HomeContext)
-    const dispatch = useDispatch()
     const provider_id = useSelector(state=>state.auth.user.id)
     const [medications,setMedications] = useState([])
     const themeContext = useContext(ThemeContext)
+    const [formModalOpen, setFormModalOpen] = useState(false);
+    const [modalForm, setModalForm] = useState("")
     const [dxSearchTerm,setDxSearchTerm] = useState("")
     const [dxSearchResults,setDxSearchResults]=useState([]);
     const [dxPerformSearch,setDxPerformSearch]=useState(false)
@@ -87,83 +137,55 @@ function PatientMedications(props) {
     const [displayMedicationQuestions,setDisplayMedicationQuestions] = useState(false)
     const [newMedInstructions,setNewMedInstructions] = useState("")
 
-    const addMedication = (medicationName,instructions) => {
-        dispatch(createMedication({medicationName,instructions,patient:props.patient.id,provider_id}))
-    }
-
-    useEffect(()=>{
-        const searchDxs= async (searchTerm) => {
-            const response = await fetch(`/api/umls/search-term/${searchTerm}`)
-            const data = await response.json()
-            console.log(data)
-            setSearchingForMeds(false)
-            setDxSearchResults(data.results)
-            return;
-        }
-        if (dxSearchTerm.length > 0) {
-            searchDxs(dxSearchTerm)
-        }
-    },[dxPerformSearch])
+    const handleFormModalOpen = (modalForm) => {
+        setModalForm(modalForm)
+        console.log(modalForm)
+        setFormModalOpen(true);
+    };
+  
+    const handleFormModalClose = () => {
+        setModalForm("")
+        setFormModalOpen(false);
+    };
 
 
     return (
         <>
-                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"fit-content",marginLeft:"9px",marginRight:"9px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}}>
-                    <div style={{color:"white", marginTop:"10px",marginBottom:"6px", width:"100%", padding:"4px", fontSize:"16px", backgroundImage: "linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%)"}}>Medications</div>
+                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"100%",marginLeft:"9px",marginRight:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                    <ColorButton onClick={(e)=>handleFormModalOpen("NewMedicationForm")} style={{outline:"none"}}>
+                        <AddIcon></AddIcon> Add a Medication
+                    </ColorButton>
+                    <div>
+                        Medications
+                    </div>
+                    </div>
+                    <div style={{overflow:"scroll"}}>
                     <PatientMedicationsList patient={{...props.patient}}/>
-                    <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",transition:"all .4s ease-in-out",transitionProperty:"width"}}>
-                    <div style={{display:"flex",flexDirection:"column"}}>
-                    <LoginTextField placeholder="enter a medication" value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}></LoginTextField>
-                    <ColorButton onClick={()=>{
-                        setDisplayMedicationQuestions(false)
-                        setDxSearchResults([])
-                        setSearchingForMeds(true)
-                        setDxPerformSearch(!dxPerformSearch)
-                        }}
-                        style={{background:"transparent"}}
-                        ><FindInPageTwoToneIcon style={{marginRight:"4px"}}/> search for med</ColorButton>
                     </div>
-                        <div style={{display:"flex",flexDirection:"column",maxHeight:"200px",overflow:"scroll",marginLeft:"10px"}}>
-                        {searchingForMeds ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/ezgif.com-gif-maker.gif" style={{height:"140px",marginLeft:"10px"}}></img> : <></>}
-                        {displayMedicationQuestions ? 
-                        <div style={{display:"flex",flexDirection:"column",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white",color:themeContext.themes === "dark" ? "antiquewhite" : "grey",marginLeft:"10px", borderRadius:"4px",padding:"10px"}}>
-                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                            <div style={{fontSize:"20px"}}>{dxSearchResults[selectedMedicationIndex]}</div>
-                            <Button size="small" onClick={()=>setDisplayMedicationQuestions(false)}>
-                                back
-                            </Button>
-                            </div>
-                            <form>
-                                <div style={{display:"flex",flexDirection:"column", justifyContent:"center"}}>
-                                    <p>Insructions:</p>
-                                    <input value={newMedInstructions} onChange={(e)=>setNewMedInstructions(e.target.value)}></input>
-                                </div>
-                                <IconButton size="large">
-                                    <AddIcon style={{color:"lightgreen"}} onClick={()=>{
-                                        setDxSearchResults([])
-                                        setDxSearchTerm("")
-                                        setNewMedInstructions("")
-                                        setDisplayMedicationQuestions(false)
-                                        addMedication(dxSearchResults[selectedMedicationIndex],newMedInstructions)}}/>
-                                </IconButton>
-                            </form>
-                        </div>
-                        : dxSearchResults.map((dx,index)=>{
-                        return(
-                            <div onClick={()=>setSelectedMedicationIndex(index)} 
-                            style={{transition:"all .4s ease-in-out",transitionProperty:"width",display:"flex",
-                            flexDirection:"row", alignItems:"center",cursor:"pointer",color:themeContext.themes === "dark" ? "white" : "black",
-                            marginTop:"3px",padding:"4px",borderRadius:"3px",
-                            background:themeContext.themes === "dark" ? index === selectedMedicationIndex ? "#999999" : "#343434" : index === selectedMedicationIndex ? "aliceblue" : "ivory"}}>
-                                <IconButton size="small" onClick={(e)=>setDisplayMedicationQuestions(true)}>
-                                <AddIcon style={{color:themeContext.themes === "dark" ? "goldenrod" : "goldenrod", borderRadius:"3px",margin:"2px",padding:"2px",cursor:"pointer"}}/>
-                                </IconButton>
-                                {dx}
-                            </div>
-                        )
-                        })}
-                        </div>
-                    </div>
+                    <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={formModalOpen}
+        onClose={handleFormModalClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 200
+        }}
+      >
+        <Slide direction="up" in={formModalOpen}>
+          <div className={classes.paper} style={{overflow:"hidden",display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden"}}>
+          {modalForm === "NewMedicationForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
+          {modalForm === "NewOrderForm" ? <NewOrderForm patient={props.patient}></NewOrderForm> : <></> }
+          {modalForm === "NewMentalProblemForm" ? <NewMentalProblemForm patient={props.patient}></NewMentalProblemForm> : <></> }
+          {modalForm === "NewPhysicalProblemForm" ? <NewPhysicalProblemForm patient={props.patient}></NewPhysicalProblemForm> : <></> }
+          </div>
+        </Slide>
+      </Modal>
+    </div>
                 </div>
         </>
     );

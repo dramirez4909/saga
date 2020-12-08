@@ -38,6 +38,7 @@ import PatientPhoneNumbers from '../components/PatientPhoneNumbers';
 import HomeIcon from '@material-ui/icons/Home';
 import PatientAddressInfo from '../components/PatientAddressInfo';
 import '../styles/PatientChartRibbon.css'
+import ChartReviewTabs from '../components/ChartReviewTabs';
 
 const isBrowser = typeof window !== `undefined`
 
@@ -298,7 +299,7 @@ function PatientChart(props) {
             </div>
         </div>
         </div>
-      <div style={{display:"flex", flexDirection:"column",flexWrap:"wrap",maxHeight:"82vh",alignContent:"flex-start",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%",borderRight:themeContext.themes === "dark" ? "1px solid white" : "1px solid black",alignContent:"center"}}> 
+      <div style={{display:"flex", flexDirection:"column",flexWrap:"wrap",maxHeight:"82vh",alignContent:"flex-start",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%",alignContent:"center"}}> 
             {/* <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
               {patientTabs.map((tab,index)=>{
                 return (
@@ -310,7 +311,7 @@ function PatientChart(props) {
                 )
               })}
             </div> */}
-              {currentPatientTab === "Chart Review" ? <ChartReview patient={currentPatient}/> : <></>}
+              {currentPatientTab === "Chart Review" ? <ChartReviewTabs patient={currentPatient}/> : <></>}
               {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
               {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
               {currentPatientTab === "Notes" ? <PatientNotes patient={currentPatient}/> : <></>}
