@@ -7,14 +7,14 @@ const OPEN_TAB = 'encounter/OPEN_TAB'
 const OPEN_CHART = 'encounter/OPEN_CHART'
 const ADD_ENCOUNTER = 'encounter/ADD_ENCOUNTER'
 
-export const loadProviderEncounters = (id) => async (dispatch) => {
-    const csrfToken = Cookies.get("XSRF-TOKEN");
-    const res = await fetch(`/api/encounters/provider/${id}`)
-    if (res.ok) {
-        const data = await res.json()
-        // dispatch(setEncounters(data.encounters))
-    }
-}
+// export const loadProviderEncounters = (id) => async (dispatch) => {
+//     const csrfToken = Cookies.get("XSRF-TOKEN");
+//     const res = await fetch(`/api/encounters/provider/${id}`)
+//     if (res.ok) {
+//         const data = await res.json()
+//         // dispatch(setEncounters(data.encounters))
+//     }
+// }
 
 export const loadDepartmentEncounters = () => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN");

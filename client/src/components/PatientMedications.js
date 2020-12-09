@@ -151,42 +151,7 @@ function PatientMedications(props) {
 
     return (
         <>
-                <div style={{display:"flex",flexDirection:"column",borderRadius:"9px",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px", width:"100%",marginLeft:"9px",marginRight:"9px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                    <ColorButton onClick={(e)=>handleFormModalOpen("NewMedicationForm")} style={{outline:"none"}}>
-                        <AddIcon></AddIcon> Add a Medication
-                    </ColorButton>
-                    <div>
-                        Medications
-                    </div>
-                    </div>
-                    <div style={{overflow:"scroll"}}>
                     <PatientMedicationsList patient={{...props.patient}}/>
-                    </div>
-                    <div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={formModalOpen}
-        onClose={handleFormModalClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 200
-        }}
-      >
-        <Slide direction="up" in={formModalOpen}>
-          <div className={classes.paper} style={{overflow:"hidden",display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden"}}>
-          {modalForm === "NewMedicationForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
-          {modalForm === "NewOrderForm" ? <NewOrderForm patient={props.patient}></NewOrderForm> : <></> }
-          {modalForm === "NewMentalProblemForm" ? <NewMentalProblemForm patient={props.patient}></NewMentalProblemForm> : <></> }
-          {modalForm === "NewPhysicalProblemForm" ? <NewPhysicalProblemForm patient={props.patient}></NewPhysicalProblemForm> : <></> }
-          </div>
-        </Slide>
-      </Modal>
-    </div>
-                </div>
         </>
     );
 }

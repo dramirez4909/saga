@@ -4,6 +4,7 @@ const SET_PATIENT = "/currentPatient/SET_PATIENT"
 const ADD_ORDER = "/currentPatient/ADD_ORDER"
 const ADD_MED = "/currentPatient/ADD_MED"
 const ADD_PROBLEM = "/currentPatient/ADD_PROBLEM"
+const UPDATE_MED = "/currentPatient/UPDATE_MED"
 
 
 export const setPatient = (patient) => {
@@ -34,6 +35,29 @@ export const createMedication = (medication) => async (dispatch) => {
     const data = await res.json()
     console.log(data)
     dispatch(addMedication(data.medication))
+}
+
+export const updateMedication = (medication) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const jsonMed = JSON.stringify(medication)
+    const res = await fetch('/api/medications/create',{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonMed
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(updateMed(data.medication))
+}
+
+export const updateMed = (medication) => {
+    return {
+        type:UPDATE_MED,
+        medication
+    }
 }
 
 export const createProblem = (problem) => async (dispatch) => {
@@ -73,8 +97,9 @@ export const addOrder = (order) => {
     }
 }
 
-export default function currentPatientReducer(state={orders:[],medications:[],problems:[],encounters:[]},action){
+export default function currentPatientReducer(state={orders:[],medications:{},problems:[],encounters:[]},action){
     const newState = Object.assign({},state)
+    const meds = {...state.medications}
     switch (action.type) {
         case SET_PATIENT:
             return action.patient
@@ -84,10 +109,12 @@ export default function currentPatientReducer(state={orders:[],medications:[],pr
             newState.orders.push(action.order)
             return newState
         case ADD_MED:
-            const meds = [...state.medications]
             newState.medications = meds
-            newState.medications.push(action.medication)
+            newState.medications[action.medication.id] = action.medication
             return newState
+        // case UPDATE_MED: 
+        //     newState.medications = meds
+        //     newState.medications
         case ADD_PROBLEM: 
             const probs = [...state.problems]
             newState.problems = probs

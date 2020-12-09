@@ -278,16 +278,16 @@ function PatientChart(props) {
                 </div>
                 </Fade> */}
         <div style={{display:"flex",flexDirection:"column",borderRight:themeContext.themes === "dark" ? "" : ""}}>
-          <span style={{fontFamily:"inherit",borderBottom:themeContext.themes === "dark" ? "1px solid white" : "1px solid black",letterSpacing:"2px",textTransform:"uppercase",fontSize:"25px",padding:"8px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"200"}}>{patient.firstName + " " + patient.lastName}</span>
+          <span style={{fontFamily:"inherit",letterSpacing:"2px",textTransform:"uppercase",fontSize:"25px",padding:"8px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"200"}}>{patient.firstName + " " + patient.lastName}</span>
 
         <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
           {/* <span style={{fontSize:"34px",color:themeContext.themes === "dark" ? "white" : "grey"}}>{patient.fullName}</span> */}
             <div style={{display:"flex",flexDirection:"row",justifyContent:"center",background:themeContext.themes === "dark" ? "#4444" : "white",borderLeft:themeContext.themes === "dark" ? "" : ""}}>
-            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginLeft:"10px",marginTop:"10px",marginBottom:"10px",border:"3px solid white",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
+            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginLeft:"10px",marginTop:"10px",marginBottom:"10px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
                 {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
             </div>
             </div>
-            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",paddingTop:"10px",borderTop:themeContext.themes === "dark" ? "1px solid white" : "1px solid black"}}>
+            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",paddingTop:"10px"}}>
                 <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
                     <PatientPhoneNumbers patient={props.patient}/>
                     <PatientAddressInfo patient={props.patient}/>

@@ -75,6 +75,10 @@ button.MuiTab-textColorPrimary.Mui-selected {
     flex-direction: column;
 }
 
+#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > header {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
   #user-photo {
   grid-row-start: 2;
   border-radius: 2.5em;

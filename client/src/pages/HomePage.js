@@ -221,14 +221,13 @@ const HomePage=(props)=>{
                     <div className={context.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
                     {tabs.map((activity, index)=>
                         (   
-                            <ActivityTab key={index} style={{...tabStyle}} index={index} activity={activity}/>
+                            <ActivityTab key={activity.name} style={{...tabStyle}} index={index} activity={activity}/>
                         ))}
                     </div>
                     <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
                     {tabs.map(( activity, index)=>
                     (
-                        <Fade in={activity.name === selectedTabName} timeout={350} mountOnEnter unmountOnExit>
-                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
+                        <div style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
                             {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
                             {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
@@ -236,7 +235,7 @@ const HomePage=(props)=>{
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
-                        </Fade>
+                        
                         ))}
                 </div>
                 </div>
