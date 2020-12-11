@@ -29,6 +29,8 @@ import NewMedicationForm from './NewMedicationForm';
 import NewMentalProblemForm from './newMentalProblemForm';
 import NewPhysicalProblemForm from './NewPhysicalProblemForm';
 import NewOrderForm from './NewOrderForm';
+import {updateMedication} from '../store/current_patient';
+import EditIcon from '@material-ui/icons/Edit';
 
 const NewItemColorButton = withStyles((theme) => ({
     root: {
@@ -40,8 +42,25 @@ const NewItemColorButton = withStyles((theme) => ({
         width:"fit-content",
         backgroundColor:"#a9a9a9",
         '&:hover': {
-            backgroundColor: "#b1f3b1 !important",
+            backgroundColor: "yellowgreen !important",
         },
+    },
+    }))(Button);
+
+const GreenColorButton = withStyles((theme) => ({
+    root: {
+        color: "yellowgreen",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        outline:"none",
+        margin: "4px",
+        backgroundColor:"transparent",
+        border:"1px solid yellowgreen",
+        '&:hover': {
+            backgroundColor: "yellowgreen !important",
+            color:"white",
+            border:"1px solid yellowgreen",
+        }
     },
     }))(Button);
 
@@ -144,7 +163,17 @@ const ColorButton = withStyles((theme) => ({
           },
         patientInstructions : {
             cursor:"pointer",
+            transition:"all .3s ease-in-out",
             '&:hover': {
+                background:"gainsboro"
+            }
+        
+        },
+        patientInstructionsDark : {
+            cursor:"pointer",
+            transition:"all .3s ease-in-out",
+            '&:hover': {
+                background:"grey"
             }
         }
     }));
@@ -159,6 +188,7 @@ function PatientMedicationsList(props) {
     const dispatch = useDispatch()
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const [patient,setPatient] = useState(props.patient)
+    const [medsArray,setMedsArray] = useState([])
     const [selectedIndex, setSelectedIndex] = React.useState();
     const [previewCui,setPreviewCui] = useState("")
     const [selectedItemDefinitions,setSelectedItemDefinitions] = useState([])
@@ -195,6 +225,7 @@ function PatientMedicationsList(props) {
 
     useEffect(()=>{
         if (props.patient.problems) {
+            setMedsArray(Object.values(patient.medications))
             setPatient(props.patient)
             setLoading(false)
         }
@@ -222,21 +253,31 @@ function PatientMedicationsList(props) {
     },[previewCui])
 
     const handleSave =()=>{
-        // const newMed = {...selectedMed}
-        // newMed.instructions = selectedMedInstructions
-        // const newPatientMeds = [...patient.medications]
-        // newPatientMeds[selectedIndex] = newMed
-        // const newPatient = {...patient}
-        // newPatient.medications = newPatientMeds
-        // setPatient(newPatient)
-
+        const newMed = {...selectedMed}
+        newMed.instructions = selectedMedInstructions
+        setSelectedMed(newMed)
         setSelectedMedInstructions(selectedMedInstructions)
         setShowInstructionEdit(false)
+        dispatch(updateMedication({id:selectedMed.id,instructions:selectedMedInstructions,current:selectedMed.current}))
     }
 
     const handleCancel = () => {
         setSelectedMedInstructions(selectedMed.instructions)
         setShowInstructionEdit(false)
+    }
+
+    const handleDiscontinue = () => {
+        const newMed = {...selectedMed}
+        newMed.current = "false"
+        setSelectedMed(newMed)
+        dispatch(updateMedication({id:selectedMed.id,instructions:selectedMedInstructions,current:"false"}))
+    }
+
+    const handleRestart = () => {
+        const newMed = {...selectedMed}
+        newMed.current = "true"
+        setSelectedMed(newMed)
+        dispatch(updateMedication({id:selectedMed.id,instructions:selectedMedInstructions,current:"true"}))
     }
 
 
@@ -268,6 +309,7 @@ function PatientMedicationsList(props) {
     }
     const rippleClasses = { rippleVisible: classes.rippleVisible, child: classes.child, [`${"@keyframes enter"}`]: classes[`${"@keyframes enter"}`] }
 
+
     return (
         <>  
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
@@ -298,11 +340,15 @@ function PatientMedicationsList(props) {
                                     handleListItemClick(med, index)
                                 }}
                                 className={"TaskPaperListItem"}
-                                style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none", backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "light" ? "#444444" : "white" }}
+                                style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none",
+                                backgroundColor: themeContext.themes === "dark" ? selectedIndex === index ? "#999999" : "#444444" : selectedIndex === index ? "aliceblue" : "white",
+                                color: themeContext.themes === "light" ? "#444444" : "white" }}
                             >
                                 <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
                                 {/* <span style={{color:themeContext.themes === "light" ? "#444444" : "lightgreen"}}>{notedDate}</span>  */}
                                 <span style={{fontSize:"18px"}}>{med.name}</span> 
+                                {console.log("current med boi",med.current)}
+                               {med.current === "true" ? <span style={{fontSize:"18px",background:"yellowgreen",padding:"2px", borderRadius:"4px",color:"white"}}>CURR</span> : <span style={{color:"white",fontSize:"18px",background:"darkgray",padding:"2px", borderRadius:"4px"}}>DIS</span>}
                                 </div>
                                 <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
                             </ListItem>
@@ -311,7 +357,6 @@ function PatientMedicationsList(props) {
                             </>
                             )
                         })}
-                
                 </List>
                 </div>
                 {selectedMed.name && provider.first_name ? 
@@ -326,9 +371,10 @@ function PatientMedicationsList(props) {
                         <span style={{marginLeft:"20px",color:"salmon"}}>
                             CUI: {" " + selectedMed.cui}
                         </span>
-                        <ColorButton>
+                        {selectedMed.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>DISCONTINUED</span>}
+                        {selectedMed.current === "false" ? <GreenColorButton onClick={handleRestart}>Restart</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
                             discontinue
-                        </ColorButton>
+                        </ColorButton>}
                     </div>
                         <Divider style={{ width: "100%" }} light={true} />
                         <div style={{display:"flex",flexDirection:"column"}}>
@@ -342,8 +388,8 @@ function PatientMedicationsList(props) {
                                 {!showInstructionEdit ? 
                                 <>
                                 <div style={{display:"flex",flexDirection:"column",marginLeft:"20px",marginRight:"20px"}}>
-                                <div className={classes.patientInstructions} rows={4} style={{border:themeContext.themes === "dark" ? "2px solid grey" : "2px solid white", borderRadius:"4px",width:"100%",padding:"10px"}}>{!selectedMedInstructions ? "No Instructions" : selectedMedInstructions}</div>
-                                <div style={{display:"flex",marginLeft:"40px"}}><BlueColorButton onClick={(e)=>{setShowInstructionEdit(true)}}>Edit</BlueColorButton> </div>
+                                <div className={themeContext.themes === "dark" ? classes.patientInstructionsDark: classes.patientInstructions} onClick={(e)=>{setShowInstructionEdit(true)}} rows={4} style={{border:themeContext.themes === "dark" ? "2px solid grey" : "2px solid grey", borderRadius:"4px",width:"100%",padding:"10px"}}>{!selectedMedInstructions ? "No Instructions" : selectedMedInstructions}</div>
+                                <div style={{display:"flex",marginLeft:"40px"}}><BlueColorButton onClick={(e)=>{setShowInstructionEdit(true)}}><EditIcon style={{marginRight:"4px"}}/>Edit</BlueColorButton> </div>
                                 </div>
                                 </>
                                  : 
@@ -389,10 +435,14 @@ function PatientMedicationsList(props) {
                         )
                     })}
                 </div> : 
-                <div style={{borderRadius:"9px",
-                margin:"20px",
-                boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px",display:"flex",flexDirection:"column",width:"50%",height:"450px", color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                    <h3>Select a medication to preview</h3>
+                <div style={{borderRadius:"4px",
+                marginLeft:"10px",
+                // boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
+                overflow:"scroll",maxHeight:"450px",
+                justifyContent:"center",alignItems:"center",
+                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"gainsboro"}}>
+                    <h3 style={{padding:"20px",color:"white"}}>Select a medication to preview</h3>
+                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/istockphoto-1077536516-612x612-removebg-preview.png" style={{width:"400px",marginTop:"-70px"}}></img>
                 </div>}
                 </div>
       <Modal

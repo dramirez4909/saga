@@ -24,3 +24,15 @@ def create_medication():
     db.session.commit()
     format_medication = medication.to_dict()
     return {"medication":format_medication}
+
+@medications.route("/update",methods=["PATCH"])
+def update_medication():
+    data = request.json
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!",data)
+    med_to_update = Medication.query.get(data['id'])
+    med_to_update.instructions = data["instructions"]
+    med_to_update.current = data["current"]
+    db.session.add(med_to_update)
+    db.session.commit()
+    format_medication = med_to_update.to_dict()
+    return {"medication":format_medication}

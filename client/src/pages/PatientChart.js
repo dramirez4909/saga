@@ -230,7 +230,7 @@ function PatientChart(props) {
     }
     return (
         <>
-        <div style={{display:"flex",marginTop:"10px",marginRight:"10px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",flexDirection:"row"}}>
+        <div style={{display:"flex",marginRight:"10px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",flexDirection:"row"}}>
           {/* <div style={{display:"flex",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
             <div>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >

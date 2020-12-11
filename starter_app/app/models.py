@@ -229,7 +229,7 @@ class Medication(db.Model):
   created_at = db.Column(db.DateTime, nullable = True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
   cui = db.Column(db.String(50),nullable=True)
-  current = db.Column(db.String(50),nullable=True)
+  current = db.Column(db.String(50),nullable=True,default="true")
   
   patient = db.relationship("Patient",back_populates="medications")
   def to_dict(self):
@@ -242,6 +242,7 @@ class Medication(db.Model):
       "patient":{"id":self.patient.id},
       "cui":self.cui,
       "provider_id":self.provider_id,
+      "current":self.current,
     }
   
   def basic(self):
@@ -254,6 +255,7 @@ class Medication(db.Model):
       "patient":{"id":self.patient.id},
       "cui":self.cui,
       "provider_id":self.provider_id,
+      "current":self.current,
     }
 
 

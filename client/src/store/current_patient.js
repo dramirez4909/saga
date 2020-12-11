@@ -40,7 +40,7 @@ export const createMedication = (medication) => async (dispatch) => {
 export const updateMedication = (medication) => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN")
     const jsonMed = JSON.stringify(medication)
-    const res = await fetch('/api/medications/create',{
+    const res = await fetch('/api/medications/update',{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export const addOrder = (order) => {
     }
 }
 
-export default function currentPatientReducer(state={orders:[],medications:{},problems:[],encounters:[]},action){
+export default function currentPatientReducer(state={orders:[],medications:{},problems:{},encounters:[]},action){
     const newState = Object.assign({},state)
     const meds = {...state.medications}
     switch (action.type) {
@@ -112,13 +112,13 @@ export default function currentPatientReducer(state={orders:[],medications:{},pr
             newState.medications = meds
             newState.medications[action.medication.id] = action.medication
             return newState
-        // case UPDATE_MED: 
-        //     newState.medications = meds
-        //     newState.medications
+        case UPDATE_MED: 
+            newState.medications = meds
+            newState.medications[action.medication.id] = action.medication
         case ADD_PROBLEM: 
-            const probs = [...state.problems]
-            newState.problems = probs
-            newState.problems.push(action.problem)
+            const probs = {...state.problems}
+            // newState.problems = probs
+            // newState.problems[action.problem.id] = action.problem
             return newState
         default:
             return state
