@@ -115,7 +115,7 @@ function PatientEncounters(props) {
     const [displayOrderForm,setDisplayOrderForm] = useState(false)
     const [newOrderType,setNewOrderType] =useState(1)
     const [newOrderPatientName,setNewOrderPatientName]=useState(props.patient.fullName)
-    const [newOrderStatus,setNewOrderStatus]=useState("unscheduled")
+    const [newOrderStatus,setNewOrderStatus]=useState("Needs Scheduled")
     const [newOrderSignature,setNewOrderSignature]=useState("")
     const [createNewOrder,setCreateNewOrder]=useState(true)
     const themeContext = useContext(ThemeContext)

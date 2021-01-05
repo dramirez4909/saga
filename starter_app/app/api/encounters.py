@@ -33,7 +33,7 @@ def department_encounters_and_orders():
 def create_encounter():
     data = request.json
     order = Order.query.get(data["order"]["id"])
-    order.status = "scheduled"
+    order.status = "Scheduled"
     start = datetime.fromisoformat((data["start"][:-1]+"-01:00"))
     end = datetime.fromisoformat((data["end"][:-1]+"-01:00"))
 

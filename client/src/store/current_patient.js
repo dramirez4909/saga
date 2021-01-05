@@ -6,6 +6,7 @@ const ADD_MED = "/currentPatient/ADD_MED"
 const ADD_PROBLEM = "/currentPatient/ADD_PROBLEM"
 const UPDATE_MED = "/currentPatient/UPDATE_MED"
 const UPDATE_PROB = "/currentPatient/UPDATE_PROB"
+const UPDATE_ORDER = "/currentPatient/UPDATE_ORDER"
 
 
 export const setPatient = (patient) => {
@@ -114,6 +115,29 @@ export const addProblem = (problem) => {
     }
 }
 
+export const updateOrder = (order) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const jsonOrd = JSON.stringify(order)
+    const res = await fetch('/api/orders/update',{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonOrd
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(updateOrd(data.order))
+}
+
+export const updateOrd = (order) => {
+    return {
+        type:UPDATE_ORDER,
+        order
+    }
+}
+
 export const addOrder = (order) => {
     return {
         type:ADD_ORDER,
@@ -121,17 +145,17 @@ export const addOrder = (order) => {
     }
 }
 
-export default function currentPatientReducer(state={orders:[],medications:{},problems:{},encounters:[]},action){
+export default function currentPatientReducer(state={orders:{},medications:{},problems:{},encounters:[]},action){
     const newState = Object.assign({},state)
     const meds = {...state.medications}
     const probs = {...state.problems}
+    const orders = {...state.orders}
     switch (action.type) {
         case SET_PATIENT:
             return action.patient
         case ADD_ORDER:
-            const orders = [...state.orders]
             newState.orders = orders
-            newState.orders.push(action.order)
+            newState.orders[action.order.id] = (action.order)
             return newState
         case ADD_MED:
             newState.medications = meds
@@ -148,6 +172,10 @@ export default function currentPatientReducer(state={orders:[],medications:{},pr
         case UPDATE_PROB: 
             newState.problems = probs
             newState.problems[action.problem.id] = action.problem
+            return newState
+        case UPDATE_ORDER: 
+            newState.orders = orders
+            newState.orders[action.order.id] = action.order
             return newState
         default:
             return state

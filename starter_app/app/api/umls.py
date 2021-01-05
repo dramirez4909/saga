@@ -232,7 +232,68 @@ def chronic_problems(search_string):
 # parser.add_argument("-s", "--source", required =  False, dest="source", help = "enter source name if known")
 
 
-
+@umls.route("/search-term/procedure-order/<search_string>")
+def procedure_orders(search_string):
+    string = search_string
+    pageNumber = 0
+    AuthClient = Authentication(apikey)
+    sabs= ['CPT']
+    searchType='approximate'
+    tgt = AuthClient.gettgt()
+    # ticket = AuthClient.getst(tgt)
+    # query = {'string':string,'ticket':ticket, 'pageNumber':pageNumber,'sabs':sabs,'searchType':searchType}
+    uri = "https://uts-ws.nlm.nih.gov"
+    version = "current"
+    content_endpoint = "/rest/search/"+version
+    # r = requests.get(uri+content_endpoint,params=query)
+    # r.encoding = 'utf-8'
+    # items  = json.loads(r.text)
+    # jsonData = items["result"]
+    names = []
+    # for result in jsonData["results"]:
+    #     print(result['name'])
+    #     print(result)
+    #     names.append(result['name'])
+    # print("THE POINT IS THAT IT WORKS!!!!!!!!!!!!!!!!!",tgt,"ST:",ticket)
+    # return {"results": names}
+    while pageNumber < 2:
+      ticket = AuthClient.getst(tgt)
+      pageNumber += 1
+      query = {'string':string,'ticket':ticket, 'pageNumber':pageNumber,'sabs':sabs,'searchType':searchType}
+      #query['includeObsolete'] = 'true'
+      #query['includeSuppressible'] = 'true'
+      #query['returnIdType'] = "sourceConcept"
+      #query['sabs'] = "SNOMEDCT_US"
+      r = requests.get(uri+content_endpoint,params=query)
+      r.encoding = 'utf-8'
+      items  = json.loads(r.text)
+      jsonData = items["result"]
+      #print (json.dumps(items, indent = 4))
+      print("Results for page " + str(pageNumber)+"\n")
+      for result in jsonData["results"]:
+        try:
+          print(result)
+          print("ui: " + result["ui"])
+        except:
+          NameError
+        try:
+          print("uri: " + result["uri"])
+        except:
+          NameError
+        try:
+          print("name: " + result["name"])
+          names.append({"name":result['name'],"cui":result['ui']})
+        except:
+          NameError
+        try:
+          print("Source Vocabulary: " + result["rootSource"])
+        except:
+          NameError
+        print("\n")
+      ##Either our search returned nothing, or we're at the end
+      if jsonData["results"][0]["ui"] == "NONE":
+          return {"results":names}
+    return {"results":names}
 
 
 ##uncomment the print statment if you want the raw json output, or you can just look at the documentation :=)
@@ -279,7 +340,7 @@ def search_cui(cui):
   print("items boiiii!!!!!!!!!!!!!",items)
   try:
     if items["error"] == 'No results containing all your search terms were found.':
-      return {"definitions":[{"rootSource":"NODATA","value":"No definition data found in UMLS Metathesuarus"}]}
+      return {"definitions":[{"rootSource":"GENERIC","value":"No specific definition available"}]}
   except:
     NameError
   jsonData = items["result"]

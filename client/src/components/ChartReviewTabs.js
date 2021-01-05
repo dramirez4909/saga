@@ -15,6 +15,7 @@ import PatientMedications from './PatientMedications';
 import ThemeContext from './utils/ThemeContext';
 import PatientPhysicalProblemsList from './PatientPhysicalProblemList'
 import { Fade } from '@material-ui/core';
+import PatientOrdersList from './PatientOrdersList';
 
 const tabStyle = {
   outline: "none",
@@ -121,7 +122,7 @@ export default function ChartReviewTabs(props) {
         <PatientPhysicalProblemsList patient={props.patient}/>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Orders
+        <PatientOrdersList patient={props.patient}/>
       </TabPanel>
       <TabPanel value={value} index={5}>
         Encounters

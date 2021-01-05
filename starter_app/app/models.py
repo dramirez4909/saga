@@ -67,7 +67,6 @@ class Order_Type(db.Model):
   name = db.Column(db.String(40), nullable = False)
   department_id = db.Column(db.Integer, db.ForeignKey("departments.id"), nullable=True)
 
-
   orders = db.relationship("Order",back_populates="type")
   department = db.relationship("Department",back_populates="order_types")
 
@@ -88,6 +87,11 @@ class Order(db.Model):
   encounter_id = db.Column(db.Integer, db.ForeignKey("encounters.id"), nullable=True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
   department_id = db.Column(db.Integer, db.ForeignKey("departments.id"), nullable=True)
+  created_at = db.Column(db.DateTime, nullable = True)
+  cui = db.Column(db.String(30), nullable=True)
+  name = db.Column(db.String(2000), nullable = True)
+  note = db.Column(db.String(2000), nullable = True)
+
 
   type = db.relationship("Order_Type",back_populates="orders")
   patient = db.relationship("Patient",back_populates="orders")
@@ -104,7 +108,12 @@ class Order(db.Model):
         "status": self.status,
         "provider": self.provider.name_and_id(),
         "type":self.type.name,
-        "department":{"id":self.department_id}
+        "department":{"id":self.department_id},
+        "created_at": self.created_at,
+        "provider_id": self.provider_id,
+        "cui":self.cui,
+        "name": self.name,
+        "note": self.note
       }
     else: 
       return{
@@ -113,7 +122,12 @@ class Order(db.Model):
         "status": self.status,
         "provider": self.provider.name_and_id(),
         "type":self.type.name,
-        "department":{"id":self.department_id}
+        "department":{"id":self.department_id},
+        "created_at": self.created_at,
+        "provider_id": self.provider_id,
+        "cui":self.cui,
+        "name": self.name,
+        "note": self.note
       }
     
   def basic(self):
@@ -125,7 +139,12 @@ class Order(db.Model):
         "status": self.status,
         "provider": self.provider.name_and_id(),
         "type":self.type.name,
-        "department":{"id":self.department_id}
+        "department":{"id":self.department_id},
+        "created_at": self.created_at,
+        "provider_id": self.provider_id,
+        "cui":self.cui,
+        "name": self.name,
+        "note": self.note
       }
     else: 
       return{
@@ -134,7 +153,12 @@ class Order(db.Model):
         "status": self.status,
         "provider": self.provider.name_and_id(),
         "type":self.type.name,
-        "department":{"id":self.department_id}
+        "department":{"id":self.department_id},
+        "created_at": self.created_at,
+        "provider_id": self.provider_id,
+        "cui":self.cui,
+        "name": self.name,
+        "note": self.note
       }
 
 class Problem(db.Model):
