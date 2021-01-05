@@ -18,8 +18,20 @@ problems = Blueprint('problems', __name__)
 @problems.route("/create",methods=["POST"])
 def create_problem():
     data = request.json
-    problem = Problem(patient_id=data["patient"],provider_id=data['provider_id'],name=data['problemName'], created_at=datetime.now(), type=data['type'])
+    problem = Problem(cui=data["cui"],patient_id=data["patient"],provider_id=data['provider_id'],name=data['problemName'], created_at=datetime.now(), type=data['type'],note=data['instructions'])
     db.session.add(problem)
     db.session.commit()
     format_problem = problem.to_dict()
+    return {"problem":format_problem}
+
+@problems.route("/update",methods=["PATCH"])
+def update_problem():
+    data = request.json
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!",data)
+    prob_to_update = Problem.query.get(data['id'])
+    prob_to_update.note = data["note"]
+    prob_to_update.current = data["current"]
+    db.session.add(prob_to_update)
+    db.session.commit()
+    format_problem = prob_to_update.to_dict()
     return {"problem":format_problem}

@@ -145,6 +145,9 @@ class Problem(db.Model):
   created_at = db.Column(db.DateTime, nullable = True)
   provider_id = db.Column(db.Integer, db.ForeignKey("providers.id"), nullable=True)
   type = db.Column(db.String(40), nullable = True)
+  cui = db.Column(db.String(50),nullable=True)
+  note = db.Column(db.String(2000), nullable = True)
+  current = db.Column(db.String(50), nullable=True)
 
   patient = db.relationship("Patient",back_populates="problems")
   provider = db.relationship("Provider",back_populates="problems")
@@ -154,7 +157,11 @@ class Problem(db.Model):
       "id": self.id,
       "name": self.name,
       "created_at": self.created_at,
-      "type":self.type
+      "type":self.type,
+      "cui":self.cui,
+      "provider_id":self.provider_id,
+      "note":self.note,
+      "current":self.current,
     }
   
   def basic(self):
@@ -162,7 +169,11 @@ class Problem(db.Model):
       "id": self.id,
       "name": self.name,
       "created_at": self.created_at,
-      "type":self.type
+      "type":self.type,
+      "cui":self.cui,
+      "provider_id":self.provider_id,
+      "note":self.note,
+      "current":self.current,
     }
 
 

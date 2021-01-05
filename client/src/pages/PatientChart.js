@@ -277,8 +277,8 @@ function PatientChart(props) {
                     </div>
                 </div>
                 </Fade> */}
-        <div style={{display:"flex",flexDirection:"column",borderRight:themeContext.themes === "dark" ? "" : ""}}>
-          <span style={{fontFamily:"inherit",letterSpacing:"2px",textTransform:"uppercase",fontSize:"25px",padding:"8px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"200"}}>{patient.firstName + " " + patient.lastName}</span>
+        <div style={{display:"flex",flexDirection:"column",borderRight:themeContext.themes === "dark" ? "" : "",borderRight:themeContext.themes === "dark" ? "1px solid black" : "1px solid gainsboro"}}>
+          <span style={{fontFamily:"inherit",letterSpacing:"2px",textAlign:"center",textTransform:"uppercase",fontSize:"20px",padding:"6px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"500"}}>{patient.firstName + " " + patient.lastName}</span>
 
         <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
           {/* <span style={{fontSize:"34px",color:themeContext.themes === "dark" ? "white" : "grey"}}>{patient.fullName}</span> */}
@@ -292,10 +292,6 @@ function PatientChart(props) {
                     <PatientPhoneNumbers patient={props.patient}/>
                     <PatientAddressInfo patient={props.patient}/>
                 </div>
-                <div>
-                  <ChartReviewBasicAttributes patient={props.patient}></ChartReviewBasicAttributes>
-                </div>
-
             </div>
         </div>
         </div>
@@ -311,12 +307,10 @@ function PatientChart(props) {
                 )
               })}
             </div> */}
+                <div>
+                  <ChartReviewBasicAttributes patient={props.patient}></ChartReviewBasicAttributes>
+                </div>
               {currentPatientTab === "Chart Review" ? <ChartReviewTabs patient={currentPatient}/> : <></>}
-              {currentPatientTab === "Encounters" ? <PatientEncounters patient={currentPatient}/> : <></>}
-              {currentPatientTab === "Orders" ? <PatientOrders patient={currentPatient}/> : <></>}
-              {currentPatientTab === "Notes" ? <PatientNotes patient={currentPatient}/> : <></>}
-              {currentPatientTab === "Problem List" ? <AllProblems patient={currentPatient}/> : <></>}
-              {currentPatientTab === "Meds" ? <PatientMedications patient={currentPatient}/> : <></>}
             </div>
             {/* <div style={{minWidth:"400px",marginTop:"0px",position:"sticky",top:"85px",}}>
              Care Timeline 

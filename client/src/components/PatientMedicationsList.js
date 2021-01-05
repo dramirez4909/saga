@@ -49,17 +49,14 @@ const NewItemColorButton = withStyles((theme) => ({
 
 const GreenColorButton = withStyles((theme) => ({
     root: {
-        color: "yellowgreen",
+        color: "white",
         paddingRight: "10px",
         paddingLeft: "10px",
         outline:"none",
         margin: "4px",
-        backgroundColor:"transparent",
-        border:"1px solid yellowgreen",
+        backgroundColor:"#a9a9a9",
         '&:hover': {
             backgroundColor: "yellowgreen !important",
-            color:"white",
-            border:"1px solid yellowgreen",
         }
     },
     }))(Button);
@@ -67,17 +64,17 @@ const GreenColorButton = withStyles((theme) => ({
 
 const ColorButton = withStyles((theme) => ({
     root: {
-        color: "salmon",
+        color: "white",
         paddingRight: "10px",
         paddingLeft: "10px",
         outline:"none",
         margin: "4px",
-        backgroundColor:"transparent",
-        border:"1px solid salmon",
+        backgroundColor:"#a9a9a9",
+        border:"1px solid #a9a9a9",
         '&:hover': {
-            backgroundColor: "salmon !important",
+            backgroundColor: "#ed462f !important",
             color:"white",
-            border:"1px solid salmon",
+            border:"1px solid #ed462f",
         }
     },
     }))(Button);
@@ -366,12 +363,12 @@ function PatientMedicationsList(props) {
                 overflow:"scroll",maxHeight:"450px",
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                     <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
+                                                {selectedMed.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>DISCONTINUED</span>}
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
                         <h2 style={{color:"cornflowerblue"}}>{selectedMed.name}</h2>
                         <span style={{marginLeft:"20px",color:"salmon"}}>
                             CUI: {" " + selectedMed.cui}
                         </span>
-                        {selectedMed.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>DISCONTINUED</span>}
                         {selectedMed.current === "false" ? <GreenColorButton onClick={handleRestart}>Restart</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
                             discontinue
                         </ColorButton>}
@@ -415,8 +412,7 @@ function PatientMedicationsList(props) {
                             </div>
                             <Divider style={{ width: "100%"}} light={true} />
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-
-                            </div>
+                                </div>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
 
                             </div>
@@ -438,11 +434,10 @@ function PatientMedicationsList(props) {
                 <div style={{borderRadius:"4px",
                 marginLeft:"10px",
                 // boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
-                overflow:"scroll",maxHeight:"450px",
                 justifyContent:"center",alignItems:"center",
-                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"gainsboro"}}>
-                    <h3 style={{padding:"20px",color:"white"}}>Select a medication to preview</h3>
-                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/istockphoto-1077536516-612x612-removebg-preview.png" style={{width:"400px",marginTop:"-70px"}}></img>
+                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"transparent"}}>
+                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/simmmax191100036-removebg-preview.png" style={{width:"400px",marginTop:"-20px"}}></img>
+                    <div>Select a medication to expand</div>
                 </div>}
                 </div>
       <Modal

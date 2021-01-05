@@ -5,6 +5,7 @@ const ADD_ORDER = "/currentPatient/ADD_ORDER"
 const ADD_MED = "/currentPatient/ADD_MED"
 const ADD_PROBLEM = "/currentPatient/ADD_PROBLEM"
 const UPDATE_MED = "/currentPatient/UPDATE_MED"
+const UPDATE_PROB = "/currentPatient/UPDATE_PROB"
 
 
 export const setPatient = (patient) => {
@@ -53,10 +54,33 @@ export const updateMedication = (medication) => async (dispatch) => {
     dispatch(updateMed(data.medication))
 }
 
+export const updateProblem = (problem) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const jsonMed = JSON.stringify(problem)
+    const res = await fetch('/api/problems/update',{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonMed
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(updateProb(data.problem))
+}
+
 export const updateMed = (medication) => {
     return {
         type:UPDATE_MED,
         medication
+    }
+}
+
+export const updateProb = (problem) => {
+    return {
+        type:UPDATE_PROB,
+        problem
     }
 }
 
@@ -100,6 +124,7 @@ export const addOrder = (order) => {
 export default function currentPatientReducer(state={orders:[],medications:{},problems:{},encounters:[]},action){
     const newState = Object.assign({},state)
     const meds = {...state.medications}
+    const probs = {...state.problems}
     switch (action.type) {
         case SET_PATIENT:
             return action.patient
@@ -115,10 +140,14 @@ export default function currentPatientReducer(state={orders:[],medications:{},pr
         case UPDATE_MED: 
             newState.medications = meds
             newState.medications[action.medication.id] = action.medication
+            return newState
         case ADD_PROBLEM: 
-            const probs = {...state.problems}
-            // newState.problems = probs
-            // newState.problems[action.problem.id] = action.problem
+            newState.problems = probs
+            newState.problems[action.problem.id] = action.problem
+            return newState
+        case UPDATE_PROB: 
+            newState.problems = probs
+            newState.problems[action.problem.id] = action.problem
             return newState
         default:
             return state

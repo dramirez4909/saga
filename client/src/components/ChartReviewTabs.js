@@ -13,7 +13,8 @@ import PatientMentalProblemsList from './PatientMentalProblemList'
 import PatientMedsTable from './PatientMedsTable';
 import PatientMedications from './PatientMedications';
 import ThemeContext from './utils/ThemeContext';
-
+import PatientPhysicalProblemsList from './PatientPhysicalProblemList'
+import { Fade } from '@material-ui/core';
 
 const tabStyle = {
   outline: "none",
@@ -96,17 +97,13 @@ export default function ChartReviewTabs(props) {
             icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/256x256.png"></img>} 
             {...a11yProps(3)}
           />
-          <Tab label="Allergies" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
-            icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/91-919780_stimulant-drugs-clipart-png-download.png"></img>} 
-            {...a11yProps(4)}
-          />
           <Tab label="Orders" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
             icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-calendar-100.png"></img>} 
-            {...a11yProps(5)}
+            {...a11yProps(4)}
           />
           <Tab label="Encounters" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
             icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/paper-rocket-flat.svg"></img>} 
-            {...a11yProps(6)}
+            {...a11yProps(5)}
           />
         </Tabs>
       </AppBar>
@@ -121,15 +118,12 @@ export default function ChartReviewTabs(props) {
         <PatientMentalProblemsList patient={props.patient}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Problem List
+        <PatientPhysicalProblemsList patient={props.patient}/>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Allergies
-      </TabPanel>
-      <TabPanel value={value} index={5}>
         Orders
       </TabPanel>
-      <TabPanel value={value} index={6}>
+      <TabPanel value={value} index={5}>
         Encounters
         <PatientEncountersList patient={props.patient}/>
       </TabPanel>

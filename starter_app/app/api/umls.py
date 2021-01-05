@@ -59,7 +59,7 @@ def user_medications(search_string):
       for result in jsonData["results"]:
         try:
           print(result)
-          w = "/rest/content/"+version + "/CUI/" + "C1163349" + "/atmos"
+          w = "/rest/content/"+version + "/CUI/" + "C1163349" + "/atoms"
           tick = {'ticket':ticket}
           p = requests.get(uri+w,params=tick)
           print(p)
@@ -138,7 +138,7 @@ def mental_health_problems(search_string):
           NameError
         try:
           print("name: " + result["name"])
-          names.append(result['name'])
+          names.append({"name":result['name'],"cui":result['ui']})
         except:
           NameError
         try:
@@ -205,7 +205,7 @@ def chronic_problems(search_string):
           NameError
         try:
           print("name: " + result["name"])
-          names.append(result['name'])
+          names.append({"name":result['name'],"cui":result['ui']})
         except:
           NameError
         try:
@@ -277,9 +277,15 @@ def search_cui(cui):
   r.encoding = 'utf-8'
   items  = json.loads(r.text)
   print("items boiiii!!!!!!!!!!!!!",items)
+  try:
+    if items["error"] == 'No results containing all your search terms were found.':
+      return {"definitions":[{"rootSource":"NODATA","value":"No definition data found in UMLS Metathesuarus"}]}
+  except:
+    NameError
   jsonData = items["result"]
   print("RAW JSON DATA BABY:",jsonData)
   return {"definitions":jsonData}
+  
   # print out the shared data elements that are common to both the 'Concept' and 'SourceAtomCluster' class
 
   ## These data elements may or may not exist depending on what class ('Concept' or 'SourceAtomCluster') you're dealing with so we check for each one.
