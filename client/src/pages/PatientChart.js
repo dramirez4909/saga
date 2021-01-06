@@ -278,7 +278,7 @@ function PatientChart(props) {
                 </div>
                 </Fade> */}
         <div style={{display:"flex",flexDirection:"column",borderRight:themeContext.themes === "dark" ? "" : "",borderRight:themeContext.themes === "dark" ? "1px solid black" : "1px solid gainsboro"}}>
-          <span style={{fontFamily:"inherit",letterSpacing:"2px",textAlign:"center",textTransform:"uppercase",fontSize:"20px",padding:"6px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"500"}}>{patient.firstName + " " + patient.lastName}</span>
+          <span style={{fontFamily:"inherit",letterSpacing:"2px",textAlign:"center",textTransform:"uppercase",fontSize:"20px",padding:"6px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"500",marginTop:"30px"}}>{patient.firstName + " " + patient.lastName}</span>
 
         <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
           {/* <span style={{fontSize:"34px",color:themeContext.themes === "dark" ? "white" : "grey"}}>{patient.fullName}</span> */}
@@ -295,7 +295,7 @@ function PatientChart(props) {
             </div>
         </div>
         </div>
-      <div style={{display:"flex", flexDirection:"column",flexWrap:"wrap",maxHeight:"82vh",alignContent:"flex-start",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%",alignContent:"center"}}> 
+      <div style={{padding:"10px",display:"flex", flexDirection:"column",alignContent:"flex-start",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%",alignContent:"center"}}> 
             {/* <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
               {patientTabs.map((tab,index)=>{
                 return (

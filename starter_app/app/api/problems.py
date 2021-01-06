@@ -18,7 +18,7 @@ problems = Blueprint('problems', __name__)
 @problems.route("/create",methods=["POST"])
 def create_problem():
     data = request.json
-    problem = Problem(cui=data["cui"],patient_id=data["patient"],provider_id=data['provider_id'],name=data['problemName'], created_at=datetime.now(), type=data['type'],note=data['instructions'])
+    problem = Problem(cui=data["cui"],patient_id=data["patient"],provider_id=data['provider_id'],name=data['problemName'], created_at=datetime.now(), type=data['type'],note=data['instructions'],current=data['current'])
     db.session.add(problem)
     db.session.commit()
     format_problem = problem.to_dict()

@@ -577,6 +577,8 @@ class Encounter(db.Model):
       "resource_id":self.resource_id,
       "start": self.start,
       "end":self.end,
+      "orders":[order.basic() for order in self.orders],
+      "provider_id":self.provider_id,
       "provider":self.provider.name_and_id(),
       "type": self.type.to_dict(),
       "patient": self.patient.name_and_id(),
@@ -671,7 +673,7 @@ class Role(db.Model):
     return {
       "id": self.id,
       "name": self.name,
-      "security_points": [{f"{security_point.id}":security_point.to_dict()} for (security_point) in self.security_points]
+      "security_points": {security_point.id: security_point.to_dict() for security_point in self.security_points}
     }
 
 class User(db.Model,UserMixin):
@@ -696,7 +698,8 @@ class User(db.Model,UserMixin):
         "username": self.username,
         "email": self.email,
         "provider": self.provider[0].to_dict(),
-        "roles": [role.to_dict() for role in self.roles],
+        "roles": {role.id: role.to_dict() for role in self.roles},
+        "security_points": {security_point.id: security_point.to_dict() for security_point in self.security_points},
         "picture": self.profile_picture_path,
         "first_name": self.first_name,
         "last_name": self.last_name,
@@ -706,8 +709,11 @@ class User(db.Model,UserMixin):
         "id": self.id,
         "username": self.username,
         "email": self.email,
-        "roles": [role.to_dict() for role in self.roles],
+        "roles": {role.id: role.to_dict() for role in self.roles},
+        "security_points": {security_point.id: security_point.to_dict() for security_point in self.security_points},
         "picture": self.profile_picture_path,
+        "first_name": self.first_name,
+        "last_name": self.last_name,
       }
   
   @property

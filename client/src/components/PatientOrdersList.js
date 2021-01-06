@@ -21,7 +21,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ButtonBase from "@material-ui/core/ButtonBase";
 import List from '@material-ui/core/List';
 import PatientChartContext from './utils/PatientChartContext';
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Grid, IconButton, TextareaAutosize } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Fade, Grid, IconButton, TextareaAutosize } from '@material-ui/core';
 import PatientEncountersList from './PatientEncountersList';
 import PatientOrdersList from './PatientOrdersList';
 import AddIcon from '@material-ui/icons/Add';
@@ -266,14 +266,14 @@ function PatientProblemList(props) {
         const newMed = {...selectedMed}
         newMed.status = "Canceled"
         setSelectedMed(newMed)
-        dispatch(updateOrder({id:selectedMed.id,status:"Canceled"}))
+        dispatch(updateOrder({id:selectedMed.id,status:"Canceled",note:selectedMedInstructions}))
     }
 
     const handleRestart = () => {
         const newMed = {...selectedMed}
         newMed.status = "Needs Scheduling"
         setSelectedMed(newMed)
-        dispatch(updateOrder({id:selectedMed.id,status:"Needs Scheduling"}))
+        dispatch(updateOrder({id:selectedMed.id,status:"Needs Scheduling",note:selectedMedInstructions}))
     }
 
 
@@ -301,17 +301,18 @@ function PatientProblemList(props) {
     },[selectedMedProviderId])
 
     if (loading) {
-        return "...loading"
+        return ""
     }
     const rippleClasses = { rippleVisible: classes.rippleVisible, child: classes.child, [`${"@keyframes enter"}`]: classes[`${"@keyframes enter"}`] }
 
 
     return (
         <>  
+        <Fade in={loading === false}>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
                     <div style={{display:"flex",flexDirection:"column",width: "35%"}}>
                     <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewOrderForm")} style={{outline:"none"}}>
-                        <AddIcon></AddIcon> Add A Mental Health Issue
+                        <AddIcon></AddIcon> Place An Order
                     </NewItemColorButton>
             <List style={{backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",borderRadius:"8px",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
                         {Object.values(patient.orders).map((med,index)=>{
@@ -363,7 +364,7 @@ function PatientProblemList(props) {
                 overflow:"scroll",maxHeight:"450px",
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                     <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                    <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkseagreen" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{selectedMed.status}</span>
+                    <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkgrey" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{selectedMed.status}</span>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
                         <h2 style={{color:"cornflowerblue"}}>{selectedMed.name}</h2>
                         <span style={{marginLeft:"20px",color:"salmon"}}>
@@ -381,7 +382,7 @@ function PatientProblemList(props) {
                             <Divider style={{ width: "100%"}} light={true} />
                             <div style={{background:themeContext.themes === "dark" ? "" : "#f9f9f9",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
 
-                                <div style={{color:"cornflowerblue"}}>Health Issue Note:</div> 
+                                <div style={{color:"cornflowerblue"}}>Order Notes:</div> 
                                 {!showInstructionEdit ? 
                                 <>
                                 <div style={{display:"flex",flexDirection:"column",marginLeft:"20px",marginRight:"20px"}}>
@@ -437,10 +438,11 @@ function PatientProblemList(props) {
                 overflow:"scroll",maxHeight:"450px",
                 justifyContent:"center",alignItems:"center",
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"transparent"}}>
-                    <h3 style={{padding:"20px",color:"white"}}>Select An Order To View</h3>
-                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/istockphoto-1169420428-612x612-removebg-preview.png" style={{width:"400px",marginTop:"-70px"}}></img>
+                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/reasons-people-avoid-mental-health-treatment-removebg-preview.png" style={{width:"400px"}}></img>
+                    <div>Select an order to expand.</div>
                 </div>}
                 </div>
+                </Fade>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

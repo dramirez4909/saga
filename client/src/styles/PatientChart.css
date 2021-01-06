@@ -77,6 +77,8 @@ button.MuiTab-textColorPrimary.Mui-selected {
 
 #root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > header {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
   #user-photo {
@@ -85,4 +87,8 @@ button.MuiTab-textColorPrimary.Mui-selected {
   /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
   height: auto;
   width:100%;
+}
+
+#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div:nth-child(2) > div > div:nth-child(2) > div.makeStyles-root-44 > header > div > div.MuiTabs-scroller.MuiTabs-scrollable > div {
+  justify-content: center;
 }

@@ -333,7 +333,7 @@ const Navbar = (props) => {
             <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>}
 
             {currentUser.picture ? <Avatar onClick={handleClick} style={{boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} src={`${currentUser.picture}`}/> 
-            : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar>}
+            : currentUser.provider ? <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar> : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.username[0]}</Avatar>}
               <StyledMenu
                 id="customized-menu"
                 anchorEl={anchorEl}
@@ -449,7 +449,7 @@ const Navbar = (props) => {
             <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>} */}
 
             {currentUser.picture ? <Avatar onClick={handleClick} style={{boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} src={`${currentUser.picture}`}/> 
-            : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar>}
+            : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.first_name[0]+currentUser.last_name[0]}</Avatar>}
               <StyledMenu
                 id="customized-menu"
                 anchorEl={anchorEl}

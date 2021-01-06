@@ -23,6 +23,8 @@ with app.app_context():
   department_schedule_access = Security_Point(name="department schedule access")
   patient_search = Security_Point(name="patient search")
   chart_access = Security_Point(name="chart access")
+  patient_checkin_access = Security_Point(name="patient checkin")
+  patient_registration_access = Security_Point(name="patient registration")
   patient_user_access = Security_Point(name="patient user access")
 
   demo_provider =Provider(specialty="Family Medicine")
@@ -40,11 +42,20 @@ with app.app_context():
   sarah = Patient(firstName="Sarah",lastName="Connor",dob = datetime.datetime(1945, 2, 15), sex="female", address_line_one ="7819 Tomorrow Ln.",address_city="Austin",address_state="TX",address_zip="78710")
   elizabeth = Patient(firstName="Elizabeth",lastName="Bennet",dob = datetime.datetime(1994, 3, 15), sex="female", address_line_one ="7834 Austen St.",address_city="Austin",address_state="TX",address_zip="78710")
 
-  my_schedule = Activity(name="My Schedule", required_security_point_id=1)
-  orders = Activity(name="Place Orders", required_security_point_id=2)
-  department_schedule = Activity(name="Dep. Schedule", required_security_point_id=3)
-  search_patients = Activity(name="Patient Search",required_security_point_id=4)
-  patient_chart = Activity(name="chart",required_security_point_id=5)
+  my_schedule = Activity(name="My Schedule")
+  my_schedule.security_point = my_schedule_access
+  orders = Activity(name="Place Orders")
+  orders.security_point = orders_access
+  department_schedule = Activity(name="Dep. Schedule")
+  department_schedule.security_point = department_schedule_access
+  search_patients = Activity(name="Patient Search")
+  search_patients.security_point = patient_search
+  patient_chart = Activity(name="chart")
+  patient_chart.security_point = chart_access
+  patient_checkin = Activity(name="Patient Check-in")
+  patient_checkin.security_point = patient_checkin_access
+  patient_registration = Activity(name="Patient Registration")
+  patient_registration.security_point = patient_registration_access
 
   encounter_one = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,10,30),end=datetime.datetime(2020,10,21,11,30))
   provider_role = Role(name="provider")
@@ -143,6 +154,8 @@ with app.app_context():
   provider_role.security_points.append(chart_access)
 
   scheduler_role.security_points.append(department_schedule_access)
+  scheduler_role.security_points.append(patient_registration_access)
+  scheduler_role.security_points.append(patient_checkin_access)
   demo_provider.encounters.append(encounter_two)
   demo_provider.encounters.append(encounter_three)
   demo_provider.encounters.append(encounter_four)
@@ -187,12 +200,16 @@ with app.app_context():
   db.session.add(soonmi)
   db.session.add(alissa)
   db.session.add(my_schedule_access)
+  db.session.add(patient_registration_access)
+  db.session.add(patient_checkin_access)
   db.session.add(orders_access)
   db.session.add(department_schedule_access)
   db.session.add(patient_search)
   db.session.add(chart_access)
   db.session.add(patient_user_access)
   db.session.add(my_schedule)
+  db.session.add(patient_registration)
+  db.session.add(patient_checkin)
   db.session.add(orders)
   db.session.add(department_schedule)
   db.session.add(search_patients)

@@ -21,7 +21,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ButtonBase from "@material-ui/core/ButtonBase";
 import List from '@material-ui/core/List';
 import PatientChartContext from './utils/PatientChartContext';
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Grid, IconButton, TextareaAutosize } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Avatar,Fade, Grid, IconButton, TextareaAutosize } from '@material-ui/core';
 import PatientEncountersList from './PatientEncountersList';
 import PatientOrdersList from './PatientOrdersList';
 import AddIcon from '@material-ui/icons/Add';
@@ -302,15 +302,18 @@ function PatientMedicationsList(props) {
     },[selectedMedProviderId])
 
     if (loading) {
-        return "...loading"
+        return ""
     }
     const rippleClasses = { rippleVisible: classes.rippleVisible, child: classes.child, [`${"@keyframes enter"}`]: classes[`${"@keyframes enter"}`] }
 
 
     return (
         <>  
+            <Fade in={loading === false}>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                    <div style={{display:"flex",flexDirection:"column",width: "35%"}}>
+                    <div style={{display:"flex",flexDirection:"column",width: "35%",
+                    boxShadow:"rgba(0, 0, 0, 0.05) 0px 0px 0px 1px",borderRadius:"4px",
+                }}>
                     <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewMedicationForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Add a Medication
                     </NewItemColorButton>
@@ -345,7 +348,7 @@ function PatientMedicationsList(props) {
                                 {/* <span style={{color:themeContext.themes === "light" ? "#444444" : "lightgreen"}}>{notedDate}</span>  */}
                                 <span style={{fontSize:"18px"}}>{med.name}</span> 
                                 {console.log("current med boi",med.current)}
-                               {med.current === "true" ? <span style={{fontSize:"18px",background:"yellowgreen",padding:"2px", borderRadius:"4px",color:"white"}}>CURR</span> : <span style={{color:"white",fontSize:"18px",background:"darkgray",padding:"2px", borderRadius:"4px"}}>DIS</span>}
+                               {med.current === "true" ? <span style={{fontSize:"18px",background:"yellowgreen",padding:"2px", borderRadius:"4px",color:"white"}}>Current</span> : <span style={{color:"white",fontSize:"18px",background:"darkgray",padding:"2px", borderRadius:"4px"}}>Discontinued</span>}
                                 </div>
                                 <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
                             </ListItem>
@@ -359,7 +362,7 @@ function PatientMedicationsList(props) {
                 {selectedMed.name && provider.first_name ? 
                 <div style={{borderRadius:"4px",
                 marginLeft:"10px",
-                boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
+                boxShadow:"0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149)",
                 overflow:"scroll",maxHeight:"450px",
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                     <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
@@ -436,10 +439,11 @@ function PatientMedicationsList(props) {
                 // boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
                 justifyContent:"center",alignItems:"center",
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"transparent"}}>
-                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/simmmax191100036-removebg-preview.png" style={{width:"400px",marginTop:"-20px"}}></img>
+                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/simmmax191100036-removebg-preview.png" style={{width:"400px"}}></img>
                     <div>Select a medication to expand</div>
                 </div>}
                 </div>
+                </Fade>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

@@ -161,8 +161,6 @@ const DepartmentSchedule = props => {
     setOpen(false);
   };
     const dispatch = useDispatch()
-    const encounters = useSelector(state=>state.encounters.my_encounters)
-    const appointmentOrders = useSelector(state=>state.orders.appointment_requests)
     // const orders = Object.values(appointmentOrders).map((order,index)=>{
     // })
 
@@ -365,7 +363,8 @@ const DepartmentSchedule = props => {
           {Object.values(orders).length === 0 ? <div style={{display:"flex",color:"black", backgroundColor: themeContext.themes === "dark" ? "#343434" : "white",margin:"20px",padding:"30px", height:"100%", justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
             <div style={{display:"flex",flexDirection:"column",color:"black", boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",padding:"10px",borderRadius:"4px", marginBottom:"20px"}}>
               <span style={{color: themeContext.themes === "dark" ? "white" : "#999999"}}>No remaining unscheduled orders. With the right security, you can place orders from the Orders tab of a patient's chart.</span>
-              <ColorButton>Place Orders<ExitToAppTwoToneIcon style={{marginLeft:"3px"}}/></ColorButton></div>
+              {/* <ColorButton>Place Orders<ExitToAppTwoToneIcon style={{marginLeft:"3px"}}/></ColorButton> */}
+              </div>
             </div> : 
             <List style={{marginBottom:"20px",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#999999" : "white"}} component="nav" aria-label="main mailbox folders">
             {Object.values(orders).map((order,index)=> {
@@ -443,7 +442,7 @@ const DepartmentSchedule = props => {
                     endAccessor="end"
                     onEventResize={resizeEvent}
                     defaultView={'day'}
-                    views={['day', 'work_week','month']}
+                    views={['day','month']}
                     dragFromOutsideItem = {dragFromOutsideItem}
                     onDropFromOutside={onDropFromOutside}
                     defaultDate={moment().toDate()}

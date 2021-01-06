@@ -9,8 +9,6 @@ import currentPatient from './current_patient'
 const rootReducer = combineReducers({
     auth,
     activities,
-    encounters,
-    orders,
     currentPatient
 });
 

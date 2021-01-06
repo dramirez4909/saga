@@ -38,6 +38,13 @@ export const openPatientChart = (patientId) => async (dispatch) => {
     dispatch(openChart(data.patient))
 }
 
+export const openPatientRegistration = (patientId) => async (dispatch) => {
+    const res = await fetch(`/api/patients/id/${patientId}`)
+    const data = await res.json()
+    console.log(data)
+    dispatch(openChart(data.patient))
+}
+
 // export const openDepartmentSchedule = (departmentId) => async (dispatch) => {
 //     const res = await fetch(`/api/orders/department/${departmentId}`)
 //     const data = await res.json()

@@ -136,7 +136,7 @@ const NewMedicationForm = (props) => {
       };
 
     const addMedication = (medicationName,instructions,cui) => {
-        dispatch(createOrder({name:medicationName,patient_id:props.patient.id,provider_id,cui,order_type:type,status:"Needs Scheduling"}))
+        dispatch(createOrder({note:instructions,name:medicationName,patient_id:props.patient.id,provider_id,cui,order_type:type,status:"Needs Scheduling"}))
     }
 
     useEffect(()=>{
@@ -160,7 +160,7 @@ const NewMedicationForm = (props) => {
                     <div style={{display:"flex",flexDirection:"column",boxShadow: "rgba(0, 0, 0, 0.09) 0px 1px 2px 0px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                         <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",paddingLeft:"8px",paddingRight:"8px",paddingTop:"12px",paddingBottom:"12px",borderBottom: themeContext.themes === "dark" ? "": ""}}>
                             <div style={{backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",display:"flex",flexDirection:"row",alignItems:"center",padding:"4px"}}>
-                            <div style={{color:themeContext.themes === "dark" ? "white" : "black", padding:"4px", borderRadius:"4px",fontSize:"18px"}}>New Mental Health Issue</div> 
+                            <div style={{color:themeContext.themes === "dark" ? "white" : "black", padding:"4px", borderRadius:"4px",fontSize:"18px"}}>New Order</div> 
                                 <div style={{color:themeContext.themes === "dark" ? "white" : "cornflowerblue", fontSize:"18px",marginLeft:"5px"}}>
                                     <span style={{fontWeight:"normal"}}>for: </span>{props.patient.firstName + " " + props.patient.lastName}
                                 </div>
@@ -180,7 +180,7 @@ const NewMedicationForm = (props) => {
                         </div> */}
                         {/* <div style={{display:"flex",flexDirection:"row",justifyContent:"center",fontSize:"18px"}}>Source Vocabularies: </div> */}
                         <div style={{borderRadius:"8px",color:themeContext.themes === "dark" ? "white" : "cornflowerblue",marginTop:"20px",fontSize:"18px",display:"flex",justifyContent:"center",textAlign:"center"}}>
-                            Select the mental disorder source vocabularies to include in your search.
+                            Select the procedure source vocabularies to include in your search.
                         </div>
                         <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                         <div>
@@ -189,7 +189,7 @@ const NewMedicationForm = (props) => {
                               aria-haspopup="true"
                               onMouseEnter={handleGreenPopoverOpen}
                               onMouseLeave={handleGreenPopoverClose}
-                              control={<GreenCheckbox checked={greenCheck} onChange={handleGreenCheck} name="checkedG" />} label="DSM-5"/>
+                              control={<GreenCheckbox checked={greenCheck} onChange={handleGreenCheck} name="checkedG" />} label="CPT"/>
                             <Popover
                               id="mouse-over-popover"
                               className={classes.popover}
@@ -212,11 +212,10 @@ const NewMedicationForm = (props) => {
                               {/* <Typography>RxNorm now includes the United States Pharmacopeia (USP) Compendial Nomenclature from the United States Pharmacopeial Convention. USP is a cumulative data set of all Active Pharmaceutical Ingredients (API).</Typography> */}
                             </Popover>
     </div>
-                        <FormControlLabel control={<GreenCheckbox checked={blueCheck} onChange={handleBlueCheck} name="checkedH" />} label="ICD-10"/>
-                        <FormControlLabel control={<GreenCheckbox checked={yellowCheck} onChange={handleYellowCheck} name="checkedI" />} label="SNOMED-CT"/>
+                        <FormControlLabel control={<GreenCheckbox checked={blueCheck} onChange={handleBlueCheck} name="checkedH" />} label="Health Care Common Procedure Coding Sys."/>
                         </div>
                     {displayMedicationQuestions ? "" : <div style={{display:"flex",flexDirection:"column",paddingLeft:"15px",paddingRight:"15px"}}>
-                    <Input placeholder="e.g. Depression, Separation Anxiety, etc..." autoFocus={true} style={{color:themeContext.themes === "dark" ? "white" : "black",fontSize:"23px"}} value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}
+                    <Input placeholder="e.g. xray chest, transarterial embolization, etc..." autoFocus={true} style={{color:themeContext.themes === "dark" ? "white" : "black",fontSize:"23px"}} value={dxSearchTerm} onChange={(e)=>setDxSearchTerm(e.target.value)}
                      endAdornment={
                         <InputAdornment position="end">
                           <IconButton

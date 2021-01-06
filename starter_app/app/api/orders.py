@@ -22,7 +22,7 @@ def create_order():
     order_type = Order_Type.query.get(data['order_type'])
     print("!!!!!!!!!!!!!!!!!",order_type)
     provider_user = db.session.query(Provider).filter(Provider.user_id == data['provider_id']).first()
-    order = Order(order_type=order_type.id, created_at=datetime.now(), patient_id=data['patient_id'],provider_id=provider_user.id,status=data['status'], department_id=order_type.department_id,name=data['name'],cui=data['cui'])
+    order = Order(note=data['note'],order_type=order_type.id, created_at=datetime.now(), patient_id=data['patient_id'],provider_id=provider_user.id,status=data['status'], department_id=order_type.department_id,name=data['name'],cui=data['cui'])
     db.session.add(order)
     order_type.orders.append(order)
     db.session.commit()

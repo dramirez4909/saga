@@ -48,6 +48,7 @@ import {Breakpoint} from 'react-socks'
 import { BottomNavigation } from '@material-ui/core'
 import MobileBottomNav from '../components/MobileBottomNav'
 import MobileBottomMenu from '../components/MobileBottomMenu'
+import Registration from './Registration'
 
 const drawerWidth = 240;
 
@@ -231,6 +232,7 @@ const HomePage=(props)=>{
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
                             {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
                             {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
+                            {activity.name === "Registration" ? <Registration/> : <></>}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
@@ -264,6 +266,7 @@ const HomePage=(props)=>{
                             {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
                             {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
+                            {activity.name === "Registration" ? <Registration/> : <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>

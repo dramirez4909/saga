@@ -54,7 +54,14 @@ const Dashboard=(props)=>{
         <div style={{margin:"20px"}}>
         <h1>Dashboard</h1>
         <Button onClick={handleLogOut}>Log out</Button>
-            <div>hello</div>
+            {activities.map(activity=>{
+              return (
+                <>
+                <div>{activity.name}</div>
+                <div></div>
+                </>
+              )
+            })}
         </div>
         <div>
             {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>
