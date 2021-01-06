@@ -5,7 +5,8 @@ const OPEN_TAB = 'activities/OPEN_TAB'
 const OPEN_CHART = 'activities/OPEN_CHART'
 const CLOSE_TAB = 'activities/CLOSE_TAB'
 const OPEN_DEPARTMENT_SCHEDULE = 'activities/OPEN_DEPARTMENT_SCHEDULE'
-
+const OPEN_PATIENT_REGISTRATION = 'activities/OPEN_PATIENT_REGISTRATION'
+const OPEN_PATIENT_CHECKIN = 'activities/OPEN_PATIENT_CHECKIN'
 export const closeTab = (tabName,index) => {
     console.log("given index close tab: ",index)
     return {
@@ -38,11 +39,16 @@ export const openPatientChart = (patientId) => async (dispatch) => {
     dispatch(openChart(data.patient))
 }
 
-export const openPatientRegistration = (patientId) => async (dispatch) => {
-    const res = await fetch(`/api/patients/id/${patientId}`)
-    const data = await res.json()
-    console.log(data)
-    dispatch(openChart(data.patient))
+export const openPatientRegistration = () => {
+    return {
+        type: OPEN_PATIENT_REGISTRATION,
+    }
+}
+
+export const openPatientCheckin = () => {
+    return {
+        type: OPEN_PATIENT_CHECKIN,
+    }
 }
 
 // export const openDepartmentSchedule = (departmentId) => async (dispatch) => {
@@ -74,8 +80,9 @@ export const openTab = (activity) => {
     }
 }
 
-export default function activitiesReducer(state = {} ,action) {
+export default function activitiesReducer(state = {open_tabs:[]} ,action) {
     let newState = Object.assign({},state);
+    const opentabs = [...state.open_tabs]
     switch (action.type){
         case LOAD_ACTIVITES:
             newState = action.activities
@@ -99,9 +106,16 @@ export default function activitiesReducer(state = {} ,action) {
             newState.open_tabs.push({id:5, patient:action.patient, name:action.patient.lastName + ", " + action.patient.firstName})
             return newState
         case OPEN_DEPARTMENT_SCHEDULE:
-            const opentabs = [...state.open_tabs]
             newState.open_tabs = opentabs
             newState.open_tabs.push({id:6, department:action.department, name:action.department.name})
+            return newState
+        case OPEN_PATIENT_REGISTRATION:
+            newState.open_tabs = opentabs
+            newState.open_tabs.push({id:8, name:"Patient Registration"})
+            return newState
+        case OPEN_PATIENT_CHECKIN:
+            newState.open_tabs = opentabs
+            newState.open_tabs.push({id:9, name:"Patient Check-in"})
             return newState
         // case UPDATE_CHART_ORDERS: 
         //     const tabs = [...state.opentabs]

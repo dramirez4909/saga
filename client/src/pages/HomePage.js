@@ -230,9 +230,7 @@ const HomePage=(props)=>{
                     (
                         <div style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
-                            {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
-                            {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
-                            {activity.name === "Registration" ? <Registration/> : <></>}
+                            {activity.name === "Patient Registration" ? <Registration/> : <></>}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}

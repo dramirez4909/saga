@@ -8,15 +8,28 @@ import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
 import json2mq from 'json2mq';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {Breakpoint} from 'react-socks'
+import { openPatientCheckin, openPatientRegistration } from '../store/activities'
+import HomeContext from '../components/utils/HomeContext'
 
 const Dashboard=(props)=>{
     const [loading,setLoading] = useState(true)
     const [activities,setActivities] =useState([])
     const dispatch = useDispatch()
     const themeContext = useContext(ThemeContext)
+    const homeContext = useContext(HomeContext)
 
     const handleLogOut = ()=> {
         dispatch(logout())
+    }
+
+    const handleActivityClick=(name)=>{
+      console.log(name)
+      if (name==="Patient Registration") {
+        dispatch(openPatientRegistration())
+        homeContext.setSelectedTab("Patient Registration")
+      } else if (name==="Patient Check-in") {
+        dispatch(openPatientCheckin())
+      }
     }
 
     function JavaScriptMedia() {
@@ -56,10 +69,7 @@ const Dashboard=(props)=>{
         <Button onClick={handleLogOut}>Log out</Button>
             {activities.map(activity=>{
               return (
-                <>
-                <div>{activity.name}</div>
-                <div></div>
-                </>
+                <div style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick(activity.name)}>{activity.name}</div>
               )
             })}
         </div>
