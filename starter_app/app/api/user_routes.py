@@ -13,6 +13,13 @@ def index():
   print("user route______")
   return { "users": [user.to_dict() for user in response]}
 
+@user_routes.route('/id/<id>')
+def byId(id):
+  user = User.query.get(id)
+  print("!!!!!!",user)
+  format_user = user.to_dict()
+  return { "user": format_user}
+
 @user_routes.route('/upload-photo/<id>',methods=['POST'])
 def upload(id):
   user = User.query.get(id)

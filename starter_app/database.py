@@ -162,7 +162,7 @@ with app.app_context():
 
   appointment_encounter_type = Encounter_Type(name="Outpatient Appointment")
   appointment_order_type=Order_Type(name="Outpatient Appointment Request")
-  
+
   fam_department.order_types.append(appointment_order_type)
   fam_department.encounter_types.append(appointment_encounter_type)
 
@@ -216,6 +216,7 @@ with app.app_context():
   db.session.add(patient_checkin_access)
   db.session.add(orders_access)
   db.session.add(department_schedule_access)
+  db.session.add(administrator_role)
   db.session.add(patient_search)
   db.session.add(chart_access)
   db.session.add(patient_user_access)

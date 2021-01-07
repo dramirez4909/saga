@@ -20,6 +20,7 @@ def login():
     if not data:
         return {"errors": ""}
     user = User.query.filter(User.username == data['username']).first()
+    print('!!!!!!!!',user)
     if user and user.check_password(data['password']):
         format_user = user.to_dict()
         login_user(user)
