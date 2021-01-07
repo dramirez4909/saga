@@ -21,12 +21,12 @@ export default function RegistrationBiometricInfo() {
     return (
         <div style={{display:"flex",flexDirection:"column",alignItems:"center",width:"100%"}}>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                <TextField fullWidth value={regContext.weight} onChange={(e)=>regContext.setWeight(e.target.value)} style={{margin:"10px"}}id="outlined-basic" label="Weight" variant="outlined" />
-                <TextField fullWidth value={regContext.height} onChange={(e)=>regContext.setHeight(e.target.value)} style={{margin:"10px"}}id="outlined-basic" label="Height" variant="outlined" />
+                <TextField size="small" fullWidth value={regContext.weight} onChange={(e)=>regContext.setWeight(e.target.value)} style={{margin:"5px"}}id="outlined-basic" label="Weight" variant="outlined" />
+                <TextField size="small" fullWidth value={regContext.height} onChange={(e)=>regContext.setHeight(e.target.value)} style={{margin:"5px"}}id="outlined-basic" label="Height" variant="outlined" />
             </div>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                <TextField fullWidth value={regContext.bmi} onChange={(e)=>regContext.setBmi(e.target.value)} style={{margin:"10px"}}id="outlined-basic" label="BMI" variant="outlined" />
-                <TextField fullWidth value={regContext.heartRate} onChange={(e)=>regContext.setHeartRate(e.target.value)}style={{margin:"10px"}}id="outlined-basic" label="Heart Rate" variant="outlined" />
+                <TextField size="small" fullWidth value={regContext.bmi} onChange={(e)=>regContext.setBmi(e.target.value)} style={{margin:"5px"}}id="outlined-basic" label="BMI" variant="outlined" />
+                <TextField size="small" fullWidth value={regContext.heartRate} onChange={(e)=>regContext.setHeartRate(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Heart Rate" variant="outlined" />
             </div>
             <div style={{display:"flex",flexDirection:"row",width:"100%",justifyContent:"space-around"}}>
             <FormControl component="fieldset">
@@ -41,10 +41,10 @@ export default function RegistrationBiometricInfo() {
             </FormControl>
             </div>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                <TextField fullWidth value={regContext.occupation} onChange={(e)=>regContext.setOccupation(e.target.value)} style={{margin:"10px"}}id="outlined-basic" label="Occupation" variant="outlined" />
+                <TextField size="small" fullWidth value={regContext.occupation} onChange={(e)=>regContext.setOccupation(e.target.value)} style={{margin:"5px"}}id="outlined-basic" label="Occupation" variant="outlined" />
             </div>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                <TextField fullWidth style={{margin:"10px"}}id="outlined-basic" label="Reason for Today's Visit" variant="outlined" />
+                <TextField size="small" fullWidth style={{margin:"10px"}}id="outlined-basic" label="Reason for Today's Visit" variant="outlined" />
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -12,14 +12,23 @@ import RegistrationBasicInfoForm from '../components/RegistrationBasicInfoForm';
 import RegistrationBiometricInfo from '../components/RegistrationBiometricInfo';
 import RegistrationContext from '../components/utils/RegistrationContext';
 import Cookies from 'js-cookie'
+import RegistrationContactInfo from '../components/RegistrationContactInfo';
+
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color: "white",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        margin: "4px",
+        backgroundColor:"grey",
+        '&:hover': {
+            backgroundColor: "#b1f3b1 !important",
+        },
+    },
+    }))(Button);
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    display:"flex",
-    justifyContent:"center",
-    maxWidth:"800px"
-  },
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -33,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Basic Info', 'Biometrics', 'Create New Patient'];
+  return ['Basic Info', 'Contact Info', 'Biometric Info' ,'Create New Patient'];
 }
 
 function getStepContent(step) {
@@ -74,6 +83,7 @@ export default function Registration() {
   const [picture,setPicture]=useState("")
   const [creatingPatient,setCreatingPatient]=useState(false)
   const [patientToCreate,setPatientToCreate]=useState({})
+  const [createdPatient,setCreatedPatient]=useState({})
 
   useEffect(()=>{
     const createPatient = async (patient) => {
@@ -88,6 +98,7 @@ export default function Registration() {
             body: jsonPatient
         })
         const data = await res.json()
+        setCreatedPatient(data.patient)
         setPatientToCreate({})
         handleNext()
     }
@@ -181,7 +192,7 @@ export default function Registration() {
 
   return (
       <RegistrationContext.Provider value={contextObject}>
-    <div className={classes.root} style={{overflow:"scroll",maxHeight:"80vh",width:"100%"}}>
+    <div className={classes.root} style={{width: '100%', display:"flex", justifyContent:"center", maxWidth:"1000px", overflow:"scroll",maxHeight:"80vh",width:"100%"}}>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((label, index) => (
           <Step key={label}>
@@ -189,7 +200,8 @@ export default function Registration() {
             <StepContent>
               <Typography>{getStepContent(index)}</Typography>
               {index === 0 ? <RegistrationBasicInfoForm/> : ""}
-              {index === 1 ? <RegistrationBiometricInfo/> : ""}
+              {index === 1 ? <RegistrationContactInfo/> : ""}
+              {index === 2 ? <RegistrationBiometricInfo/> : ""}
               <div className={classes.actionsContainer}>
                 <div>
                   <Button
@@ -199,18 +211,17 @@ export default function Registration() {
                   >
                     Back
                   </Button>
-                  
                     {activeStep === steps.length - 1 ? <Button
                     variant="contained"
                     color="primary"
                     onClick={handleCreateNewPatient}
                     className={classes.button}
-                  >Create New Patient</Button> : <Button
+                  >Create New Patient</Button> : <ColorButton
                   variant="contained"
                   color="primary"
                   onClick={handleNext}
                   className={classes.button}
-                >Next</Button>}
+                >Next</ColorButton>}
                 </div>
               </div>
             </StepContent>
@@ -219,9 +230,11 @@ export default function Registration() {
       </Stepper>
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>New Patient successfully created - you&apos;re finished!</Typography>
+          <Typography>{createdPatient.firstName + " " + createdPatient.lastName} is in the system!</Typography>
+          
+
           <Button onClick={handleReset} className={classes.button}>
-            Reset
+            Register Another Patient
           </Button>
         </Paper>
       )}

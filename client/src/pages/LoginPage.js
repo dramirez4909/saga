@@ -124,12 +124,19 @@ function LoginPage() {
 
     const demoProviderLogin = async (e) => {
         e.preventDefault();
-        await dispatch(login('DemoUser', 'password'));
+        await dispatch(login('demo_provider', 'password'));
         document.location.reload();
     }
+
+    const demoAdministratorLogin = async (e) => {
+        e.preventDefault();
+        await dispatch(login('demo_administrator', 'password'));
+        document.location.reload();
+    }
+
     const demoSchedulerLogin = async (e) => {
         e.preventDefault();
-        await dispatch(login('Angelo', 'password'));
+        await dispatch(login('demo_scheduler', 'password'));
         document.location.reload();
     }
 
@@ -145,6 +152,7 @@ function LoginPage() {
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <ColorButton size="small" onClick={demoProviderLogin}>Login As a Provider</ColorButton>
                         <ColorButton size="small" onClick={demoSchedulerLogin}>Login As a Scheduler</ColorButton>
+                        <ColorButton size="small" onClick={demoAdministratorLogin}>Login As a Administrator</ColorButton>
                     </div>
                     <Divider style={{width: "100%", margin: "10px"}}/>
                     <div style={{color:"red", display: "flex", flexDirection:"column"}}>
