@@ -5,11 +5,13 @@ import activities from './activities'
 import encounters from './encounters'
 import orders from './orders'
 import currentPatient from './current_patient'
+import currentRecord from './current_record'
 
 const rootReducer = combineReducers({
     auth,
     activities,
-    currentPatient
+    currentPatient,
+    currentRecord
 });
 
 let storeEnhancer;

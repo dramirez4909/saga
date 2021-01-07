@@ -68,7 +68,7 @@ export default function PatientSearchResults(props) {
   const themeContext = useContext(ThemeContext)
   const dispatch = useDispatch()
   const openTabs = useSelector(state=>state.activities.open_tabs)
-  
+
   const handleListItemClick = (event, index) => {
     // context.setSelectedIndex(index);
     // context.setSelectedPatient(props.patientSearchResults[index])

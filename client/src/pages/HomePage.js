@@ -49,6 +49,8 @@ import { BottomNavigation } from '@material-ui/core'
 import MobileBottomNav from '../components/MobileBottomNav'
 import MobileBottomMenu from '../components/MobileBottomMenu'
 import Registration from './Registration'
+import UserEditor from './UserEditor'
+import { setCurrentRecord } from '../store/current_record'
 
 const drawerWidth = 240;
 
@@ -175,10 +177,13 @@ const HomePage=(props)=>{
     const [activities,setActivities] =useState([])
     const allActivities = useSelector(state=>state.activities)
 
-    const setSelectedTab = (tabName,patient) => {
-      if (tabName.includes(",")){
+    const setSelectedTab = (tabName,patient,record) => {
+      if (patient){
         console.log(tabName)
         dispatch(setCurrentPatient(patient))
+      } else if (record) {
+        console.log(tabName,record)
+        dispatch(setCurrentRecord(record))
       }
       setSelectedTabName(tabName)
       console.log("new selected tab name: ", tabName)
@@ -233,6 +238,7 @@ const HomePage=(props)=>{
                             {activity.name === "Patient Registration" ? <Registration/> : <></>}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
+                            {activity.record ? activity.record.type === "user" ? <UserEditor record={activity.record} /> : "" : "" }
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
                         
@@ -266,6 +272,7 @@ const HomePage=(props)=>{
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.name === "Registration" ? <Registration/> : <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
+                            {activity.record ? <UserEditor record={activity.record}/> : <></>}
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
                         </Fade>

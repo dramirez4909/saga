@@ -7,6 +7,7 @@ const CLOSE_TAB = 'activities/CLOSE_TAB'
 const OPEN_DEPARTMENT_SCHEDULE = 'activities/OPEN_DEPARTMENT_SCHEDULE'
 const OPEN_PATIENT_REGISTRATION = 'activities/OPEN_PATIENT_REGISTRATION'
 const OPEN_PATIENT_CHECKIN = 'activities/OPEN_PATIENT_CHECKIN'
+const OPEN_EDITOR = 'activities/OPEN_EDITOR'
 export const closeTab = (tabName,index) => {
     console.log("given index close tab: ",index)
     return {
@@ -37,6 +38,23 @@ export const openPatientChart = (patientId) => async (dispatch) => {
     const data = await res.json()
     console.log(data)
     dispatch(openChart(data.patient))
+}
+
+export const openEditor = (record) => async (dispatch) => {
+    if (record.type === "user") {
+        const res = await fetch(`/api/users/id/${record.user.id}`)
+        const data = await res.json()
+        const user = data.user
+        const userRecord = {type:"user",user}
+        dispatch(openEdit(userRecord))
+    } else if (record.type === "department") {
+        const res = await fetch(`/api/department/id/${record.department.id}`)
+        const data = await res.json()
+        console.log(data)
+        const department = data.department
+        department.type = "department"
+        dispatch(openEdit(department))
+    }
 }
 
 export const openPatientRegistration = () => {
@@ -73,6 +91,13 @@ export const openChart=(patient)=>{
     }
 }
 
+export const openEdit=(record)=>{
+    return {
+        type:OPEN_EDITOR,
+        record
+    }
+}
+
 export const openTab = (activity) => {
     return {
         type: OPEN_TAB,
@@ -104,6 +129,11 @@ export default function activitiesReducer(state = {open_tabs:[]} ,action) {
             const currentTabs = [...state.open_tabs]
             newState.open_tabs = currentTabs
             newState.open_tabs.push({id:5, patient:action.patient, name:action.patient.lastName + ", " + action.patient.firstName})
+            return newState
+        case OPEN_EDITOR:
+            newState.open_tabs = opentabs
+            console.log("record from store",action.record)
+            newState.open_tabs.push({id:10, record:action.record, name: action.record.type === "user" ? action.record.user.first_name ? `${action.record.user.first_name} ${action.record.user.last_name}` : "New User" : action.record.name ? action.record.name : `New ${action.record.type}`})
             return newState
         case OPEN_DEPARTMENT_SCHEDULE:
             newState.open_tabs = opentabs
