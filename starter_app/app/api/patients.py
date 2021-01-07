@@ -31,3 +31,12 @@ def upload(id):
   db.session.commit()
   format_patient = patient.to_dict()
   return {"patient":format_patient}
+
+@patients.route("/create",methods=["POST"])
+def create_patient():
+    data = request.json
+    patient = Patient(firstName=data['firstName'],lastName=data['lastName'], address_line_one = data['addressLineOne'],address_line_two=data['addressLineTwo'],address_line_three=data['addressLineThree'],address_city=data['addressCity'],address_state=data['addressState'],address_zip=data['addressZip'],bmi=data['bmi'],weight=data['weight'],height=data["height"],home_phone=data['homePhone'],mobile_phone=data['mobilePhone'],work_phone=data['workPhone'],occupation=data['occupation'],dob=data['birthday'],sex=data['sex'],smoker=data['smoker'],beats_per_minute=data["heartRate"])
+    db.session.add(patient)
+    db.session.commit()
+    format_patient = patient.to_dict()
+    return {"patient":format_patient}
