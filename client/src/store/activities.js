@@ -8,8 +8,10 @@ const OPEN_DEPARTMENT_SCHEDULE = 'activities/OPEN_DEPARTMENT_SCHEDULE'
 const OPEN_PATIENT_REGISTRATION = 'activities/OPEN_PATIENT_REGISTRATION'
 const OPEN_PATIENT_CHECKIN = 'activities/OPEN_PATIENT_CHECKIN'
 const OPEN_EDITOR = 'activities/OPEN_EDITOR'
+
 export const closeTab = (tabName,index) => {
     console.log("given index close tab: ",index)
+    console.log("given name close tab: ",tabName)
     return {
         type:CLOSE_TAB,
         tabName,

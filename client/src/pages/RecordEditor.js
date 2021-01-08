@@ -7,10 +7,11 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
+import User from '../components/User';
+import UserEditor from '../components/UserEditor'
 
 
-
-export default function UserEditor(props) {
+export default function RecordEditor(props) {
     const currentRecord = useSelector(state=>state.currentRecord)
     const [loading,setLoading] =useState(true)
 
@@ -30,7 +31,9 @@ export default function UserEditor(props) {
         <CircularProgress/>
     )
     return (
-        "hello"
+        <div>
+            {currentRecord.type === "user" ? <UserEditor user={currentRecord}></UserEditor> : <></>}
+        </div>
     )
 
 }

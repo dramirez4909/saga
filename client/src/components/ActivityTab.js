@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import HomeContext from './utils/HomeContext';
 import ScheduleTwoToneIcon from '@material-ui/icons/ScheduleTwoTone';
 import BorderColorTwoToneIcon from '@material-ui/icons/BorderColorTwoTone';
@@ -10,7 +10,7 @@ import ThemeContext from './utils/ThemeContext'
 import CloseIcon from '@material-ui/icons/Close'
 import { IconButton } from '@material-ui/core';
 import { closeTab } from '../store/activities';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const iconStyle = {
     height: "25px",
@@ -35,13 +35,26 @@ const tabStyle = {
 function ActivityTab(props) {
     const context = useContext(HomeContext)
     const themeContext = useContext(ThemeContext)
+    const openTabs = useSelector(state=>state.activities.open_tabs)
     const dispatch = useDispatch()
+
+    // useEffect(()=>{
+    //     if (context.tabs !== undefined && openTabs !== undefined){
+    //             context.setTabs(openTabs)
+    //     }
+    // },[openTabs])
 
     const closeThisTab = (e, activityName) => {
         e.stopPropagation()
         dispatch(closeTab(activityName,props.index))
+        if (context.openTabs[props.index - 1].patient) {
+            context.setSelectedTab(context.openTabs[props.index - 1].name,context.openTabs[props.index - 1].patient)
+        } else if (context.openTabs[props.index - 1].record) {
+            context.setSelectedTab(context.openTabs[props.index - 1].name,null,context.openTabs[props.index - 1].record)
+        } else {
+            context.setSelectedTab(context.openTabs[props.index - 1].name)
+        }
         console.log("openTabs context var after deletion: ",context.openTabs)
-        context.setSelectedTab(context.openTabs[props.index - 1].name,context.openTabs[props.index - 1].patient,context.openTabs[props.index - 1].record)
     }
 
     return (

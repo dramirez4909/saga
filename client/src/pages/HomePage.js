@@ -49,7 +49,7 @@ import { BottomNavigation } from '@material-ui/core'
 import MobileBottomNav from '../components/MobileBottomNav'
 import MobileBottomMenu from '../components/MobileBottomMenu'
 import Registration from './Registration'
-import UserEditor from './UserEditor'
+import UserEditor from './RecordEditor'
 import { setCurrentRecord } from '../store/current_record'
 
 const drawerWidth = 240;
@@ -192,6 +192,7 @@ const HomePage=(props)=>{
     useEffect(()=>{
         if (openTabs && (allActivities.role_activities || allActivities.user_activities)){
             setTabs(openTabs)
+            console.log("tabs tabs tabs",openTabs)
             setActivities([{name:"dashboard",id:0 },...Object.values(allActivities.role_activities),...Object.values(allActivities.user_activities)])
         }
     },[openTabs, allActivities])
@@ -216,7 +217,7 @@ const HomePage=(props)=>{
 
     return (
         <>    
-                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs}}>
+                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs,tabs,setTabs}}>
                 <Breakpoint medium up>
                 <NavBar currentUser={currentUser}>
                 </NavBar>
