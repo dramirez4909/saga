@@ -36,6 +36,7 @@ export const loadUserActvities = (activities) => {
 }
 
 export const openPatientChart = (patientId) => async (dispatch) => {
+    console.log(patientId)
     const res = await fetch(`/api/patients/id/${patientId}`)
     const data = await res.json()
     console.log(data)
@@ -43,6 +44,7 @@ export const openPatientChart = (patientId) => async (dispatch) => {
 }
 
 export const openEditor = (record) => async (dispatch) => {
+    console.log("record to look for: ",record)
     if (record.type === "user") {
         const res = await fetch(`/api/users/id/${record.user.id}`)
         const data = await res.json()
@@ -126,6 +128,7 @@ export default function activitiesReducer(state = {open_tabs:[]} ,action) {
             tabs.splice(action.index,1)
             console.log("after deletion tabs: ",tabs)
             newState.open_tabs = tabs
+            console.log("NEW STTTTAAAAATE BOIII!: ",newState.open_tabs)
             return newState
         case OPEN_CHART:
             const currentTabs = [...state.open_tabs]

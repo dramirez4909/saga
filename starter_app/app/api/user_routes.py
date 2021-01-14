@@ -32,3 +32,16 @@ def upload(id):
   db.session.commit()
   format_user = user.to_dict()
   return {"user":format_user}
+
+@user_routes.route('/update/<id>',methods=['POST','PATCH'])
+def update(id):
+  data = request.json
+  user = User.query.get(id)
+  user.email = data["email"]
+  user.first_name = data["first_name"]
+  user.last_name = data["last_name"]
+  user.username = data["username"]
+  db.session.add(user)
+  db.session.commit()
+  format_user = user.to_dict()
+  return {"user":format_user}

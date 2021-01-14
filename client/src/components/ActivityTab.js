@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect,useState } from 'react';
 import HomeContext from './utils/HomeContext';
 import ScheduleTwoToneIcon from '@material-ui/icons/ScheduleTwoTone';
 import BorderColorTwoToneIcon from '@material-ui/icons/BorderColorTwoTone';
@@ -11,6 +11,8 @@ import CloseIcon from '@material-ui/icons/Close'
 import { IconButton } from '@material-ui/core';
 import { closeTab } from '../store/activities';
 import { useDispatch, useSelector } from 'react-redux';
+import { fade} from '@material-ui/core/styles';
+
 
 const iconStyle = {
     height: "25px",
@@ -35,6 +37,7 @@ const tabStyle = {
 function ActivityTab(props) {
     const context = useContext(HomeContext)
     const themeContext = useContext(ThemeContext)
+    const [display,setDisplay] =useState("")
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const dispatch = useDispatch()
 
@@ -47,14 +50,19 @@ function ActivityTab(props) {
     const closeThisTab = (e, activityName) => {
         e.stopPropagation()
         dispatch(closeTab(activityName,props.index))
-        if (context.openTabs[props.index - 1].patient) {
-            context.setSelectedTab(context.openTabs[props.index - 1].name,context.openTabs[props.index - 1].patient)
-        } else if (context.openTabs[props.index - 1].record) {
-            context.setSelectedTab(context.openTabs[props.index - 1].name,null,context.openTabs[props.index - 1].record)
-        } else {
-            context.setSelectedTab(context.openTabs[props.index - 1].name)
-        }
-        console.log("openTabs context var after deletion: ",context.openTabs)
+        const oldTabs = [...context.tabs]
+        oldTabs[props.index] = {name:""}
+        context.setTabs(oldTabs)
+        // if (context.openTabs[props.index - 1].patient) {
+        //     context.setSelectedTab(context.openTabs[props.index - 1].name,context.openTabs[props.index - 1].patient)
+        // } else if (context.openTabs[props.index - 1].record) {
+        //     context.setSelectedTab(context.openTabs[props.index - 1].name,null,context.openTabs[props.index - 1].record)
+        // } else {
+            context.setSelectedTab(context.openTabs[0].name)
+        // }
+        // console.log("openTabs context var after deletion: ",context.openTabs)
+        setDisplay("none")
+
     }
 
     return (
@@ -62,9 +70,11 @@ function ActivityTab(props) {
             <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient,props.activity.record)}} 
                 className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
                 style={{zIndex: props.activity.name === context.selectedTabName ? 1 : "",
+                padding:"13px",
                 background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
-                borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
-                borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : ""
+                // borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                // borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                display: display
             }}
                 > 
             <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-dashboard-layout-100.png" style={{...iconStyle}}></img> : <></> }

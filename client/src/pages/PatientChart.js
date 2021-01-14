@@ -211,6 +211,7 @@ function PatientChart(props) {
     useEffect(()=>{
       if (props.patient.id === currentPatient.id) {
         setLoading(false)
+        setPatient(currentPatient)
       }
     },[currentPatient])
 

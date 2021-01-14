@@ -38,6 +38,7 @@ import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
+import { fade} from '@material-ui/core/styles';
 import {setCurrentPatient} from '../store/current_patient'
 // import DepartmentScheduler from './DepartmentScheduler'
 // import ProviderSchedule from './ProviderSchedule'
@@ -45,11 +46,11 @@ import ThemeContext from '../components/utils/ThemeContext'
 import DepartmentSchedule from './DepartmentSchedule'
 import {Breakpoint} from 'react-socks'
   import { fromPairs } from 'lodash'
-import { BottomNavigation } from '@material-ui/core'
+import { BottomNavigation, CircularProgress } from '@material-ui/core'
 import MobileBottomNav from '../components/MobileBottomNav'
 import MobileBottomMenu from '../components/MobileBottomMenu'
 import Registration from './Registration'
-import UserEditor from './RecordEditor'
+import RecordEditor from './RecordEditor'
 import { setCurrentRecord } from '../store/current_record'
 
 const drawerWidth = 240;
@@ -176,6 +177,7 @@ const HomePage=(props)=>{
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const [activities,setActivities] =useState([])
     const allActivities = useSelector(state=>state.activities)
+    const [loading,setLoading] =useState(false)
 
     const setSelectedTab = (tabName,patient,record) => {
       if (patient){
@@ -189,17 +191,24 @@ const HomePage=(props)=>{
       console.log("new selected tab name: ", tabName)
     }
 
+    const closeTab =(index)=>{
+      const newTabs = tabs.splice(index,1)
+      setTabs(newTabs)
+    }
+
     useEffect(()=>{
         if (openTabs && (allActivities.role_activities || allActivities.user_activities)){
             setTabs(openTabs)
             console.log("tabs tabs tabs",openTabs)
+            console.log("tabs state variable: ",tabs)
             setActivities([{name:"dashboard",id:0 },...Object.values(allActivities.role_activities),...Object.values(allActivities.user_activities)])
         }
     },[openTabs, allActivities])
 
     const tabStyle = {
+        backgroundColor: fade(theme.palette.common.white, 0.25),
         '&:hover': {
-            backgroundColor: "hsla(0,0%,100%,.32)",
+            backgroundColor: "black",
         }
     }
 
@@ -215,9 +224,17 @@ const HomePage=(props)=>{
       },
     });
 
+    console.log("tabs state variable: ",tabs)
+
+    if (loading) {
+      return (
+        <CircularProgress/>
+      )
+    }
+
     return (
         <>    
-                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs,tabs,setTabs}}>
+                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs,tabs,setTabs,setLoading,loading}}>
                 <Breakpoint medium up>
                 <NavBar currentUser={currentUser}>
                 </NavBar>
@@ -225,21 +242,23 @@ const HomePage=(props)=>{
 
               <div className={classes.content}>
                 <div style={{display:"flex",flexDirection:"column",backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
-                    <div className={context.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
+                    <div 
+                    // className={context.themes === "dark" ? "dark-tabs" : "tabs"} 
+                    style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"0px",listStyleType:"none",...tabStyle}}>
                     {tabs.map((activity, index)=>
                         (   
-                            <ActivityTab key={activity.name} style={{...tabStyle}} index={index} activity={activity}/>
+                            <ActivityTab key={activity.name} index={index} activity={activity}/>
                         ))}
                     </div>
                     <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
-                    {tabs.map(( activity, index)=>
+                    {tabs.map((activity, index)=>
                     (
                         <div style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
                             {activity.name === "Patient Registration" ? <Registration/> : <></>}
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
-                            {activity.record ? activity.record.type === "user" ? <UserEditor record={activity.record} /> : "" : "" }
+                            {activity.record ? activity.record.type === "user" ? <RecordEditor record={activity.record} /> : "" : "" }
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
                         
@@ -263,8 +282,9 @@ const HomePage=(props)=>{
                         ))}
                     </div> */}
                     <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
-                    {tabs.map(( activity, index)=>
-                    (
+                    {tabs.map(( activity, index)=> {
+                      console.log("activity: ",activity,"index: ",index)
+                    return (
                         <Fade in={activity.name === selectedTabName} timeout={350} mountOnEnter unmountOnExit>
                         <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
@@ -273,11 +293,11 @@ const HomePage=(props)=>{
                             {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
                             {activity.name === "Registration" ? <Registration/> : <></>}
                             {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
-                            {activity.record ? <UserEditor record={activity.record}/> : <></>}
+                            {activity.record ? <RecordEditor record={activity.record}/> : <></>}
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
                         </Fade>
-                        ))}
+                        )})}
                 </div>
                 </div>
             </div>

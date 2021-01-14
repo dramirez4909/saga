@@ -27,8 +27,8 @@ import { fade} from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import PatientSearchContext from './utils/PatientSearchContext'
 import ThemeContext from './utils/ThemeContext';
-import { useSelector } from 'react-redux';
-import UserEditForm from './UserEditForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateRecord } from '../store/current_record';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -134,6 +134,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
     paper: {
+      boxShadow: theme.shadows[2],
       padding: theme.spacing(2, 4, 3),},
     
     input: {
@@ -142,17 +143,34 @@ const useStyles = makeStyles((theme) => ({
   
   }));
 
-const UserEditor = (props) => {
+  const ColorButton = withStyles((theme) => ({
+    root: {
+        color: "white",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        outline: "none",
+        textDecoration:"none",
+        margin: "4px",
+        backgroundColor:"grey",
+        '&:hover': {
+            backgroundColor: "#b1f3b1 !important",
+        },
+    },
+  }))(Button);
+
+const UserEditForm = (props) => {
     const classes = useStyles();
 
     const [user,setUser]=useState(props.user)
-    const [firstName,setFirstName]=useState()
-    const [lastName,setLastName]=useState()
+    const [firstName,setFirstName]=useState(props.user.first_name)
+    const [lastName,setLastName]=useState(props.user.last_name)
+    const [username,setUsername]=useState(props.user.username)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [loadingPicture,setLoadingPicture] = useState(false)
     const themeContext = useContext(ThemeContext)
     const [loading,setLoading]=useState(true)
     const currentRecord = useSelector(state=>state.currentRecord)
+    const dispatch = useDispatch()
 
     const [email,setEmail]=useState(props.user.email)
     const [roles, setRoles]=useState("")
@@ -187,24 +205,76 @@ const UserEditor = (props) => {
         })
       }
 
-      useEffect(()=>{
-        if (props.user.id === currentRecord.id && (props.user.id && currentRecord.id)) {
-          setUser(currentRecord)
-          setLoading(false)
-        }
-      },[currentRecord])
+    //   useEffect(()=>{
+    //     if (props.user.id === currentRecord.id) {
+    //       setUser(currentRecord)
+    //       setLoading(false)
+    //     }
+    //   },[currentRecord,props.user])
 
-      if (loading) {
-        return (
-          <CircularProgress/>
-        )
+    //   if (loading) {
+    //     return (
+    //       <CircularProgress/>
+    //     )
+    //   }
+
+      const saveChanges = (e) => {
+          e.preventDefault()
+          dispatch(updateRecord({type:"user",first_name:firstName,last_name:lastName,email,username,id:user.id}))
       }
     
     return (
-        <div className={classes.paper} style={{outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"100px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-          <UserEditForm user={currentRecord}/>
+        <div style={{outline:"none",width:"100%",maxWidth:"1000px",display:"flex",flexDirection:"column"}}>
+        <h3>{firstName + " " + lastName}</h3>
+          
+            <form onSubmit={(e)=>{handleProfileFormSubmit(e)}}>
+              <div style={{display:"flex",flexDirection:"row"}}>
+                <div>
+                <form ref={form} onSubmit={submit}>
+                  <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
+                    <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px"}}>
+                      {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={user.picture ? user.picture : ""}/>}
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",justifyContent:"center",width:"100%",margin:"5px"}}>
+                    <input
+                    accept="image/*"
+                    className={classes.input}
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    name="file"
+                  />
+                  <label htmlFor="contained-button-file">
+                    <Button variant="contained" color="primary" component="span" fullWidth>
+                      Select New
+                      <PhotoCamera style={{marginLeft:"4px"}}></PhotoCamera>
+                    </Button>
+                  </label>
+                    {/* <input type="file" name="file"></input> */}
+                  <Button style={{backgroundColor:"cornflowerblue",color:"white"}} type="submit" name="Sign Up" >Update Photo</Button>
+                  </div>
+                  </div>
+                </form>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",width:"100%",margin:"20px"}}>
+                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%"}}>
+                        <ColorButton style={{justifySelf:"right"}}>Reset</ColorButton>
+                    </div>
+                
+                <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
+                    <TextField size="small" fullWidth value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px"}}id="outlined-basic" label="First Name" variant="outlined" />
+                    <TextField size="small" fullWidth value={lastName} onChange={(e)=>setLastName(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Last Name" variant="outlined" />
+                    <TextField size="small" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Email" variant="outlined" />
+                    <TextField size="small" fullWidth value={username} onChange={(e)=>setUsername(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Username" variant="outlined" />
+                </div>
+                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%"}}>
+                        <ColorButton onClick={(e)=>saveChanges(e)}>Save</ColorButton>
+                    </div>
+                </div>
+              </div>
+            </form>
           </div>
     )
 }
 
-export default UserEditor
+export default UserEditForm

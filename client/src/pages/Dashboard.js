@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from '@material-ui/core'
+import { Button, CircularProgress, Grid } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {logout} from '../store/auth'
@@ -130,26 +130,26 @@ const Dashboard=(props)=>{
         <div style={{margin:"20px"}}>
         <h1>Dashboard</h1>
         <Button onClick={handleLogOut}>Log out</Button>
-            <div style={{display:"flex",flexDirection:"row"}}>
+            <Grid container style={{width:"100%"}}>
             {activities.some(activity=> activity.name === "Patient Registration") ? 
-                  <div style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} title="Patient Registration"></DashboardActivityButton>
-                  </div> : ""}
+                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
+                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="Patient Registration"></DashboardActivityButton>
+                  </Grid> : ""}
             {activities.some(activity=> activity.name === "Patient Check-in") ? 
-                  <div style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Patient Check-in")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} title="Patient Check-in"></DashboardActivityButton>
-                  </div> : ""}
+                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Patient Check-in")}>
+                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="Patient Check-in"></DashboardActivityButton>
+                  </Grid> : ""}
             {activities.some(activity=> activity.name === "User Editor") ? 
-                  <div style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("User Editor")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} title="User Editor"></DashboardActivityButton>
-                  </div> : ""}
+                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("User Editor")}>
+                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="User Editor"></DashboardActivityButton>
+                  </Grid> : ""}
             {activities.some(activity=> activity.name === "Record Editor") ?
-                  <div style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Department Editor")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} title="Department Editor" onClick={(e)=>handleActivityClick("Department Editor")}></DashboardActivityButton>
-                  </div>
+                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Department Editor")}>
+                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="Department Editor" onClick={(e)=>handleActivityClick("Department Editor")}></DashboardActivityButton>
+                  </Grid>
                   : ""
                   }
-            </div>
+            </Grid>
         </div>
         <div>
             {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>
