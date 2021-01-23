@@ -70,10 +70,9 @@ function ActivityTab(props) {
             <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient,props.activity.record)}} 
                 className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
                 style={{zIndex: props.activity.name === context.selectedTabName ? 1 : "",
-                padding:"13px",
                 background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
-                // borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
-                // borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
                 display: display
             }}
                 > 

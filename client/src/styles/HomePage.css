@@ -39,7 +39,7 @@ div.makeStyles-toolbar-10 {
 .tabs li { 
   /* Makes a horizontal row */
   float: left; 
-  transition: all 150ms ease-in;
+  
 	
   /* So the psueudo elements can be
      abs. positioned inside */
@@ -51,7 +51,7 @@ div.makeStyles-toolbar-10 {
   float: left; 
   padding: 7px 10px; 
   text-decoration: none;
-  transition: all 150ms ease-in;
+  
 
   
   /* Default colors */ 
@@ -63,7 +63,7 @@ div.makeStyles-toolbar-10 {
   -webkit-border-top-right-radius: 15px;
   -moz-border-radius-topleft: 15px;
   -moz-border-radius-topright: 15px;
-  transition: all 150ms ease-in;
+  
 
   /* border-top-left-radius: 15px;
   border-top-right-radius: 15px;  */
@@ -71,21 +71,21 @@ div.makeStyles-toolbar-10 {
 .tabs .active {
   /* Highest, active tab is on top */
   z-index: 3;
-  transition: all 150ms ease-in;
+  
 
 }
 .tabs .active a { 
   /* Colors when tab is active */
   background: white; 
   color: black; 
-  transition: all 150ms ease-in;
+  
 
 }
 .tabs li:before, .tabs li:after, 
 .tabs li a:before, .tabs li a:after {
   /* All pseudo elements are 
      abs. positioned and on bottom */
-  transition: all 150ms ease-in;
+  
 
   position: absolute;
   bottom: 0;
@@ -97,12 +97,12 @@ div.makeStyles-toolbar-10 {
 .tabs .active:after,   .tabs .active:before, 
 .tabs .active a:after, .tabs .active a:before {
   content: "";
-  transition: all 150ms ease-in;
+  
 
 }
 .tabs .active:before, .tabs .active:after {
   background: white; 
-  transition: all 150ms ease-in;
+  
 
   
   /* Squares below circles */
@@ -110,18 +110,18 @@ div.makeStyles-toolbar-10 {
 /* Squares */
 .tabs li:before, .tabs li:after {
   background: rgb(221,224,230);
-  transition: all 150ms ease-in;
+  
   width: 10px;
   height: 8px;
 }
 .tabs li:before {
   left: -10px;      
-  transition: all 150ms ease-in;
+  
 
 }
 .tabs li:after { 
   right: -10px;
-  transition: all 150ms ease-in;
+  
 
 }
 /* Circles */
@@ -129,7 +129,7 @@ div.makeStyles-toolbar-10 {
   width: 20px; 
   height: 8px;
   /* Circles are circular */
-  transition: all 150ms ease-in;
+  
   border-bottom-left-radius: 10px;  
   border-bottom-right-radius: 10px;
   background: rgb(221,224,230);
@@ -138,7 +138,7 @@ div.makeStyles-toolbar-10 {
   z-index: 2;
 }
 .tabs .active a:after, .tabs .active a:before {
-  transition: all 150ms ease-in;
+  
 
   background: rgb(221,224,230);
 }
@@ -146,17 +146,17 @@ div.makeStyles-toolbar-10 {
    outside color needs */
 .tabs li:first-child.active a:before,
 .tabs li:last-child.active a:after {
-  transition: all 150ms ease-in;
+  
 
   background: rgb(221,224,230);
 }
 .tabs li a:before {
-  transition: all 150ms ease-in;
+  
 
   left: -20px;
 }
 .tabs li a:after {
-  transition: all 150ms ease-in;
+  
 
   right: -20px;
 }
@@ -165,7 +165,7 @@ div.makeStyles-toolbar-10 {
 .dark-tabs li { 
   /* Makes a horizontal row */
   float: left; 
-  transition: all 150ms ease-in;
+  
 
   /* So the psueudo elements can be
   
@@ -173,7 +173,7 @@ div.makeStyles-toolbar-10 {
   position: relative; 
 }
 .dark-tabs a { 
-  transition: all 150ms ease-in;
+  
 
   /* Make them block level
      and only as wide as they need */
@@ -199,13 +199,13 @@ div.makeStyles-toolbar-10 {
 }
 .dark-tabs .active a { 
   /* Colors when tab is active */
-  transition: all 150ms ease-in;
+  
   background: #444444; 
   color: white; 
 }
 .dark-tabs li:before, .dark-tabs li:after, 
 .dark-tabs li a:before, .dark-tabs li a:after {
-  transition: all 150ms ease-in;
+  
 
   /* All pseudo elements are 
      abs. positioned and on bottom */
@@ -218,12 +218,12 @@ div.makeStyles-toolbar-10 {
 .dark-tabs li:first-child:before, .dark-tabs li:first-child a:before,
 .dark-tabs .active:after,   .dark-tabs .active:before, 
 .dark-tabs .active a:after, .dark-tabs .active a:before {
-  transition: all 150ms ease-in;
+  
 
   content: "";
 }
 .dark-tabs .active:before, .dark-tabs .active:after {
-  transition: all 150ms ease-in;
+  
 
   background: #444444; 
   
@@ -231,19 +231,19 @@ div.makeStyles-toolbar-10 {
 }
 /* Squares */
 .dark-tabs li:before, .dark-tabs li:after {
-  transition: all 150ms ease-in;
+  
 
   background: #212121;
   width: 10px;
   height: 8px;
 }
 .dark-tabs li:before {
-  transition: all 150ms ease-in;
+  
 
   left: -10px;      
 }
 .dark-tabs li:after { 
-  transition: all 150ms ease-in;
+  
 
   right: -10px;
 }
@@ -253,7 +253,7 @@ div.makeStyles-toolbar-10 {
   height: 8px;
   /* Circles are circular */
   border-bottom-left-radius: 10px;  
-  transition: all 150ms ease-in;
+  
   border-bottom-right-radius: 10px;
   background: #212121;
   
@@ -261,22 +261,22 @@ div.makeStyles-toolbar-10 {
   z-index: 2;
 }
 .dark-tabs .active a:after, .dark-tabs .active a:before {
-  transition: all 150ms ease-in;
+  
   background: #212121;
 }
 /* First and last tabs have different
    outside color needs */
 .dark-tabs li:first-child.active a:before,
 .dark-tabs li:last-child.active a:after {
-  transition: all 150ms ease-in;
+  
   background: #212121;
 }
 .dark-tabs li a:before {
-  transition: all 150ms ease-in;
+  
   left: -20px;
 }
 .dark-tabs li a:after {
-  transition: all 150ms ease-in;
+  
   right: -20px;
 }
 

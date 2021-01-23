@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    outline:"none",
+    borderRadius:"8px",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -127,39 +128,42 @@ const Dashboard=(props)=>{
 
     return (
         <>
-        <div style={{margin:"20px"}}>
-        <h1>Dashboard</h1>
-        <Button onClick={handleLogOut}>Log out</Button>
-            <Grid container style={{width:"100%"}}>
+        <div style={{margin:"20px",width:"100%",padding:"30px",display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
+          <div style={{display:"flex", flexDirection:"column", border:"1px solid #dadce0",borderRadius:"8px",paddingRight:"24px",paddingLeft:"24px",paddingTop:"16px",paddingBottom:"16px",width:"100%"}}>
+            <div style={{fontFamily:"Google Sans,Roboto,Arial,sans-serif",fontWeight:"400",fontSize:"22px",alignSelf:"center"}}>
+              My Activities
+            </div>
+            <div style={{width:"100%",display:"flex",flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}} >
             {activities.some(activity=> activity.name === "Patient Registration") ? 
-                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="Patient Registration"></DashboardActivityButton>
-                  </Grid> : ""}
+                                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
+                  <DashboardActivityButton onClick={(e)=>handleActivityClick("Patient Registration")} style={{cursor:"pointer"}} color={"coral"} title="Patient Registration"></DashboardActivityButton>
+                  </div>
+                  : ""}
             {activities.some(activity=> activity.name === "Patient Check-in") ? 
-                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Patient Check-in")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="Patient Check-in"></DashboardActivityButton>
-                  </Grid> : ""}
+                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
+                  <DashboardActivityButton onClick={(e)=>handleActivityClick("Patient Check-in")} style={{cursor:"pointer"}} color={"coral"} title="Patient Check-in"></DashboardActivityButton>
+                </div>
+                   : ""}
             {activities.some(activity=> activity.name === "User Editor") ? 
-                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("User Editor")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="User Editor"></DashboardActivityButton>
-                  </Grid> : ""}
+                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("User Editor")}>
+                  <DashboardActivityButton onClick={(e)=>handleActivityClick("User Editor")} style={{cursor:"pointer"}} color={"transparent"} title="User Editor"></DashboardActivityButton>
+                  </div>
+                  : ""}
             {activities.some(activity=> activity.name === "Record Editor") ?
-                  <Grid item xs={12} sm={12} lg={6} style={{cursor:"pointer"}} onClick={(e)=>handleActivityClick("Department Editor")}>
-                  <DashboardActivityButton style={{cursor:"pointer"}} color={"coral"} title="Department Editor" onClick={(e)=>handleActivityClick("Department Editor")}></DashboardActivityButton>
-                  </Grid>
+                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Department Editor")}>
+                  <DashboardActivityButton onClick={(e)=>handleActivityClick("Department Editor")} style={{cursor:"pointer"}} color={"coral"} title="Department Editor" onClick={(e)=>handleActivityClick("Department Editor")}></DashboardActivityButton>
+                  </div>
                   : ""
                   }
-            </Grid>
+            </div>
+            </div>
         </div>
-        <div>
+        {/* <div>
             {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>
             :
             <Button onClick={changeThemes} size="small" style={{outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></Button>}
-        </div>
+        </div> */}
         <div>
-      <button type="button" onClick={handleOpen}>
-        react-transition-group
-      </button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

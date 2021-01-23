@@ -206,7 +206,6 @@ const HomePage=(props)=>{
     },[openTabs, allActivities])
 
     const tabStyle = {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
         '&:hover': {
             backgroundColor: "black",
         }
@@ -243,16 +242,17 @@ const HomePage=(props)=>{
               <div className={classes.content}>
                 <div style={{display:"flex",flexDirection:"column",backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
                     <div 
-                    // className={context.themes === "dark" ? "dark-tabs" : "tabs"} 
-                    style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"0px",listStyleType:"none",...tabStyle}}>
+                    className={context.themes === "dark" ? "dark-tabs" : "tabs"} 
+                    style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"0px",listStyleType:"none",...tabStyle,marginTop:"8px"}}>
                     {tabs.map((activity, index)=>
                         (   
                             <ActivityTab key={activity.name} index={index} activity={activity}/>
                         ))}
                     </div>
                     <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
-                    {tabs.map((activity, index)=>
-                    (
+                    {tabs.map((activity, index)=> {
+                      if (activity.name === selectedTabName) {
+                    return (
                         <div style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
                             {activity.name === "dashboard" ? <Dashboard/> : <></>}
                             {activity.name === "Patient Registration" ? <Registration/> : <></>}
@@ -262,7 +262,7 @@ const HomePage=(props)=>{
                             {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
                         </div>
                         
-                        ))}
+                        )}})}
                 </div>
                 </div>
             </div>

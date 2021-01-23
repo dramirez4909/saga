@@ -347,7 +347,7 @@ const Navbar = (props) => {
                 <StyledMenuItem>
                   <ListItemText primary="Settings" />
                 </StyledMenuItem>
-                <StyledMenuItem>
+                <StyledMenuItem onClick={handleLogOut}>
                   <ListItemText primary="Logout" />
                 </StyledMenuItem>
             </StyledMenu>
@@ -463,7 +463,7 @@ const Navbar = (props) => {
                 <StyledMenuItem>
                   <ListItemText primary="Settings" />
                 </StyledMenuItem>
-                <StyledMenuItem>
+                <StyledMenuItem onClick={handleLogOut}>
                   <ListItemText primary="Logout" />
                 </StyledMenuItem>
             </StyledMenu>

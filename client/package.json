@@ -24,6 +24,7 @@
     "json2mq": "^0.2.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
+    "radium": "^0.26.1",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-big-calendar": "^0.28.1",
