@@ -18,7 +18,7 @@ const buttonStyle = {
     ':hover':{
         // backgroundColor:"rgba(0,0,0,.03)",
         transform:"scale(1.05)",
-        boxShadow:"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+        // boxShadow:"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
     }
 }
 

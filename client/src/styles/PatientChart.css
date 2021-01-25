@@ -13,13 +13,26 @@ div.MuiPaper-elevation1 {
   box-shadow: none;
 }
 
+
+
+button.MuiTab-textColorPrimary.Mui-selected {
+  color: white
+
+}
+
+#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div > header > div > div > span {
+  height:100%;
+  background-color: yellowgreen
+}
+
 #root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > header > div > div.MuiTabs-scroller.MuiTabs-scrollable > span {
   height:100%;
   background-color: cornflowerblue;
 }
 
 button.MuiTab-textColorPrimary.Mui-selected {
-  color: white
+  color: white;
+  z-index: 10;
 }
 
 

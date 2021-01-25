@@ -1,11 +1,12 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Radio from '@material-ui/core/Radio';
-import { AppBar, Toolbar, Box, IconButton, Avatar, Typography, Button, CircularProgress } from '@material-ui/core';
+import { AppBar, Toolbar, Box, IconButton, Avatar, Typography, Button, CircularProgress, Divider, InputAdornment } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { logout } from '../store/auth';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircle';
 import {openTab} from '../store/activities'
 import HomeContext from '../components/utils/HomeContext'
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -29,6 +30,7 @@ import PatientSearchContext from './utils/PatientSearchContext'
 import ThemeContext from './utils/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRecord } from '../store/current_record';
+import UserEditFormField from './UserEditFormField';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -145,15 +147,19 @@ const useStyles = makeStyles((theme) => ({
 
   const ColorButton = withStyles((theme) => ({
     root: {
-        color: "white",
+        color:"dodgerblue",
         paddingRight: "10px",
         paddingLeft: "10px",
         outline: "none",
+        margin:"10px",
+        marginTop:"15px",
+        border:"1px solid dodgerblue",
         textDecoration:"none",
         margin: "4px",
-        backgroundColor:"grey",
+        backgroundColor:"transparent",
         '&:hover': {
-            backgroundColor: "#b1f3b1 !important",
+            backgroundColor: "dodgerblue !important",
+            color:"white"
         },
     },
   }))(Button);
@@ -169,6 +175,10 @@ const UserEditForm = (props) => {
     const [loadingPicture,setLoadingPicture] = useState(false)
     const themeContext = useContext(ThemeContext)
     const [loading,setLoading]=useState(true)
+    const [firstNameEdit,setFirstNameEdit] = useState(false)
+    const [lastNameEdit,setLastNameEdit] =useState(false)
+    const [emailEdit,setEmailEdit] = useState(false)
+    const [usernameEdit,setUsernameEdit] = useState(false)
     const currentRecord = useSelector(state=>state.currentRecord)
     const dispatch = useDispatch()
 
@@ -205,6 +215,23 @@ const UserEditForm = (props) => {
         })
       }
 
+    const handleFirstNameSubmit=(e)=>{
+      e.stopPropagation()
+      setFirstNameEdit(false)
+    }
+    const handleLastNameSubmit=(e)=>{
+      e.stopPropagation()
+      setLastNameEdit(false)
+    }
+    const handleEmailSubmit=(e)=>{
+      e.stopPropagation()
+      setEmailEdit(false)
+    }
+    const handleUsernameSubmit=(e)=>{
+      e.stopPropagation()
+      setUsernameEdit(false)
+    }
+
     //   useEffect(()=>{
     //     if (props.user.id === currentRecord.id) {
     //       setUser(currentRecord)
@@ -220,16 +247,21 @@ const UserEditForm = (props) => {
 
       const saveChanges = (e) => {
           e.preventDefault()
+          setFirstNameEdit(false)
+          setLastNameEdit(false)
+          setEmailEdit(false)
+          setUsernameEdit(false)
           dispatch(updateRecord({type:"user",first_name:firstName,last_name:lastName,email,username,id:user.id}))
       }
     
     return (
-        <div style={{outline:"none",width:"100%",maxWidth:"1000px",display:"flex",flexDirection:"column"}}>
-        <h3>{firstName + " " + lastName}</h3>
+      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <div style={{outline:"none",width:"100%",borderRadius:"8px",border:"1px solid #dadce0",padding:"24px",display:"flex",flexDirection:"column",paddingLeft:"0px",paddingRight:"0px"}}>
+        <h3 style={{paddingLeft:"16px"}}>Basic Info</h3>
           
             <form onSubmit={(e)=>{handleProfileFormSubmit(e)}}>
               <div style={{display:"flex",flexDirection:"row"}}>
-                <div>
+                {/* <div>
                 <form ref={form} onSubmit={submit}>
                   <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
                     <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginTop:"5px"}}>
@@ -250,30 +282,87 @@ const UserEditForm = (props) => {
                       <PhotoCamera style={{marginLeft:"4px"}}></PhotoCamera>
                     </Button>
                   </label>
-                    {/* <input type="file" name="file"></input> */}
                   <Button style={{backgroundColor:"cornflowerblue",color:"white"}} type="submit" name="Sign Up" >Update Photo</Button>
                   </div>
                   </div>
                 </form>
-                </div>
-                <div style={{display:"flex",flexDirection:"column",width:"100%",margin:"20px"}}>
-                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%"}}>
-                        <ColorButton style={{justifySelf:"right"}}>Reset</ColorButton>
-                    </div>
-                
+                </div> */}
                 <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
-                    <TextField size="small" fullWidth value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px"}}id="outlined-basic" label="First Name" variant="outlined" />
-                    <TextField size="small" fullWidth value={lastName} onChange={(e)=>setLastName(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Last Name" variant="outlined" />
-                    <TextField size="small" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Email" variant="outlined" />
-                    <TextField size="small" fullWidth value={username} onChange={(e)=>setUsername(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Username" variant="outlined" />
-                </div>
-                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%"}}>
-                        <ColorButton onClick={(e)=>saveChanges(e)}>Save</ColorButton>
+                
+                <div style={{display:"flex",flexDirection:"column",width:"100%",minWidth:"500px",paddingLeft:"0px",paddingRight:"0px"}}>
+
+                    { firstNameEdit ? 
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                        FIRST NAME
                     </div>
+                    <form onSubmit={(e)=>handleFirstNameSubmit(e)} style={{width:"100%"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setFirstNameEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    </form>
+                    </div>
+                    :
+                    <div onClick={(e)=>setFirstNameEdit(true)} style={{margin:"0px"}}>
+                    <UserEditFormField label={"first name"} text={firstName}/>
+                    </div>
+                    }
+                    <Divider style={{ width: "100%"}} />
+                    { lastNameEdit ? 
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                        LAST NAME
+                    </div>
+                    <form onSubmit={(e)=>handleLastNameSubmit(e)} style={{width:"100%"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setLastNameEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    </form>
+                    </div>
+                    :
+                    <div onClick={(e)=>setLastNameEdit(true)} style={{margin:"0px"}}>
+                    <UserEditFormField label={"last name"} text={lastName}/>
+                    </div>
+                    }
+                    <Divider style={{ width: "100%"}} />
+                    { emailEdit ? 
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                        EMAIL
+                    </div>
+                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"100%"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setEmailEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={email} onChange={(e)=>setEmail(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    </form>
+                    </div>
+                    :
+                    <div onClick={(e)=>setEmailEdit(true)} style={{margin:"0px"}}>
+                    <UserEditFormField label={"email"} text={email}/>
+                    </div>
+                    }
+                    <Divider style={{ width: "100%"}} />
+                    { usernameEdit ? 
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                        USERNAME
+                    </div>
+                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"100%"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setUsernameEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={username} onChange={(e)=>setUsername(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    </form>
+                    </div>
+                    :
+                    <div onClick={(e)=>setUsernameEdit(true)} style={{margin:"0px"}}>
+                    <UserEditFormField label={"email"} text={username}/>
+                    </div>
+                    }
+                    {/* <TextField size="small" fullWidth value={lastName} onChange={(e)=>setLastName(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Last Name" variant="outlined" />
+                    <TextField size="small" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Email" variant="outlined" />
+                    <TextField size="small" fullWidth value={username} onChange={(e)=>setUsername(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Username" variant="outlined" /> */}
+                </div>
+
                 </div>
               </div>
             </form>
           </div>
+                              <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%",marginTop:"10px"}}>
+                              <ColorButton fullWidth onClick={(e)=>saveChanges(e)}>Save All <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
+                          </div>
+                          </div>
     )
 }
 

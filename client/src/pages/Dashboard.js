@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid } from '@material-ui/core'
+import { Avatar, Button, CircularProgress, Grid } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {logout} from '../store/auth'
@@ -16,6 +16,11 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { setCurrentRecord } from '../store/current_record'
+import UserCard from '../components/UserCard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserMd } from '@fortawesome/free-solid-svg-icons'
+import { faUserCog } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -24,11 +29,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
     outline:"none",
-    borderRadius:"8px",
+    borderRadius:"4px",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  large: {
+    width: theme.spacing(9),
+    height: theme.spacing(9),
   },
 }));
 
@@ -177,19 +189,43 @@ const Dashboard=(props)=>{
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
-            {modalLoading ? <CircularProgress/> : 
-
-            <div>
+          <div className={classes.paper} style={{maxWidth:"600px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",display:"flex",justifyContent:"center",flexDirection:"column"}}>
+            <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"10px"}}>
+              <div style={{fontWeight:"400",fontSize:"24px"}}>
+                Users
+              </div>
+              <div style={{display:"flex",flexDirection:"column",margin:"10px",marginTop:"16px"}}>
+              <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
+                <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"green"}}/>
+                <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
+                  - Provider
+                </div>
+              </div>
+              <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
+                <FontAwesomeIcon icon={faUserCog} style={{width:"20px",height:"20px",color:"dodgerblue"}}/>
+                <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
+                  - Administrator
+                </div>
+              </div>
+              <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
+                <FontAwesomeIcon icon={faCalendarAlt} style={{width:"20px",height:"20px",color:"coral"}}/>
+                <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
+                  - Scheduler
+                </div>
+              </div>
+            </div>
+            </div>
+            {modalLoading ? <CircularProgress/> :
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"600px",width:"100%",overFlow:"scroll",maxHeight:"600px"}}>
               {users.map(user=>{
+                {console.log(user)}
                 return(
-                  <div onClick={(e)=>handleUserEditorClick(user)}>
-                    {user.first_name}
+                  <div onClick={(e)=>handleUserEditorClick(user)} style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:"14px",marginBottom:"5px",marginRight:"14px",borderRadius:"8px",width:"100%"}}>
+                    <UserCard user={user}/>
                   </div>
                 )
               })}
             </div>
-            
             }
           </div>
         </Fade>

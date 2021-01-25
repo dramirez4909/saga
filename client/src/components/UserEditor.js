@@ -5,6 +5,7 @@ import { AppBar, Toolbar, Box, IconButton, Avatar, Typography, Button, CircularP
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { logout } from '../store/auth';
 import Menu from '@material-ui/core/Menu';
+import PropTypes from 'prop-types';
 import MenuItem from '@material-ui/core/MenuItem'
 import {openTab} from '../store/activities'
 import HomeContext from '../components/utils/HomeContext'
@@ -29,6 +30,9 @@ import PatientSearchContext from './utils/PatientSearchContext'
 import ThemeContext from './utils/ThemeContext';
 import { useSelector } from 'react-redux';
 import UserEditForm from './UserEditForm';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -134,13 +138,52 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
     paper: {
-      padding: theme.spacing(2, 4, 3),},
+      
+    },
     
     input: {
         display: 'none',
       },
+    tabRoot: {
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+      },
   
   }));
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`,
+  };
+}
 
 const UserEditor = (props) => {
     const classes = useStyles();
@@ -153,6 +196,12 @@ const UserEditor = (props) => {
     const themeContext = useContext(ThemeContext)
     const [loading,setLoading]=useState(true)
     const currentRecord = useSelector(state=>state.currentRecord)
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
 
     const [email,setEmail]=useState(props.user.email)
     const [roles, setRoles]=useState("")
@@ -201,9 +250,35 @@ const UserEditor = (props) => {
       }
     
     return (
-        <div className={classes.paper} style={{outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"100px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+      <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"20px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "#f9f9f9",minWidth:"700px"}}>
+        <div style={{fontSize:"30px",margin:"10px",paddingLeft:"16px",alignSelf:"center"}}>{currentRecord.first_name + " " + currentRecord.last_name}</div>
+        <div className={classes.tabRoot}>
+        <AppBar position="static" color="default">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+            // variant="scrollable"
+            scrollButtons="auto"
+          >
+            <Tab label="Basic Info" {...a11yProps(0)} />
+            <Tab label="User Roles" {...a11yProps(1)} />
+            <Tab label="Security Points" {...a11yProps(2)} />
+          </Tabs>
+        </AppBar>
+        <TabPanel value={value} index={0}>
           <UserEditForm user={currentRecord}/>
-          </div>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          User Roles
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Security Points
+        </TabPanel>
+      </div>
+    </div>
     )
 }
 
