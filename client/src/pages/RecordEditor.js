@@ -31,7 +31,7 @@ export default function RecordEditor(props) {
         <CircularProgress/>
     )
     return (
-        <div>
+        <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
             {currentRecord.type === "user" ? <UserEditor user={currentRecord}></UserEditor> : <></>}
         </div>
     )

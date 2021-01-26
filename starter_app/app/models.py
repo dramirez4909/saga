@@ -629,11 +629,18 @@ class Security_Point(db.Model):
   activity = db.relationship("Activity",back_populates="security_point",uselist=False)
 
   def to_dict(self):
-    return {
-      "id": self.id,
-      "name": self.name,
-      "activity": self.activity.to_dict()
-    }
+    if self.activity: 
+      return {
+        "id": self.id,
+        "name": self.name,
+        "activity": self.activity.to_dict()
+      }
+    else:
+      return {
+        "id": self.id,
+        "name": self.name,
+      }
+
 
 class Resource(db.Model):
   __tablename__ = "resources"

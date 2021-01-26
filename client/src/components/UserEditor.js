@@ -32,6 +32,8 @@ import { useSelector } from 'react-redux';
 import UserEditForm from './UserEditForm';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import UserEditRoleForm from './UserEditRoleForm';
+import UserEditSecurityForm from './UserEditSecurityForm';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -146,8 +148,15 @@ const useStyles = makeStyles((theme) => ({
       },
     tabRoot: {
         flexGrow: 1,
-        width: '100%',
         backgroundColor: theme.palette.background.paper,
+        display: 'flex',
+        justifyContent:"center",
+      },
+      tabs: {
+        borderRight: `1px solid ${theme.palette.divider}`,
+        fontWeight:"400",
+        // width:"100%",
+        // maxWidth:"300px"
       },
   
   }));
@@ -164,7 +173,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={3} style={{padding:"1px"}}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -250,32 +259,32 @@ const UserEditor = (props) => {
       }
     
     return (
-      <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"20px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "#f9f9f9",minWidth:"700px"}}>
-        <div style={{fontSize:"30px",margin:"10px",paddingLeft:"16px",alignSelf:"center"}}>{currentRecord.first_name + " " + currentRecord.last_name}</div>
+      <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"20px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+        <div style={{display:"flex",flexDirection:"row",alignItems:"center",margin:"10px",alignSelf:"center"}}>
+          {/* <Avatar style={{width:"90px",height:"90px",alignSelf:"center"}} src={currentRecord.picture}/> */}
+        </div>
         <div className={classes.tabRoot}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-            // variant="scrollable"
-            scrollButtons="auto"
-          >
-            <Tab label="Basic Info" {...a11yProps(0)} />
-            <Tab label="User Roles" {...a11yProps(1)} />
-            <Tab label="Security Points" {...a11yProps(2)} />
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        onChange={handleChange}
+        aria-label="Vertical tabs example"
+        className={classes.tabs}
+      >
+            <Tab style={{fontWeight:"400"}}label="Basic Info" {...a11yProps(0)} />
+            <Tab style={{fontWeight:"400"}}label="User Roles" {...a11yProps(1)} />
+            <Tab style={{fontWeight:"400"}}label="Security Points" {...a11yProps(2)} />
           </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
+        <TabPanel style={{width:"100%",maxWidth:"900px",overflow:"scroll"}} value={value} index={0}>
+          <div style={{fontSize:"24px",margin:"10px",paddingLeft:"16px",justifySelf:"center"}}>{currentRecord.first_name + " " + currentRecord.last_name}</div>
           <UserEditForm user={currentRecord}/>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          User Roles
+        <TabPanel style={{width:"100%",maxWidth:"900px"}} value={value} index={1}>
+          <UserEditRoleForm user={currentRecord}/>
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          Security Points
+        <TabPanel style={{width:"100%",maxWidth:"900px"}} value={value} index={2}>
+          <UserEditSecurityForm user={currentRecord}/>
         </TabPanel>
       </div>
     </div>

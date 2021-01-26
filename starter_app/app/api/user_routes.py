@@ -1,6 +1,6 @@
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask import (Blueprint, jsonify, url_for, request, redirect, render_template)
-from app.models import User, db, Patient
+from app.models import User, db, Patient, Role, Security_Point
 import os
 import boto3
 from app.config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
@@ -41,6 +41,17 @@ def update(id):
   user.first_name = data["first_name"]
   user.last_name = data["last_name"]
   user.username = data["username"]
+  if 'roles' in data:
+    user.roles = []
+    print("!!!!!!!!",data['roles'])
+    for role in data['roles']:
+      role = Role.query.get(role['id'])
+      user.roles.append(role)
+  if 'security_points' in data:
+    user.security_points = []
+    for security_point in data['security_points']:
+      security_point = Security_Point.query.get(security_point['id'])
+      user.security_points.append(security_point)
   db.session.add(user)
   db.session.commit()
   format_user = user.to_dict()

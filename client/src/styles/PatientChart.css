@@ -16,24 +16,32 @@ div.MuiPaper-elevation1 {
 
 
 button.MuiTab-textColorPrimary.Mui-selected {
-  color: white
-
+  color: white;
+  outline:none;
 }
 
-#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div > header > div > div > span {
+#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div.makeStyles-tabRoot-61 > header {
+  background-color: white;
+}
+
+#root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div.makeStyles-tabRoot-58 > div.MuiTabs-root.MuiTabs-vertical > div > span {
   height:100%;
-  background-color: yellowgreen
+  width:100%;
+  background-color: #e8f0fe
 }
 
 #root > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > header > div > div.MuiTabs-scroller.MuiTabs-scrollable > span {
   height:100%;
-  background-color: cornflowerblue;
+  background-color: yellowgreen;
 }
 
-button.MuiTab-textColorPrimary.Mui-selected {
-  color: white;
+button.MuiTab-textColorInherit.Mui-selected {
+  outline:none;
+  font-weight:bolder;
   z-index: 10;
 }
+
+
 
 
 .circular--portrait {

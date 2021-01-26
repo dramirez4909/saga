@@ -255,11 +255,11 @@ const UserEditForm = (props) => {
       }
     
     return (
-      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
+      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px"}}>
         <div style={{outline:"none",width:"100%",borderRadius:"8px",border:"1px solid #dadce0",padding:"24px",display:"flex",flexDirection:"column",paddingLeft:"0px",paddingRight:"0px"}}>
         <h3 style={{paddingLeft:"16px"}}>Basic Info</h3>
           
-            <form onSubmit={(e)=>{handleProfileFormSubmit(e)}}>
+            <form onSubmit={(e)=>{handleProfileFormSubmit(e)}} >
               <div style={{display:"flex",flexDirection:"row"}}>
                 {/* <div>
                 <form ref={form} onSubmit={submit}>
@@ -289,7 +289,7 @@ const UserEditForm = (props) => {
                 </div> */}
                 <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
                 
-                <div style={{display:"flex",flexDirection:"column",width:"100%",minWidth:"500px",paddingLeft:"0px",paddingRight:"0px"}}>
+                <div style={{display:"flex",flexDirection:"column",width:"100%",paddingLeft:"0px",paddingRight:"0px"}}>
 
                     { firstNameEdit ? 
                     <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
@@ -360,7 +360,7 @@ const UserEditForm = (props) => {
             </form>
           </div>
                               <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%",marginTop:"10px"}}>
-                              <ColorButton fullWidth onClick={(e)=>saveChanges(e)}>Save All <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
+                              <ColorButton fullWidth onClick={(e)=>saveChanges(e)}>Save Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
                           </div>
                           </div>
     )

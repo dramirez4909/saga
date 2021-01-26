@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: "whitesmoke",
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
@@ -89,12 +89,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
+    color:"dimgray",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputRoot: {
-    color: 'inherit',
+    color: 'dimgray',
   },
   mobileInputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -143,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: deepPurple[500],
   },
   logo: {
-    color: "white",
+    color:"cornflowerblue",
     textDecoration: "none",
     fontSize: "18px",
     margin: "2px",
@@ -301,7 +302,7 @@ const Navbar = (props) => {
       <Breakpoint medium up>
       <div style={{flexGrow:1}}>
         <AppBar position="static">
-        <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "cornflowerblue"}}>
+        <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
             <div style={{display:"flex",flexDirection:"row"}}>
             <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
@@ -327,10 +328,11 @@ const Navbar = (props) => {
               {displayPatientSearchResults ? patientSearchResults.length ? <PatientSearchResults patientSearchResults={patientSearchResults}/> : <></> : <></>}
             </div>
           </div>
-              <ScheduleSelector/>
-            {themeContext.themes === "light" ? <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",color:"white",marginRight:"4px",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>
+              {/* <ScheduleSelector/> */}
+            {/* {themeContext.themes === "light" ? <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",color:"white",marginRight:"4px",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></IconButton>
             :
-            <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>}
+            <IconButton onClick={changeThemes} style={{height:"38px",width:"38px",outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"4px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></IconButton>
+            } */}
 
             {currentUser.picture ? <Avatar onClick={handleClick} style={{boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} src={`${currentUser.picture}`}/> 
             : currentUser.provider ? <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.provider.first_name[0]+currentUser.provider.last_name[0]}</Avatar> : <Avatar onClick={handleClick} style={{marginRight:"30px",boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}} className={classes.purple}>{currentUser.username[0]}</Avatar>}
@@ -421,8 +423,8 @@ const Navbar = (props) => {
         <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "cornflowerblue"}}>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
             <div style={{display:"flex",flexDirection:"row"}}>
-            <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
-              <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
+            <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer",color:themeContext.themes === "dark" ? "cornflowerblue" : "cornflowerblue"}} >
+              <div className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold",color:themeContext.themes === "dark" ? "cornflowerblue" : "cornflowerblue"}}>Saga</div>
             </div>
             </div>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row"}}>

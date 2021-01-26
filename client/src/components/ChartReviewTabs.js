@@ -86,23 +86,23 @@ export default function ChartReviewTabs(props) {
           aria-label="scrollable auto tabs example"
         >
           <Tab label="Medications" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
-            icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/91-919780_stimulant-drugs-clipart-png-download.png"></img>} 
+            // icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/91-919780_stimulant-drugs-clipart-png-download.png"></img>} 
             {...a11yProps(0)}
           />
           <Tab label="Mental Health" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
-            icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-brain-100+(6).png"></img>} 
+            // icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-brain-100+(6).png"></img>} 
             {...a11yProps(1)}
           />
           <Tab label="Problem List" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
-            icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/256x256.png"></img>} 
+            // icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/256x256.png"></img>} 
             {...a11yProps(2)}
           />
           <Tab label="Procedure Orders" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
-            icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/paper-rocket-flat.svg"></img>} 
+            // icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/paper-rocket-flat.svg"></img>} 
             {...a11yProps(3)}
           />
           <Tab label="Encounters" style={{...tabStyle, color:themeContext.themes === "dark" ? "white" : ""}} 
-            icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-calendar-100.png"></img>} 
+            // icon={<img style={{height:"30px",width:"30px",transition:"all .3s ease-in-out"}} src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-calendar-100.png"></img>} 
             {...a11yProps(4)}
           />
         </Tabs>
