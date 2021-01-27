@@ -22,7 +22,8 @@ import { faUserMd } from '@fortawesome/free-solid-svg-icons'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 import CloseIcon from '@material-ui/icons/Close';
-
+import UserSearchResults from '../components/UserSearchResults'
+import DepartmentSearchResults from '../components/DepartmentSearchResults'
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -63,10 +64,14 @@ const Dashboard=(props)=>{
     const [getDepartmentRecordsFromDB,setGetDepartmentRecordsFromDB] =useState(false)
     const [modalLoading,setModalLoading]=useState(false)
     const [users,setUsers]=useState([])
+    const [departments,setDepartments]=useState([])
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const dispatch = useDispatch()
     const themeContext = useContext(ThemeContext)
     const homeContext = useContext(HomeContext)
+    const [departmentModalLoading,setDepartmentModalLoading] = useState(false)
+    const [departmentOpen,setDepartmentOpen] =useState(false)
+    const [getDepartmentRecords,setGetDepartmentRecords]=useState(false)
 
     const handleLogOut = ()=> {
         dispatch(logout())
@@ -88,25 +93,39 @@ const Dashboard=(props)=>{
       } else if (name==="User Editor") {
         setModalLoading(true)
         setOpen(true)
-        setGetUserRecordsFromDB(!getUserRecordsFromDB)
         setSelectedActivity("users")
+        setGetUserRecordsFromDB(!getUserRecordsFromDB)
+        // setSelectedActivity("users")
         // dispatch(openEditor({type:"user"}))
       } else if (name==="Department Editor") {
-        dispatch(openEditor({type:"department"}))
+        setDepartmentModalLoading(true)
+        setDepartmentOpen(true)
+        setSelectedActivity("departments")
+        setGetDepartmentRecords(!getDepartmentRecords)
+        // dispatch(openEditor({type:"department"}))
       }
     }
 
     useEffect(()=>{
-      const getRecords = async () => {
+      const getUserRecords = async () => {
         const res = await fetch(`/api/users/`)
         const data = await res.json()
         setUsers(data.users)
         setModalLoading(false)
       }
-      if (allActivities.role_activities || allActivities.user_activities) {
-        getRecords()
+      const getDeptRecords = async () => {
+        const res = await fetch(`/api/departments/`)
+        const data = await res.json()
+        console.log(data)
+        setDepartments(data.departments)
+        setDepartmentModalLoading(false)
       }
-    },[getUserRecordsFromDB])
+      if ((allActivities.role_activities || allActivities.user_activities) && selectedActivity === "users") {
+        getUserRecords()
+      } else if ((allActivities.role_activities || allActivities.user_activities ) && selectedActivity === "departments") {
+        getDeptRecords()
+      }
+    },[getDepartmentRecords,getUserRecordsFromDB])
 
     function JavaScriptMedia() {
     const matches = useMediaQuery(
@@ -176,7 +195,24 @@ const Dashboard=(props)=>{
             :
             <Button onClick={changeThemes} size="small" style={{outline:"none",background:"linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#f7b732"}}/></Button>}
         </div> */}
-        <div>
+        <UserSearchResults 
+        modalLoading={modalLoading} 
+        themeContext={themeContext}
+        users={users} 
+        open={open}
+        setOpen={setOpen}
+        Backdrop={Backdrop}
+        handleUserEditorClick={handleUserEditorClick}/>
+        {/* <DepartmentSearchResults 
+        modalLoading={modalLoading} 
+        themeContext={themeContext}
+        users={users} 
+        open={open}
+        setOpen={setOpen}
+        Backdrop={Backdrop}
+        handleUserEditorClick={handleUserEditorClick}/> */}
+        
+        {/* <div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -234,7 +270,7 @@ const Dashboard=(props)=>{
           </div>
         </Fade>
       </Modal>
-    </div>
+    </div> */}
     </>
   )
 }
