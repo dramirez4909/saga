@@ -304,13 +304,16 @@ const Navbar = (props) => {
         <AppBar position="static">
         <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-            <div style={{display:"flex",flexDirection:"row"}}>
+            <div style={{display:"flex",flexDirection:"row",justifySelf:"center"}}>
             <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
-              <p className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>Saga</p>
+              {/* <div className={classes.logo} style={{textDecoration:"none", fontStyle: "italic", fontWeight:"bold"}}>
+                Saga
+                </div> */}
+                <img style={{width:"47px",height:"47px"}} src="https://saga-health.s3-us-west-1.amazonaws.com/saga-logo-removebg-preview.png"/>
             </div>
             </div>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row"}}>
-            <div className={classes.search}>
+            <div className={classes.search} style={{marginRight:"10px"}}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>

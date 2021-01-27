@@ -40,36 +40,27 @@ import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 import { fade} from '@material-ui/core/styles';
 import {setCurrentPatient} from '../store/current_patient'
+import ScheduleSelector from '../components/ScheduleSelector'
 // import DepartmentScheduler from './DepartmentScheduler'
 // import ProviderSchedule from './ProviderSchedule'
 import ThemeContext from '../components/utils/ThemeContext'
 import DepartmentSchedule from './DepartmentSchedule'
 import {Breakpoint} from 'react-socks'
   import { fromPairs } from 'lodash'
-import { BottomNavigation, CircularProgress } from '@material-ui/core'
+import { BottomNavigation, CircularProgress,Button } from '@material-ui/core'
 import MobileBottomNav from '../components/MobileBottomNav'
 import MobileBottomMenu from '../components/MobileBottomMenu'
 import Registration from './Registration'
 import RecordEditor from './RecordEditor'
 import { setCurrentRecord } from '../store/current_record'
+import {reorderTabs} from '../store/activities'
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-  },
-  paperDark:{
-      position:"fixed",
-      top:"32px",
-      backgroundColor:"#444444",
-      width: "62px",
-  },
-  paperLight:{
-    position:"fixed",
-    top:"32px",
-    backgroundColor:"white",
-    width: "62px",
+    flexDirection:"row-reverse"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -94,7 +85,6 @@ const useStyles = makeStyles((theme) => ({
   },
   drawer: {
     width: drawerWidth,
-    position:"inherit",
     flexShrink: 0,
     whiteSpace: 'nowrap',
   },
@@ -119,6 +109,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -126,6 +117,18 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     // padding: theme.spacing(3),
+  },
+  paperDark:{
+      position:"fixed",
+      top:"32px",
+      backgroundColor:"#444444",
+      width: "62px",
+  },
+  paperLight:{
+    position:"fixed",
+    top:"32px",
+    backgroundColor:"white",
+    width: "62px",
   },
   tabStyle: {
     cursor:"pointer",
@@ -155,6 +158,8 @@ const tabStyle = {
     }
 }
 
+
+
 const HomePage=(props)=>{
   const [sideBarDisplay,setSideBarDisplay] = useState(true)
   const classes = useStyles();
@@ -164,6 +169,52 @@ const HomePage=(props)=>{
   const dispatch = useDispatch()
   const [themes,setThemes] = useState("dark")
   const context = useContext(ThemeContext)
+
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    console.log(result)
+    return result;
+  };
+
+  const grid = 8;
+
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    padding: grid * 2,
+    margin: `0 ${grid}px 0 0`,
+
+    // change background colour if dragging
+    background: isDragging ? 'lightgreen' : 'grey',
+
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  });
+
+  const getListStyle = isDraggingOver => ({
+    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    display: 'flex',
+    padding: grid,
+    overflow: 'auto',
+  });
+
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    const newTabs = reorder(
+      tabs,
+      result.source.index,
+      result.destination.index
+    );
+    dispatch(reorderTabs(newTabs))
+    console.log(newTabs)
+    setTabs(newTabs)
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -198,7 +249,9 @@ const HomePage=(props)=>{
 
     useEffect(()=>{
         if (openTabs && (allActivities.role_activities || allActivities.user_activities)){
-            setTabs(openTabs)
+            // if (openTabs.length !== tabs.length) {
+            //   console.log("THIS FIRED!!!!!")
+              setTabs(openTabs)
             console.log("tabs tabs tabs",openTabs)
             console.log("tabs state variable: ",tabs)
             setActivities([{name:"dashboard",id:0 },...Object.values(allActivities.role_activities),...Object.values(allActivities.user_activities)])
@@ -235,20 +288,104 @@ const HomePage=(props)=>{
         <>    
                 <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs,tabs,setTabs,setLoading,loading}}>
                 <Breakpoint medium up>
-                <NavBar currentUser={currentUser}>
+                <div className={classes.root}>
+      <CssBaseline />
+      {/* <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            Mini variant drawer
+          </Typography>
+        </Toolbar>
+      </AppBar> */}
+
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        anchor="right"
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          {!open ? <IconButton onClick={handleDrawerOpen}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+          :
+          <Button fullWidth size="large" onClick={handleDrawerClose}>
+            <ChevronRightIcon/>
+          </Button>}
+        </div>
+        <Divider />
+        <List style={{justifyContent:"center",display:"flex"}}>
+              <ScheduleSelector/>
+        </List>
+      </Drawer>
+      <main className={classes.content}>
+        {/* <div className={classes.toolbar} /> */}
+        <NavBar currentUser={currentUser}>
                 </NavBar>
               <div style={{display:"flex",flexDirection:"row",backgroundColor:context.themes === "light" ? "white" : "#444444",height:"100%"}}>
 
               <div className={classes.content}>
                 <div style={{display:"flex",flexDirection:"column",backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
-                    <div 
+                    {/* <div 
                     className={context.themes === "dark" ? "dark-tabs" : "tabs"} 
                     style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"0px",listStyleType:"none",...tabStyle,marginTop:"8px"}}>
                     {tabs.map((activity, index)=>
                         (   
                             <ActivityTab key={activity.name} index={index} activity={activity}/>
                         ))}
-                    </div>
+                    </div> */}
+                    <DragDropContext onDragEnd={onDragEnd}>
+                      <Droppable droppableId="droppable" direction="horizontal">
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={context.themes === "dark" ? "dark-tabs" : "tabs"}
+                            style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"0px",listStyleType:"none",...tabStyle,marginTop:"8px"}}>
+                            {tabs.map((activity, index) => (
+                              <Draggable style={{cursor:"pointer"}}key={activity.name} draggableId={activity.name} index={index}>
+                                {(provided, snapshot) => (  
+                                    <div
+                                    className={`draggable-tabs tabs draggable-tab`}
+                                    style={{cursor:"pointer"}}
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    index={index} activity={activity}>
+                                      <ActivityTab key={activity.name} index={index} activity={activity}/>
+                                    </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </DragDropContext>
                     <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
                     {tabs.map((activity, index)=> {
                       if (activity.name === selectedTabName) {
@@ -267,6 +404,8 @@ const HomePage=(props)=>{
                 </div>
             </div>
             </div>
+            </main>
+          </div>
             </Breakpoint>
             <Breakpoint small down>
                 <NavBar currentUser={currentUser}>

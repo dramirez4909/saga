@@ -48,6 +48,7 @@ div.makeStyles-toolbar-10 {
 .tabs a { 
   /* Make them block level
      and only as wide as they need */
+  max-height: 38px;
   float: left; 
   padding: 7px 10px; 
   text-decoration: none;
@@ -160,8 +161,15 @@ div.makeStyles-toolbar-10 {
 
   right: -20px;
 }
+.tabs {
+  transition: all .2s ease-in-out;
 
+}
 
+.draggable-tabs.tabs.draggable-tab {
+  cursor:default;
+  max-height:38px;
+}
 .dark-tabs li { 
   /* Makes a horizontal row */
   float: left; 

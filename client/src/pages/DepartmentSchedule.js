@@ -349,15 +349,15 @@ const DepartmentSchedule = props => {
         <Grid container style={{maxWidth:"1700px", justifyContent:"center",margin:"0",width:"100%",marginRight:"0",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white"}}>
           <Grid item lg={3} md={3} xs={3} sm={3} style={{width:"100%"}}>
           <div style={{display: "flex",flexDirection:"column",margin:"10px",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white"}}>
-          <Slide direction="up" in={slideIn} timeout={350}>
+          <Fade in={slideIn} timeout={350}>
           <div style={{display: calendarLoading ? "none": "flex",flexDirection:"row",margin:"5px",alignItems:"center",background: themeContext.themes === "dark" ? "#444444" : "white",color:themeContext.themes === "dark" ? "white" : "black"}}>
           {calendarLoading ? "" : 
           <>
           <div style={{width:"fit-content",fontSize:"18px",margin:"5px",color:themeContext.themes === "dark" ? "white" : "black"}} onClick={handleOpen}> <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}><span>{props.department.name}</span></div></div>          </>
           }
           </div>
-          </Slide>
-          <Slide direction="up" in={slideIn} timeout={350}>
+          </Fade>
+          <Fade in={slideIn} timeout={350}>
         <div style={{display:"flex",flexDirection:"column",overflow:"scroll",borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#999999" : "white",padding:"10px"}}>
           <div className={classes.rootList} style={{maxHeight:"300px",overflow:"scroll",backgroundColor: themeContext.themes === "dark" ? "#666666" : "white"}}>
           {Object.values(orders).length === 0 ? <div style={{display:"flex",color:"black", backgroundColor: themeContext.themes === "dark" ? "#343434" : "white",margin:"20px",padding:"30px", height:"100%", justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
@@ -416,7 +416,7 @@ const DepartmentSchedule = props => {
           }
               </div>
         </div>
-        </Slide>
+        </Fade>
         </div>
         <Slide direction="up" in={selectedOrder.patient}>
         <div>
@@ -426,7 +426,7 @@ const DepartmentSchedule = props => {
         </div>
         </Slide>
         </Grid>
-        <Slide direction="up" in={slideIn} timeout={350}>
+        <Fade in={slideIn} timeout={350}>
             <Grid item sm={8} style={{borderRadius:"4px",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white"}}>
                 <DndCalendar
                     style={{ backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "black",maxHeight:"700px", height: "680px",width:"100%",borderRadius:"4px" }}
@@ -471,7 +471,7 @@ const DepartmentSchedule = props => {
 
 
             </Grid>
-            </Slide>
+            </Fade>
         </Grid>
         {/* <div>
       <Modal

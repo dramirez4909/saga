@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Button from '@material-ui/core/Button';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
@@ -11,6 +12,7 @@ import SendIcon from '@material-ui/icons/Send';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeContext from './utils/HomeContext';
 import {openDepartmentSchedule} from '../store/activities'
+import EventTwoToneIcon from '@material-ui/icons/EventTwoTone';
 
 const StyledMenu = withStyles({
     paper: {
@@ -42,31 +44,30 @@ const StyledMenu = withStyles({
     root: {
       outline:"none",
       '&:focus': {
-        backgroundColor: "grey",
         '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-          color: theme.palette.common.white,
+          color: theme.palette.common.black,
         },
       },
     },
   }))(MenuItem);
 
-  const ColorButton = withStyles((theme) => ({
-    root: {
-        color: "white",
-        paddingTop:"0px",
-        paddingBottom:"0px",
-        letterSpacing:"1.8px",
-        margin: "4px",
-        borderRadius:"20px",
-        paddingLeft:"0px",
-        outline:"none",
-        textDecoration:"none",
-        backgroundColor:"darkgrey",
-        '&:hover': {
-            backgroundColor: "yellowgreen !important",
-        },
-    },
-    }))(Button);
+  // const ColorButton = withStyles((theme) => ({
+  //   root: {
+  //       color: "white",
+  //       paddingTop:"0px",
+  //       paddingBottom:"0px",
+  //       letterSpacing:"1.8px",
+  //       margin: "4px",
+  //       borderRadius:"20px",
+  //       paddingLeft:"0px",
+  //       outline:"none",
+  //       textDecoration:"none",
+  //       backgroundColor:"darkgrey",
+  //       '&:hover': {
+  //           backgroundColor: "yellowgreen !important",
+  //       },
+  //   },
+  //   }))(Button);
 
 const ScheduleSelector = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -104,15 +105,17 @@ const ScheduleSelector = (props) => {
     return (
         <>
             <div>
-                <ColorButton
+                <Button
                   aria-controls="customized-menu"
                   aria-haspopup="true"
                   variant="contained"
-                  color="primary"
+                  // color="primary"
                   onClick={handleClick}
                 >
-                 <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle, marginRight:"4px" }}></img><span style={{textTransform:"uppercase",marginRight:"3px"}}>Dept. Schedules </span>
-                </ColorButton>
+                 <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-calendar-480.png" style={{...iconStyle}}></img>
+                 {/* <EventTwoToneIcon style={{color:"yellowgreen"}}/> */}
+                 {/* <span style={{textTransform:"uppercase",marginRight:"3px"}}> </span> */}
+                </Button>
                 <StyledMenu
                   id="customized-menu"
                   anchorEl={anchorEl}

@@ -50,9 +50,9 @@ function ActivityTab(props) {
     const closeThisTab = (e, activityName) => {
         e.stopPropagation()
         dispatch(closeTab(activityName,props.index))
-        const oldTabs = [...context.tabs]
-        oldTabs[props.index] = {name:""}
-        context.setTabs(oldTabs)
+        // const oldTabs = [...context.tabs]
+        // oldTabs[props.index] = {name:""}
+        // context.setTabs(oldTabs)
         // if (context.openTabs[props.index - 1].patient) {
         //     context.setSelectedTab(context.openTabs[props.index - 1].name,context.openTabs[props.index - 1].patient)
         // } else if (context.openTabs[props.index - 1].record) {
@@ -69,7 +69,7 @@ function ActivityTab(props) {
         <>
             <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient,props.activity.record)}} 
                 className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
-                style={{zIndex: props.activity.name === context.selectedTabName ? 1 : "",
+                style={{zIndex: props.activity.name === context.selectedTabName ? 3 : "",
                 background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
                 borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
                 borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
@@ -84,8 +84,8 @@ function ActivityTab(props) {
             {props.activity.patient ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/folder-open-flat.svg" style={{...iconStyle }}></img> : <></>}
             {props.activity.name === "dashboard" ? "" : <span style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</span>} 
             {props.activity.name === "dashboard" ? "" : 
-            <IconButton style={{height:"19px",width:"19px",color:"lightgrey",outline:"none"}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
-            <CloseIcon style={{height:"19px",width:"19px",color:themeContext.themes === "dark" ? "white" : "grey"}} ></CloseIcon>
+            <IconButton style={{height:"19px",width:"19px",color:"lightgrey",outline:"none",display:display}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
+            <CloseIcon style={{height:"19px",width:"19px",color:themeContext.themes === "dark" ? "white" : "grey",display:display}} ></CloseIcon>
             </IconButton>}
             </a>
             </li>

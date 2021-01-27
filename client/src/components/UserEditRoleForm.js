@@ -24,6 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import {Breakpoint} from 'react-socks'
 import PatientSearchResults from '../components/PatientSearchResults';
 import { fade} from '@material-ui/core/styles';
+import { Fade} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PatientSearchContext from './utils/PatientSearchContext'
 import ThemeContext from './utils/ThemeContext';
@@ -35,6 +36,11 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserMd } from '@fortawesome/free-solid-svg-icons'
+import { faTools } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -157,7 +163,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth:"240px",
     backgroundColor: theme.palette.background.paper,
     overflow:"scroll",
-    maxHeight:"300px",
+    maxHeight:"380px",
     },
     button: {
     margin: theme.spacing(0.5, 0),
@@ -286,7 +292,7 @@ const UserEditRoleForm = (props) => {
     };
 
     const customList = (title, items) => (
-        <Card style={{width:"100%",border:"1px solid #dadce0",borderRadius:"8px", paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
+        <Card style={{width:"100%",border:"1px solid #dadce0",minWidth:"350px",borderRadius:"8px", paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
             <div style={{display:"flex",flexDirection:"column"}}>
                 <div style={{fontSize:"24px",fontWeight:"400"}}>{title}</div>
             </div>
@@ -299,7 +305,7 @@ const UserEditRoleForm = (props) => {
                 disabled={items.length === 0}
                 inputProps={{ 'aria-label': 'all items selected' }}
             />
-                <div style={{display:"flex",fontSize:"16px"}}>
+                <div onClick={handleToggleAll(items)} style={{display:"flex",fontSize:"16px",cursor:"pointer",color:"#777777"}}>
                     Select All
                 </div>
             </div>
@@ -315,24 +321,35 @@ const UserEditRoleForm = (props) => {
             const labelId = `transfer-list-all-item-${value}-label`;
             return (
                   <ListItem key={value} role="listitem" button onClick={handleToggle(value)}>
-                <ListItemIcon>
+                <div style={{display:"flex",flexDirection:"column"}}>
+                    <div style={{display:"flex",flexDirection:"row",alignItems:"center",margin:"5px"}}>
+                    <div style={{height:"40px",width:"40px",borderRadius:"50%",padding:"10px",
+                    boxShadow:"rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px",
+                    marginRight:"8px",display:"flex",justifyContent:"center",alignItems:"center"}}>
+                    {value === "provider" ? <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"yellowgreen"}} />: <></>}
+                    {value === "administrator" ? <FontAwesomeIcon icon={faTools} style={{width:"20px",height:"20px",color:"dodgerblue"}} />: <></>}
+                    {value === "scheduler" ? <FontAwesomeIcon icon={faCalendarAlt} style={{width:"20px",height:"20px",color:"lightcoral"}} />: <></>}
+                    </div>
+                    <div style={{fontWeight:400,fontSize:"18px",color:"#777777",textTransform:"capitalize"}} id={labelId} >{`${value}`}</div>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%", alignItems:"center",justifyContent:"space-between"}}>
+                    <ListItemIcon>
                     <Checkbox
                     checked={checked.indexOf(value) !== -1}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
                     />
-                </ListItemIcon>
-                <div style={{display:"flex",flexDirection:"column"}}>
-                    <ListItemText style={{fontWeight:400,fontSize:"24px",textTransform:"uppercase"}} id={labelId} primary={`${value}`} />
-                    <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap",maxWidth:"240px"}}>
+                    </ListItemIcon>
+                    <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap",maxWidth:"240px",cursor:"pointer"}}>
                         {Object.values(role.security_points).map(point=>{
                             return (
-                                <div>
-                                    <Chip size="medium" style={{margin:"1px",color:"dimgray",textTransform:"capitalize"}} avatar={<Avatar style={{textTransform:"uppercase"}}>{`${point.name[0]}`}</Avatar>} label={`${point.name}`} variant="outlined" />
+                                <div style={{cursor:"pointer"}}>
+                                    <Chip size="medium" style={{margin:"1px",color:"dimgray",textTransform:"capitalize",cursor:"pointer"}} icon={<VpnKeyIcon style={{color:"#dde0e6"}}/>} label={`${point.name}`} variant="outlined" />
                                 </div>
                             )
                         })}
+                    </div>
                     </div>
                 </div>
                 </ListItem>           
@@ -367,6 +384,7 @@ const UserEditRoleForm = (props) => {
       }
     
     return (
+        <Fade in={loading === false}>
       <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
         <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>
             <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
@@ -403,6 +421,7 @@ const UserEditRoleForm = (props) => {
             </Grid>}
         </div>
         </div>
+        </Fade>
     )
 }
 

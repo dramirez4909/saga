@@ -205,6 +205,7 @@ class Department(db.Model):
   __tablename__ = "departments"
   id = db.Column(db.Integer, primary_key = True)
   name = db.Column(db.String(50),nullable=True)
+  picture = db.Column(db.String(800),nullable=True)
   
   orders = db.relationship("Order",back_populates="department")
   encounters = db.relationship("Encounter",back_populates="department")

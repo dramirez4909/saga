@@ -42,11 +42,11 @@ const buttonStyle = {
     cursor:"pointer",
     transition:".2s",
     backgroundColor:"white",
-    boxShadow:"rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
     // backgroundImage:"linear-gradient(to bottom, #ff6e7f 0%, white 100%)",
     ':hover':{
         // backgroundColor:"rgba(0,0,0,.03)",
-        backgroundColor:"#dadce0"
+        backgroundColor:"#f5f5f5",
+        boxShadow:"rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
         // boxShadow:"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
     }
 }
@@ -56,24 +56,28 @@ const DashButton = (props) => {
     const classes = useStyles()
     return (
         <div style={buttonStyle}>
-                  <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",marginLeft:"14px",marginRight:"14px",marginTop:"5px",borderRadius:"8px",alignItems:"center",paddingTop:"10px",paddingBottom:"10px"}}>
+                  <div style={{display:"flex",flexDirection:"row",alignItems:"center",marginLeft:"14px",marginRight:"14px",marginTop:"5px",borderRadius:"8px",alignItems:"center",paddingTop:"10px",paddingBottom:"10px"}}>
                     
                     <Avatar src={props.user.picture} className={classes.large}/>
+                    <div style={{display:"flex",width:"100%",justifyContent:"space-between",fontSize:"18px",marginLeft:"15px",marginRight:"15px"}}>
                     <div style={{display:"flex",justifyContent:"center",fontSize:"18px",marginLeft:"15px",marginRight:"15px"}}>{props.user.first_name + " " + props.user.last_name}</div>
+                    <div style={{display:"flex",justifyContent:"center",fontSize:"18px"}}>
                     {Object.values(props.user.roles).map(role=>{
                         if (role.name === "provider") {
                             return(
-                            <FontAwesomeIcon icon={faUserMd} style={{width:"24px",height:"24px",color:"green"}}/>
+                            <FontAwesomeIcon icon={faUserMd} style={{width:"24px",height:"24px",marginLeft:"5px",color:"yellowgreen"}}/>
                         )}
                         if (role.name === "administrator") {
                             return(
-                            <FontAwesomeIcon icon={faUserCog} style={{width:"24px",height:"24px",color:"dodgerblue"}}/>
+                            <FontAwesomeIcon icon={faUserCog} style={{width:"28px",height:"28px",marginLeft:"5px",color:"dodgerblue"}}/>
                         )}
                         if (role.name === "scheduler") {
                             return(
-                            <FontAwesomeIcon icon={faCalendarAlt} style={{width:"24px",height:"24px",color:"coral"}}/>
+                            <FontAwesomeIcon icon={faCalendarAlt} style={{width:"24px",height:"24px",marginLeft:"5px",color:"lightcoral"}}/>
                         )}
                     })}
+                    </div>
+                    </div>
                   </div>
         </div>
     )

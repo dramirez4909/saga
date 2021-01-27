@@ -8,6 +8,7 @@ const OPEN_DEPARTMENT_SCHEDULE = 'activities/OPEN_DEPARTMENT_SCHEDULE'
 const OPEN_PATIENT_REGISTRATION = 'activities/OPEN_PATIENT_REGISTRATION'
 const OPEN_PATIENT_CHECKIN = 'activities/OPEN_PATIENT_CHECKIN'
 const OPEN_EDITOR = 'activities/OPEN_EDITOR'
+const SET_TABS = 'activities/SET_TABS'
 
 export const closeTab = (tabName,index) => {
     console.log("given index close tab: ",index)
@@ -41,6 +42,13 @@ export const openPatientChart = (patientId) => async (dispatch) => {
     const data = await res.json()
     console.log(data)
     dispatch(openChart(data.patient))
+}
+
+export const reorderTabs = (tabs) =>{
+    return {
+        type: SET_TABS,
+        tabs
+    }
 }
 
 export const openEditor = (record) => async (dispatch) => {
@@ -113,6 +121,9 @@ export default function activitiesReducer(state = {open_tabs:[]} ,action) {
     let newState = Object.assign({},state);
     const opentabs = [...state.open_tabs]
     switch (action.type){
+        case SET_TABS:
+            newState.open_tabs = action.tabs
+            return newState
         case LOAD_ACTIVITES:
             newState = action.activities
             newState["open_tabs"] = [{id:0,name:"dashboard"}]

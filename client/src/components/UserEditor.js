@@ -260,8 +260,10 @@ const UserEditor = (props) => {
     
     return (
       <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"20px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-        <div style={{display:"flex",flexDirection:"row",alignItems:"center",margin:"10px",alignSelf:"center"}}>
+        <div style={{display:"flex",flexDirection:"row",alignItems:"center",alignSelf:"center"}}>
+        {/* <img style={{width:"200px",alignSelf:"center"}} src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_316x112_3343d1d69c2d68a4bd3d28babd1f9e80.png"></img> */}
           {/* <Avatar style={{width:"90px",height:"90px",alignSelf:"center"}} src={currentRecord.picture}/> */}
+          <div style={{display:"flex",flexDirection:"row",alignItems:"center",fontSize:"28px",fontFamily:"system-ui",fontWeight:"300"}}>{currentRecord.first_name + " " + currentRecord.last_name}</div>
         </div>
         <div className={classes.tabRoot}>
       <Tabs
@@ -277,7 +279,6 @@ const UserEditor = (props) => {
             <Tab style={{fontWeight:"400"}}label="Security Points" {...a11yProps(2)} />
           </Tabs>
         <TabPanel style={{width:"100%",maxWidth:"900px",overflow:"scroll"}} value={value} index={0}>
-          <div style={{fontSize:"24px",margin:"10px",paddingLeft:"16px",justifySelf:"center"}}>{currentRecord.first_name + " " + currentRecord.last_name}</div>
           <UserEditForm user={currentRecord}/>
         </TabPanel>
         <TabPanel style={{width:"100%",maxWidth:"900px"}} value={value} index={1}>

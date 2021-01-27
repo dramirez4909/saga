@@ -255,8 +255,12 @@ const UserEditForm = (props) => {
       }
     
     return (
-      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px"}}>
-        <div style={{outline:"none",width:"100%",borderRadius:"8px",border:"1px solid #dadce0",padding:"24px",display:"flex",flexDirection:"column",paddingLeft:"0px",paddingRight:"0px"}}>
+      <Fade in={loading === true}>
+      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>
+            <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
+        </div>
+        <div style={{outline:"none",paddingTop:"16px",minWidth:"600px",minHeight:"280px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px"}}>
         <h3 style={{paddingLeft:"16px"}}>Basic Info</h3>
           
             <form onSubmit={(e)=>{handleProfileFormSubmit(e)}} >
@@ -292,12 +296,16 @@ const UserEditForm = (props) => {
                 <div style={{display:"flex",flexDirection:"column",width:"100%",paddingLeft:"0px",paddingRight:"0px"}}>
 
                     { firstNameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
-                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         FIRST NAME
                     </div>
-                    <form onSubmit={(e)=>handleFirstNameSubmit(e)} style={{width:"100%"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setFirstNameEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleFirstNameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
+                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setFirstNameEdit(false)}>
+                        Done 
+                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
+                      </Button></InputAdornment>} type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
                     </form>
                     </div>
                     :
@@ -307,12 +315,16 @@ const UserEditForm = (props) => {
                     }
                     <Divider style={{ width: "100%"}} />
                     { lastNameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
-                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         LAST NAME
                     </div>
-                    <form onSubmit={(e)=>handleLastNameSubmit(e)} style={{width:"100%"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setLastNameEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleLastNameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
+                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setLastNameEdit(false)}>
+                        Done 
+                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
+                      </Button></InputAdornment>} type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
                     </form>
                     </div>
                     :
@@ -322,12 +334,16 @@ const UserEditForm = (props) => {
                     }
                     <Divider style={{ width: "100%"}} />
                     { emailEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
-                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         EMAIL
                     </div>
-                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"100%"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setEmailEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={email} onChange={(e)=>setEmail(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <InputBase autoFocus={true} style={{height:"27px"}} fontSize="18px" endAdornment={<InputAdornment position="end" >
+                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setEmailEdit(false)}>
+                        Done 
+                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
+                      </Button></InputAdornment>} type="text" value={email} onChange={(e)=>setEmail(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
                     </form>
                     </div>
                     :
@@ -337,32 +353,34 @@ const UserEditForm = (props) => {
                     }
                     <Divider style={{ width: "100%"}} />
                     { usernameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px"}}>
-                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"dodgerblue",minWidth:"180px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         USERNAME
                     </div>
-                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"100%"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end"><Button style={{color:"grey"}} size="small" onClick={(e)=>setUsernameEdit(false)}>Done <CheckCircleOutlineIcon></CheckCircleOutlineIcon></Button></InputAdornment>} type="text" value={username} onChange={(e)=>setUsername(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
+                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setUsernameEdit(false)}>
+                        Done 
+                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
+                      </Button></InputAdornment>} type="text" value={username} onChange={(e)=>setUsername(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
                     </form>
                     </div>
                     :
                     <div onClick={(e)=>setUsernameEdit(true)} style={{margin:"0px"}}>
-                    <UserEditFormField label={"email"} text={username}/>
+                    <UserEditFormField label={"username"} text={username}/>
                     </div>
                     }
-                    {/* <TextField size="small" fullWidth value={lastName} onChange={(e)=>setLastName(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Last Name" variant="outlined" />
-                    <TextField size="small" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Email" variant="outlined" />
-                    <TextField size="small" fullWidth value={username} onChange={(e)=>setUsername(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Username" variant="outlined" /> */}
+                    {/* <TextField size="medium" fullWidth value={lastName} onChange={(e)=>setLastName(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Last Name" variant="outlined" />
+                    <TextField size="medium" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Email" variant="outlined" />
+                    <TextField size="medium" fullWidth value={username} onChange={(e)=>setUsername(e.target.value)}style={{margin:"5px"}}id="outlined-basic" label="Username" variant="outlined" /> */}
                 </div>
 
                 </div>
               </div>
             </form>
           </div>
-                              <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignSelf:"center",width:"100%",marginTop:"10px"}}>
-                              <ColorButton fullWidth onClick={(e)=>saveChanges(e)}>Save Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
-                          </div>
-                          </div>
+        </div>
+        </Fade>
     )
 }
 

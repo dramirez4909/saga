@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Radio from '@material-ui/core/Radio';
-import { AppBar, Toolbar, Box, IconButton, Avatar, Typography, Button, CircularProgress, Divider, InputAdornment } from '@material-ui/core';
+import { AppBar, Toolbar, Box, IconButton, Avatar, Fade,Typography, Button, CircularProgress, Divider, InputAdornment } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { logout } from '../store/auth';
 import Menu from '@material-ui/core/Menu';
@@ -157,7 +157,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth:"240px",
     backgroundColor: theme.palette.background.paper,
     overflow:"scroll",
-    maxHeight:"300px",
+    maxHeight:"380px",
     },
     button: {
     margin: theme.spacing(0.5, 0),
@@ -296,7 +296,7 @@ const UserEditSecurityForm = (props) => {
     };
 
     const customList = (title, items) => (
-        <Card style={{width:"100%",border:"1px solid #dadce0",borderRadius:"8px", paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
+        <Card style={{width:"100%",border:"1px solid #dadce0",borderRadius:"8px", minWidth:"350px",paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
             <div style={{display:"flex",flexDirection:"column"}}>
                 <div style={{fontSize:"24px",fontWeight:"400"}}>{title}</div>
             </div>
@@ -309,11 +309,11 @@ const UserEditSecurityForm = (props) => {
                 disabled={items.length === 0}
                 inputProps={{ 'aria-label': 'all items selected' }}
             />
-                <div style={{display:"flex",fontSize:"16px"}}>
+                <div onClick={handleToggleAll(items)} style={{display:"flex",fontSize:"16px",cursor:"pointer",color:"dimgray"}}>
                     Select All
                 </div>
             </div>
-            <div style={{display:"flex",flexDirection:"column",color:"dimgray"}}>
+            <div style={{display:"flex",flexDirection:"column",color:"#777777"}}>
                 <div>{`${numberOfChecked(items)}/${items.length} selected`}</div>
             </div>
             </div>
@@ -335,11 +335,11 @@ const UserEditSecurityForm = (props) => {
                     />
                 </ListItemIcon>
                 <div style={{display:"flex",flexDirection:"column"}}>
-                    <ListItemText style={{fontWeight:400,fontSize:"24px",textTransform:"uppercase"}} id={labelId} primary={`${value}`} />
+                <div style={{fontSize:"18px",color:"#777777",textTransform:"capitalize"}} id={labelId} >{`${value}`}</div>
                     <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap",maxWidth:"290px"}}>
                         { role ? 
                                 <div>
-                                    <Chip size="medium" style={{margin:"1px",color:"dimgray",textTransform:"capitalize"}} icon={<CheckCircleOutlineIcon style={{color:"yellowgreen"}}/>} label={`via ${role.name}`} variant="outlined" />
+                                    <Chip size="medium" style={{margin:"1px",color:"dimgray",textTransform:"capitalize",cursor:"pointer"}} icon={<CheckCircleOutlineIcon style={{color:"yellowgreen"}}/>} label={`via ${role.name}`} variant="outlined" />
                                 </div>
                                 : 
                                 ""
@@ -378,8 +378,9 @@ const UserEditSecurityForm = (props) => {
       }
     
     return (
+      <Fade in={loading === false}>
       <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
-        <div style={{display:"flex",flexDirection:"row",marginBottom:"10px",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{display:"flex",flexDirection:"row",marginBottom:"10px",alignItems:"center",justifyContent:"space-between",width:"100%",paddingLeft:"24px"}}>
             <Chip size="medium" style={{margin:"1px",color:"dimgray"}} icon={<CheckCircleOutlineIcon style={{color:"yellowgreen"}}/>} label={`Security Points already granted to the User through a User Role`} variant="outlined" />
             <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
         </div>
@@ -415,6 +416,7 @@ const UserEditSecurityForm = (props) => {
             </Grid>}
         </div>
         </div>
+        </Fade>
     )
 }
 

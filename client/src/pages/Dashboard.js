@@ -1,4 +1,4 @@
-import { Avatar, Button, CircularProgress, Grid } from '@material-ui/core'
+import { Avatar, Button, CircularProgress, Grid,IconButton } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {logout} from '../store/auth'
@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserMd } from '@fortawesome/free-solid-svg-icons'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -134,7 +135,7 @@ const Dashboard=(props)=>{
     },[allActivities])
     if (loading) {
         return (
-            <p>loading...</p>
+            <p></p>
         )
     }
 
@@ -185,18 +186,18 @@ const Dashboard=(props)=>{
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 200,
         }}
       >
-        <Fade in={open}>
-          <div className={classes.paper} style={{maxWidth:"600px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",display:"flex",justifyContent:"center",flexDirection:"column"}}>
+        <Fade in={modalLoading === false && open}>
+          <div className={classes.paper} style={{maxWidth:"600px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",display:"flex",flexDirection:"column"}}>
             <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"10px"}}>
               <div style={{fontWeight:"400",fontSize:"24px"}}>
                 Users
               </div>
               <div style={{display:"flex",flexDirection:"column",margin:"10px",marginTop:"16px"}}>
               <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
-                <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"green"}}/>
+                <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"yellowgreen"}}/>
                 <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
                   - Provider
                 </div>
@@ -208,12 +209,15 @@ const Dashboard=(props)=>{
                 </div>
               </div>
               <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
-                <FontAwesomeIcon icon={faCalendarAlt} style={{width:"20px",height:"20px",color:"coral"}}/>
+                <FontAwesomeIcon icon={faCalendarAlt} style={{width:"20px",height:"20px",color:"lightcoral"}}/>
                 <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
                   - Scheduler
                 </div>
               </div>
             </div>
+            <IconButton onClick={(e)=>setOpen(false)} size="large" style={{alignSelf:"baseline",marginRight:"-30px"}}>
+                <CloseIcon/>
+              </IconButton>
             </div>
             {modalLoading ? <CircularProgress/> :
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"600px",width:"100%",overFlow:"scroll",maxHeight:"600px"}}>

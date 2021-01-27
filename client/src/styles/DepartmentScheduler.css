@@ -18,8 +18,8 @@
     display: none;
 } */
 
-div.rbc-time-header-content > div.rbc-row.rbc-time-header-cell > div.rbc-header.rbc-today {
-    background-color: rgb(121, 134, 203);
+div.rbc-today {
+    background-color: white;
 }
 
 .rbc-current-time-indicator {
