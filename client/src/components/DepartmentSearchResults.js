@@ -58,20 +58,19 @@ const DepartmentSearchResults = (props) => {
             open={props.open}
             onClose={props.handleClose}
             closeAfterTransition
-            BackdropComponent={<Backdrop onClick={(e)=>props.handleClose(false)}/>}
+            BackdropComponent={Backdrop}
             BackdropProps={{
-            timeout: 200,
-            onClick:props.handleClose
+            timeout: 200
             }}
         >
             <Fade in={props.modalLoading === false && props.open}>
             <div className={classes.paper} style={{maxWidth:"600px",width:"100%",backgroundColor:props.themeContext.themes === "dark" ? "#444444" : "white",display:"flex",flexDirection:"column"}}>
                 <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"10px"}}>
                 <div style={{fontWeight:"400",fontSize:"24px"}}>
-                    Users
+                    Departments
                 </div>
                 <div style={{display:"flex",flexDirection:"column",margin:"10px",marginTop:"16px"}}>
-                <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
+                {/* <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
                     <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"yellowgreen"}}/>
                     <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
                     - Provider
@@ -88,7 +87,7 @@ const DepartmentSearchResults = (props) => {
                     <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
                     - Scheduler
                     </div>
-                </div>
+                </div> */}
                 </div>
                 <IconButton onClick={(e)=>props.setOpen(false)} size="large" style={{alignSelf:"baseline",marginRight:"-30px"}}>
                     <CloseIcon/>
@@ -96,14 +95,16 @@ const DepartmentSearchResults = (props) => {
                 </div>
                 {props.modalLoading ? <CircularProgress/> :
                 <div style={{display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"600px",width:"100%",overFlow:"scroll",maxHeight:"600px"}}>
-                {/* {props.departments.map(department=>{
+                {props.departments.map(department=>{
                     {console.log(department)}
                     return(
-                    <div onClick={(e)=>props.handledepartmentEditorClick(department)} style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:"14px",marginBottom:"5px",marginRight:"14px",borderRadius:"8px",width:"100%"}}>
-                        <departmentCard department={department}/>
+                    <div onClick={(e)=>props.handleDepartmentEditorClick(department)} style={{background:"grey",display:"flex",flexDirection:"column",alignItems:"center",marginLeft:"14px",marginBottom:"5px",marginRight:"14px",borderRadius:"8px",width:"100%"}}>
+                        {/* <departmentCard department={department}/>
+                        hi */}
+                        {department.name}
                     </div>
                     )
-                })} */}
+                })}
                 </div>
                 }
             </div>

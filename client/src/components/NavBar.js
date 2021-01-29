@@ -300,9 +300,8 @@ const Navbar = (props) => {
     <>
     <PatientSearchContext.Provider value={{setDisplayPatientSearchResults,setPatientSearchTerm}}>
       <Breakpoint medium up>
-      <div style={{flexGrow:1}}>
-        <AppBar position="static">
-        <Toolbar style={{minHeight:"0px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+      <div style={{flexGrow:1,position:"fixed",display:"block",left:0,right:0,top:0,zIndex:999,minHeight:"44px"}}>
+        <div style={{display:"flex", alignItems:"center",backgroundColor:"rgba(255,255,255,0.96)",minHeight:"44px"}}>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
             <div style={{display:"flex",flexDirection:"row",justifySelf:"center"}}>
             <div onClick={()=>context.setSelectedTab("dashboard")} style={{display:"flex", alignItems:"center", cursor:"pointer"}} >
@@ -358,8 +357,7 @@ const Navbar = (props) => {
             </StyledMenu>
             </div>
             </div>
-            </Toolbar>
-          </AppBar>
+          </div>
         </div>
       <div>
       <Modal

@@ -60,12 +60,14 @@ export const openEditor = (record) => async (dispatch) => {
         const userRecord = {type:"user",user}
         dispatch(openEdit(userRecord))
     } else if (record.type === "department") {
-        const res = await fetch(`/api/department/id/${record.department.id}`)
+        console.log("here I am ACTIVITY!",record)
+        console.log(record.department.id)
+        const res = await fetch(`/api/departments/id/${record.department.id}`)
         const data = await res.json()
         console.log(data)
         const department = data.department
-        department.type = "department"
-        dispatch(openEdit(department))
+        const departmentRecord = {type:"department",department}
+        dispatch(openEdit(departmentRecord))
     }
 }
 
@@ -117,6 +119,24 @@ export const openTab = (activity) => {
     }
 }
 
+const newRecordTab = (record) => {
+    console.log("record from newTabFunction: ",record)
+    switch (record.type){
+        case "user":
+            return {
+                record,
+                name:record.user.first_name + " " + record.user.last_name
+            }
+        case "department":
+            return {
+                record,
+                name:record.department.name + " Settings",
+            }
+        default:
+            return;
+    }
+}
+
 export default function activitiesReducer(state = {open_tabs:[]} ,action) {
     let newState = Object.assign({},state);
     const opentabs = [...state.open_tabs]
@@ -149,7 +169,7 @@ export default function activitiesReducer(state = {open_tabs:[]} ,action) {
         case OPEN_EDITOR:
             newState.open_tabs = opentabs
             console.log("record from store",action.record)
-            newState.open_tabs.push({id:10, record:action.record, name: action.record.type === "user" ? action.record.user.first_name ? `${action.record.user.first_name} ${action.record.user.last_name}` : "New User" : action.record.name ? action.record.name : `New ${action.record.type}`})
+            newState.open_tabs.push(newRecordTab(action.record))
             return newState
         case OPEN_DEPARTMENT_SCHEDULE:
             newState.open_tabs = opentabs

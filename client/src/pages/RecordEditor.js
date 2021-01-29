@@ -21,6 +21,13 @@ export default function RecordEditor(props) {
                 setLoading(false)
               }
         } else if (props.record.department) {
+            console.log("PROPS.RECORD.DEPARTMENT: ",props.record.department)
+            console.log("PROPS.RECORD: ",props.record)
+            console.log("currentRecord.type: ",currentRecord.type)
+            console.log("currentRecord.id: ",currentRecord.id)
+
+
+
             if (props.record.department.id === currentRecord.id && props.record.type === currentRecord.type) {
                 setLoading(false)
               }
@@ -33,6 +40,8 @@ export default function RecordEditor(props) {
     return (
         <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
             {currentRecord.type === "user" ? <UserEditor user={currentRecord}></UserEditor> : <></>}
+            {/* {currentRecord.type === "department" ? <DepartmentEditor department={currentRecord}></DepartmentEditor> : <></>} */}
+
         </div>
     )
 

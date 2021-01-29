@@ -57,6 +57,15 @@ const Dashboard=(props)=>{
     const handleClose = () => {
       setOpen(false);
     };
+
+    const handleDepartmentOpen = () => {
+      setDepartmentOpen(true);
+    };
+
+    const handleDepartmentClose = () => {
+      setDepartmentOpen(false);
+    };
+
     const [loading,setLoading] = useState(true)
     const [activities,setActivities] =useState([])
     const [selectedActivity,setSelectedActivity] =useState([])
@@ -81,6 +90,12 @@ const Dashboard=(props)=>{
       setOpen(false)
       if (!openTabs.some(activity=>activity.name === `${user.first_name} ${user.last_name}`)) dispatch(openEditor({type:"user",user}))
       homeContext.setSelectedTab(`${user.first_name} ${user.last_name}`,null,{type:"user",user})
+    }
+
+    const handleDepartmentEditorClick=(department)=>{
+      setDepartmentOpen(false)
+      if (!openTabs.some(activity=>activity.name === `${department.name} Settings`)) dispatch(openEditor({type:"department",department}))
+      homeContext.setSelectedTab(`${department.name} Settings`,null,{type:"department",department})
     }
 
     const handleActivityClick=(name)=>{
@@ -160,8 +175,8 @@ const Dashboard=(props)=>{
 
     return (
         <>
-        <div style={{margin:"20px",width:"100%",padding:"30px",display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-          <div style={{display:"flex", flexDirection:"column", border:"1px solid #dadce0",borderRadius:"8px",paddingRight:"24px",paddingLeft:"24px",paddingTop:"16px",paddingBottom:"16px",width:"100%"}}>
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
+          <div style={{display:"flex", flexDirection:"column",borderRadius:"8px",paddingRight:"24px",paddingLeft:"24px",paddingTop:"16px",paddingBottom:"16px",width:"100%"}}>
             <div style={{fontFamily:"Google Sans,Roboto,Arial,sans-serif",fontWeight:"400",fontSize:"22px",alignSelf:"center"}}>
               My Activities
             </div>
@@ -201,16 +216,19 @@ const Dashboard=(props)=>{
         users={users} 
         open={open}
         setOpen={setOpen}
+        handleClose={handleClose}
         Backdrop={Backdrop}
         handleUserEditorClick={handleUserEditorClick}/>
-        {/* <DepartmentSearchResults 
-        modalLoading={modalLoading} 
+        <DepartmentSearchResults 
+        modalLoading={departmentModalLoading} 
         themeContext={themeContext}
-        users={users} 
-        open={open}
-        setOpen={setOpen}
+        departments={departments} 
+        open={departmentOpen}
+        handleClose={handleDepartmentClose}
+        handleOpen={handleDepartmentOpen}
+        setOpen={setDepartmentOpen}
         Backdrop={Backdrop}
-        handleUserEditorClick={handleUserEditorClick}/> */}
+        handleDepartmentEditorClick={handleDepartmentEditorClick}/>
         
         {/* <div>
       <Modal

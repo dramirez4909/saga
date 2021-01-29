@@ -183,7 +183,7 @@ function a11yProps(index) {
   };
 }
 
-const UserEditor = (props) => {
+const DepartmentEditor = (props) => {
     const classes = useStyles();
 
     const [user,setUser]=useState(props.user)
@@ -254,13 +254,31 @@ const UserEditor = (props) => {
           {/* <Avatar style={{width:"90px",height:"90px",alignSelf:"center"}} src={currentRecord.picture}/> */}
           <div style={{display:"flex",flexDirection:"row",alignItems:"center",fontSize:"28px",fontFamily:"system-ui",fontWeight:"300"}}>{currentRecord.first_name + " " + currentRecord.last_name}</div>
         </div>
+        <div className={classes.tabRoot}>
+      <Tabs
+        orientation="vertical"
+        variant="scrollable"
+        value={value}
+        onChange={handleChange}
+        aria-label="Vertical tabs example"
+        className={classes.tabs}
+      >
+            <Tab style={{fontWeight:"400"}}label="Basic Info" {...a11yProps(0)} />
+            <Tab style={{fontWeight:"400"}}label="User Roles" {...a11yProps(1)} />
+            <Tab style={{fontWeight:"400"}}label="Security Points" {...a11yProps(2)} />
+          </Tabs>
+        <TabPanel style={{width:"100%",maxWidth:"900px",overflow:"scroll"}} value={value} index={0}>
           <UserEditForm user={currentRecord}/>
-
+        </TabPanel>
+        <TabPanel style={{width:"100%",maxWidth:"900px"}} value={value} index={1}>
           <UserEditRoleForm user={currentRecord}/>
-
+        </TabPanel>
+        <TabPanel style={{width:"100%",maxWidth:"900px"}} value={value} index={2}>
           <UserEditSecurityForm user={currentRecord}/>
+        </TabPanel>
+      </div>
     </div>
     )
 }
 
-export default UserEditor
+export default DepartmentEditor

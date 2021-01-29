@@ -67,16 +67,20 @@ function ActivityTab(props) {
 
     return (
         <>
-            <li key={props.activity.name} style={{...tabStyle}} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient,props.activity.record)}} 
-                className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
-                style={{zIndex: props.activity.name === context.selectedTabName ? 3 : "",
-                background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
-                borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
-                borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+            <div key={props.activity.name} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient,props.activity.record)}} 
+                // className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
+                style={{
+                margin:0,
+                zIndex: props.activity.name === context.selectedTabName ? 3 : "",
+                // background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
+                // borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                // borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+                background: props.activity.name === context.selectedTabName ? "white" : "transparent",
                 display: display
             }}
                 > 
-            <a style={{display:"flex", alignItems:"center", zIndex:3}}>{props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-dashboard-layout-100.png" style={{...iconStyle}}></img> : <></> }
+            <div style={{display:"flex", alignItems:"center", zIndex:3,background: props.activity.name === context.selectedTabName ? "white" : "transparent"}}>
+            {props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-dashboard-layout-100.png" style={{...iconStyle}}></img> : <></> }
             {props.activity.name === "My Schedule" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
             {props.activity.name === "Place Orders" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
             {props.activity.department ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img> : <></>}
@@ -87,8 +91,8 @@ function ActivityTab(props) {
             <IconButton style={{height:"19px",width:"19px",color:"lightgrey",outline:"none",display:display}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
             <CloseIcon style={{height:"19px",width:"19px",color:themeContext.themes === "dark" ? "white" : "grey",display:display}} ></CloseIcon>
             </IconButton>}
-            </a>
-            </li>
+            </div>
+            </div>
         </>
     );
 }

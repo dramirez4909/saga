@@ -18,7 +18,7 @@ export const setRecord = (record) => {
 }
 
 export const setCurrentRecord = (record)=> async (dispatch)=> {
-    console.log("record from reducer",record.user.id)
+    console.log("record from reducer",record)
     if (record.type === "user") {
         const res = await fetch(`/api/users/id/${record.user.id}`)
         const data = await res.json()
@@ -26,29 +26,13 @@ export const setCurrentRecord = (record)=> async (dispatch)=> {
         user.type="user"
         dispatch(setRecord(user))
     } else if (record.type === "department") {
-        const res = await fetch(`/api/department/id/${record.department.id}`)
-        const data = await res.json()
-        console.log(data)
-        const department = data.department
-        department.type = "department"
+        console.log("here I am !",record)
+        const response = await fetch(`/api/departments/id/${record.department.id}`)
+        const dataDept = await response.json()
+        console.log("OKAY!",dataDept)
+        const department = {...dataDept.department,type:"department"}
         dispatch(setRecord(department))
     }
-}
-
-export const createMedication = (medication) => async (dispatch) => {
-    const csrfToken = Cookies.get("XSRF-TOKEN")
-    const jsonMed = JSON.stringify(medication)
-    const res = await fetch('/api/medications/create',{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-        },
-        body: jsonMed
-    })
-    const data = await res.json()
-    console.log(data)
-    dispatch(addMedication(data.medication))
 }
 
 export const updateRecord = (record) => async (dispatch) => {
@@ -76,95 +60,6 @@ export const updateRec = (record) => {
     }
 }
 
-export const updateProblem = (problem) => async (dispatch) => {
-    const csrfToken = Cookies.get("XSRF-TOKEN")
-    const jsonMed = JSON.stringify(problem)
-    const res = await fetch('/api/problems/update',{
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-        },
-        body: jsonMed
-    })
-    const data = await res.json()
-    console.log(data)
-    dispatch(updateProb(data.problem))
-}
-
-export const updateMed = (medication) => {
-    return {
-        type:UPDATE_MED,
-        medication
-    }
-}
-
-export const updateProb = (problem) => {
-    return {
-        type:UPDATE_PROB,
-        problem
-    }
-}
-
-export const createProblem = (problem) => async (dispatch) => {
-    const csrfToken = Cookies.get("XSRF-TOKEN")
-    const jsonProb = JSON.stringify(problem)
-    const res = await fetch('/api/problems/create',{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-        },
-        body: jsonProb
-    })
-    const data = await res.json()
-    console.log(data)
-    dispatch(addProblem(data.problem))
-}
-
-export const addMedication = (medication) => {
-    return {
-        type: ADD_MED,
-        medication
-    }
-}
-
-export const addProblem = (problem) => {
-    return {
-        type: ADD_PROBLEM,
-        problem
-    }
-}
-
-export const updateOrder = (order) => async (dispatch) => {
-    const csrfToken = Cookies.get("XSRF-TOKEN")
-    const jsonOrd = JSON.stringify(order)
-    const res = await fetch('/api/orders/update',{
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-        },
-        body: jsonOrd
-    })
-    const data = await res.json()
-    console.log(data)
-    dispatch(updateOrd(data.order))
-}
-
-export const updateOrd = (order) => {
-    return {
-        type:UPDATE_ORDER,
-        order
-    }
-}
-
-export const addOrder = (order) => {
-    return {
-        type:ADD_ORDER,
-        order
-    }
-}
 
 export default function currentRecordReducer(state={},action){
     const newState = Object.assign({},state)
