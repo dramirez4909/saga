@@ -201,17 +201,42 @@ class Problem(db.Model):
     }
 
 
+class Organization(db.Model):
+  __tablename__ = "organizations"
+
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(180), nullable = False)
+  
+  departments = db.relationship("Department", back_populates="organization")
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "name": self.name,
+    }
+
+
 class Department(db.Model):
   __tablename__ = "departments"
   id = db.Column(db.Integer, primary_key = True)
   name = db.Column(db.String(50),nullable=True)
+  specialty= db.Column(db.String(50),nullable=True)
   picture = db.Column(db.String(800),nullable=True)
+  address_line_one = db.Column(db.String(400),nullable=True)
+  address_line_two = db.Column(db.String(400),nullable=True)
+  address_city = db.Column(db.String(40),nullable=True)
+  address_state = db.Column(db.String(40),nullable=True)
+  address_zip = db.Column(db.String(40),nullable=True)
+  organization_id = db.Column(db.Integer,db.ForeignKey("organizations.id"))
+  time_open = db.Column(db.String(40),nullable=True)
+  time_closed = db.Column(db.String(40),nullable=True)
   
   orders = db.relationship("Order",back_populates="department")
   encounters = db.relationship("Encounter",back_populates="department")
   encounter_types = db.relationship("Encounter_Type",back_populates="department")
   order_types = db.relationship("Order_Type",back_populates="department")
   providers = db.relationship("Provider",back_populates="department")
+  organization = db.relationship("Organization",back_populates="departments")
   resources = db.relationship("Resource",back_populates="department")
 
   def to_dict(self):
@@ -221,7 +246,16 @@ class Department(db.Model):
       "orders":[order.to_dict() for order in self.orders],
       "encounters": [encounter.to_dict() for encounter in self.encounters],
       "providers": [provider.to_dict() for provider in self.providers],
-      "resources": [resource.to_dict() for resource in self.resources]
+      "resources": {resource.id:resource.to_dict() for resource in self.resources},
+      "organization": self.organization.to_dict(),
+      "specialty":self.specialty,
+      "address_line_one":self.address_line_one,
+      "address_line_two":self.address_line_two,
+      "address_city":self.address_city,
+      "address_state":self.address_state,
+      "address_zip":self.address_zip,
+      "time_closed":self.time_closed,
+      "time_open":self.time_open,
     }
 
 class Note(db.Model):
@@ -648,6 +682,7 @@ class Resource(db.Model):
   id = db.Column(db.Integer, primary_key = True)
   name = db.Column(db.String(40), nullable = False)
   department_id = db.Column(db.Integer, db.ForeignKey("departments.id"),nullable=False)
+  active = db.Column(db.Boolean, nullable=False)
 
   department = db.relationship("Department",back_populates="resources")
   encounters = db.relationship("Encounter",back_populates="resource")
@@ -658,13 +693,15 @@ class Resource(db.Model):
       "name":self.name,
       "encounters": [encounter.to_dict() for encounter in self.encounters],
       "department_id":self.department_id,
-      "department": {"id":self.department_id, "name":self.department.name}
+      "department": {"id":self.department_id, "name":self.department.name},
+      "active":self.active
     }
   
   def name_and_id(self):
     return {
       "id": self.id,
       "name": self.name,
+      "active":self.active
     }
 
 

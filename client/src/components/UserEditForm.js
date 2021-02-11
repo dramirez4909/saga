@@ -257,12 +257,14 @@ const UserEditForm = (props) => {
     return (
       <Fade in={loading === true}>
       <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
+
+        <div style={{outline:"none",paddingTop:"16px",minWidth:"800px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px"}}>
+        <div style={{width:"100%",display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"16px",alignItems:"center"}}>
+        <h3>Basic Info</h3>
         <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>
             <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
         </div>
-        <div style={{outline:"none",paddingTop:"16px",minWidth:"600px",minHeight:"280px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px"}}>
-        <h3 style={{paddingLeft:"16px"}}>Basic Info</h3>
-          
+        </div>
             <form onSubmit={(e)=>{handleProfileFormSubmit(e)}} >
               <div style={{display:"flex",flexDirection:"row"}}>
                 {/* <div>

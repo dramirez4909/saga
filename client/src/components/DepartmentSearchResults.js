@@ -22,6 +22,7 @@ import { faUserMd } from '@fortawesome/free-solid-svg-icons'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 import CloseIcon from '@material-ui/icons/Close';
+import DepartmentCard from './DepartmentCard'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -101,7 +102,7 @@ const DepartmentSearchResults = (props) => {
                     <div onClick={(e)=>props.handleDepartmentEditorClick(department)} style={{background:"grey",display:"flex",flexDirection:"column",alignItems:"center",marginLeft:"14px",marginBottom:"5px",marginRight:"14px",borderRadius:"8px",width:"100%"}}>
                         {/* <departmentCard department={department}/>
                         hi */}
-                        {department.name}
+                        <DepartmentCard department={department}/>
                     </div>
                     )
                 })}

@@ -45,248 +45,6 @@ div.makeStyles-toolbar-10 {
      abs. positioned inside */
   position: relative; 
 }
-.tabs a { 
-  /* Make them block level
-     and only as wide as they need */
-  max-height: 38px;
-  float: left; 
-  padding: 7px 10px; 
-  text-decoration: none;
-  
-
-  
-  /* Default colors */ 
-  color: black;
-  background: rgb(221,224,230,0.5); 
-  
-  /* Only round the top corners */
-  -webkit-border-top-left-radius: 15px;
-  -webkit-border-top-right-radius: 15px;
-  -moz-border-radius-topleft: 15px;
-  -moz-border-radius-topright: 15px;
-  
-
-  /* border-top-left-radius: 15px;
-  border-top-right-radius: 15px;  */
-}
-.tabs .active {
-  /* Highest, active tab is on top */
-  z-index: 3;
-  
-
-}
-.tabs .active a { 
-  /* Colors when tab is active */
-  background: white; 
-  color: black; 
-  
-
-}
-.tabs li:before, .tabs li:after, 
-.tabs li a:before, .tabs li a:after {
-  /* All pseudo elements are 
-     abs. positioned and on bottom */
-  
-
-  position: absolute;
-  bottom: 0;
-}
-/* Only the first, last, and active
-   tabs need pseudo elements at all */
-.tabs li:last-child:after,   .tabs li:last-child a:after,
-.tabs li:first-child:before, .tabs li:first-child a:before,
-.tabs .active:after,   .tabs .active:before, 
-.tabs .active a:after, .tabs .active a:before {
-  content: "";
-  
-
-}
-.tabs .active:before, .tabs .active:after {
-  background: white; 
-  
-
-  
-  /* Squares below circles */
-}
-/* Squares */
-.tabs li:before, .tabs li:after {
-  background: rgb(221,224,230,0.5);
-  
-  width: 10px;
-  height: 8px;
-}
-.tabs li:before {
-  left: -10px;      
-  
-
-}
-.tabs li:after { 
-  right: -10px;
-  
-
-}
-/* Circles */
-.tabs li a:after, .tabs li a:before {
-  width: 20px; 
-  height: 8px;
-  /* Circles are circular */
-  
-  border-bottom-left-radius: 10px;  
-  border-bottom-right-radius: 10px;
-  background: rgb(221,224,230,0.5);
-  
-  /* Circles over squares */
-  z-index: 2;
-}
-.tabs .active a:after, .tabs .active a:before {
-  
-
-  background: rgb(221,224,230,0.5);
-}
-/* First and last tabs have different
-   outside color needs */
-.tabs li:first-child.active a:before,
-.tabs li:last-child.active a:after {
-  
-
-  background: rgb(221,224,230,0.5);
-}
-.tabs li a:before {
-  
-
-  left: -20px;
-}
-.tabs li a:after {
-  
-
-  right: -20px;
-}
-.tabs {
-  transition: all .2s ease-in-out;
-
-}
-
-.draggable-tabs.tabs.draggable-tab {
-  cursor:default;
-  max-height:38px;
-}
-.dark-tabs li { 
-  /* Makes a horizontal row */
-  float: left; 
-  
-
-  /* So the psueudo elements can be
-  
-     abs. positioned inside */
-  position: relative; 
-}
-.dark-tabs a { 
-  
-
-  /* Make them block level
-     and only as wide as they need */
-  float: left; 
-  padding: 7px 10px; 
-  text-decoration: none;
-  
-  /* Default colors */ 
-  color: black;
-  background: #212121; 
-  
-  /* Only round the top corners */
-  -webkit-border-top-left-radius: 15px;
-  -webkit-border-top-right-radius: 15px;
-  -moz-border-radius-topleft: 15px;
-  -moz-border-radius-topright: 15px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px; 
-}
-.dark-tabs .active {
-  /* Highest, active tab is on top */
-  z-index: 3;
-}
-.dark-tabs .active a { 
-  /* Colors when tab is active */
-  
-  background: #444444; 
-  color: white; 
-}
-.dark-tabs li:before, .dark-tabs li:after, 
-.dark-tabs li a:before, .dark-tabs li a:after {
-  
-
-  /* All pseudo elements are 
-     abs. positioned and on bottom */
-  position: absolute;
-  bottom: 0;
-}
-/* Only the first, last, and active
-   tabs need pseudo elements at all */
-.dark-tabs li:last-child:after,   .dark-tabs li:last-child a:after,
-.dark-tabs li:first-child:before, .dark-tabs li:first-child a:before,
-.dark-tabs .active:after,   .dark-tabs .active:before, 
-.dark-tabs .active a:after, .dark-tabs .active a:before {
-  
-
-  content: "";
-}
-.dark-tabs .active:before, .dark-tabs .active:after {
-  
-
-  background: #444444; 
-  
-  /* Squares below circles */
-}
-/* Squares */
-.dark-tabs li:before, .dark-tabs li:after {
-  
-
-  background: #212121;
-  width: 10px;
-  height: 8px;
-}
-.dark-tabs li:before {
-  
-
-  left: -10px;      
-}
-.dark-tabs li:after { 
-  
-
-  right: -10px;
-}
-/* Circles */
-.dark-tabs li a:after, .dark-tabs li a:before {
-  width: 20px; 
-  height: 8px;
-  /* Circles are circular */
-  border-bottom-left-radius: 10px;  
-  
-  border-bottom-right-radius: 10px;
-  background: #212121;
-  
-  /* Circles over squares */
-  z-index: 2;
-}
-.dark-tabs .active a:after, .dark-tabs .active a:before {
-  
-  background: #212121;
-}
-/* First and last tabs have different
-   outside color needs */
-.dark-tabs li:first-child.active a:before,
-.dark-tabs li:last-child.active a:after {
-  
-  background: #212121;
-}
-.dark-tabs li a:before {
-  
-  left: -20px;
-}
-.dark-tabs li a:after {
-  
-  right: -20px;
-}
 
 
 @media (max-width: 767px) {
@@ -337,4 +95,307 @@ div.makeStyles-toolbar-10 {
   padding: 0px 16px;
   min-height: 42px;
   transition: min-height 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+/* 
+.chrome-tabs {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 15px;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+.chrome-tabs * {
+  box-sizing: inherit;
+  font: inherit;
+}
+.chrome-tabs.chrome-tabs-content {
+  width: 100%;
+  height: 100%;
+}
+.chrome-tabs.chrome-tab {
+  left: 0;
+  border: 0;
+  min-width: 10px;
+  margin: 0;
+  z-index: 1;
+  margin-top: 8px;
+}
+.chrome-tabs .chrome-tab,
+.chrome-tabs .chrome-tab * {
+  user-select: none;
+  cursor: default;
+}
+.chrome-tabs .chrome-tab .chrome-tab-dividers {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: var(--tab-content-margin);
+  right: var(--tab-content-margin);
+}
+.chrome-tabs .chrome-tab .chrome-tab-dividers,
+.chrome-tabs .chrome-tab .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab .chrome-tab-dividers::after {
+  pointer-events: none;
+}
+.chrome-tabs .chrome-tab .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab .chrome-tab-dividers::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #a9adb0;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+.chrome-tabs .chrome-tab .chrome-tab-dividers::before {
+  left: 0;
+}
+.chrome-tabs .chrome-tab .chrome-tab-dividers::after {
+  right: 0;
+}
+.chrome-tabs .chrome-tab:first-child .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab:last-child .chrome-tab-dividers::after {
+  opacity: 0;
+}
+.chrome-tabs.chrome-tab.chrome-tab-background.active:hover {
+  cursor:default
+}
+.chrome-tabs.chrome-tab.chrome-tab-background:not(.active):hover {
+  background-color:  #dadce0;
+  cursor:default;
+}
+.chrome-tabs .chrome-tab .chrome-tab-background > svg {
+  width: 100%;
+  height: 100%;
+}
+.chrome-tabs .chrome-tab .chrome-tab-background > svg .chrome-tab-geometry {
+  fill: #f4f5f6;
+}
+
+.chrome-tabs .chrome-tab.active .chrome-tab-background > svg .chrome-tab-geometry {
+  fill: #fff;
+}
+.chrome-tabs .chrome-tab:not(.active) .chrome-tab-background {
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab:not(.active):hover {
+    z-index: 2;
+  }
+  .chrome-tabs .chrome-tab:not(.active):hover .chrome-tab-background {
+    opacity: 1;
+  }
+}
+.chrome-tabs .chrome-tab.chrome-tab-was-just-added {
+  top: 10px;
+  animation: chrome-tab-was-just-added 120ms forwards ease-in-out;
+}
+.chrome-tabs.chrome-tab.chrome-tab-content {
+  position: absolute;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  left: var(--tab-content-margin);
+  right: var(--tab-content-margin);
+  padding: 9px 8px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+  pointer-events: all;
+}
+.chrome-tabs .chrome-tab[is-mini] .chrome-tab-content {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.chrome-tabs .chrome-tab .chrome-tab-favicon {
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+  height: 16px;
+  width: 16px;
+  background-size: 16px;
+  margin-left: 4px;
+}
+.chrome-tabs .chrome-tab[is-small] .chrome-tab-favicon {
+  margin-left: 0;
+}
+.chrome-tabs .chrome-tab[is-mini]:not(.active) .chrome-tab-favicon {
+  margin-left: auto;
+  margin-right: auto;
+}
+.chrome-tabs .chrome-tab[is-mini].active .chrome-tab-favicon {
+  display: none;
+}
+.chrome-tabs.chrome-tab.chrome-tab-title {
+  flex: 1;
+  vertical-align: top;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 4px;
+  color: #5f6368;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+}
+.chrome-tabs .chrome-tab[is-small] .chrome-tab-title {
+  margin-left: 0;
+}
+.chrome-tabs .chrome-tab .chrome-tab-favicon + .chrome-tab-title,
+.chrome-tabs .chrome-tab[is-small] .chrome-tab-favicon + .chrome-tab-title {
+  margin-left: 8px;
+}
+.chrome-tabs .chrome-tab[is-smaller] .chrome-tab-favicon + .chrome-tab-title,
+.chrome-tabs .chrome-tab[is-mini] .chrome-tab-title {
+  display: none;
+}
+.chrome-tabs .chrome-tab.active .chrome-tab-title {
+  color: #45474a;
+}
+.chrome-tabs .chrome-tab .chrome-tab-drag-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab:not(.active) .chrome-tab-close:not(:hover):not(:active) {
+    opacity: 0.8;
+  }
+}
+.chrome-tabs .chrome-tab[is-smaller] .chrome-tab-close {
+  margin-left: auto;
+}
+.chrome-tabs .chrome-tab[is-mini]:not(.active) .chrome-tab-close {
+  display: none;
+}
+.chrome-tabs .chrome-tab[is-mini].active .chrome-tab-close {
+  margin-left: auto;
+  margin-right: auto;
+}
+@-moz-keyframes chrome-tab-was-just-added {
+  to {
+    top: 0;
+  }
+}
+@-webkit-keyframes chrome-tab-was-just-added {
+  to {
+    top: 0;
+  }
+}
+@-o-keyframes chrome-tab-was-just-added {
+  to {
+    top: 0;
+  }
+}
+@keyframes chrome-tab-was-just-added {
+  to {
+    top: 0;
+  }
+}
+.chrome-tabs.chrome-tabs-is-sorting .chrome-tab:not(.chrome-tab-is-dragging),
+.chrome-tabs:not(.chrome-tabs-is-sorting) .chrome-tab.chrome-tab-was-just-dragged {
+  transition: transform 120ms ease-in-out;
+}
+.chrome-tabs .chrome-tabs-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+}
+.chrome-tabs-optional-shadow-below-bottom-bar {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1' viewBox='0 0 1 1'><rect x='0' y='0' width='1' height='1' fill='rgba(0, 0, 0, .17)'></rect></svg>");
+  background-size: 1px 1px;
+  background-repeat: repeat-x;
+  background-position: 0% 0%;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .chrome-tabs-optional-shadow-below-bottom-bar {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='2' height='2' viewBox='0 0 2 2'><rect x='0' y='0' width='2' height='1' fill='rgba(0, 0, 0, .27)'></rect></svg>");
+  }
+} */
+
+.chrome-tabs.chrome-tab.chrome-tab-close {
+  flex-grow: 0;
+  flex-shrink: 0;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-top: 0px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0, 0, 0, .65)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
+}
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab .chrome-tab-close:hover {
+    background-color: grey
+  }
+  .chrome-tabs .chrome-tab .chrome-tab-close:hover:active {
+    background-color: grey
+  }
+}
+@media not all and (hover: hover) {
+  .chrome-tabs .chrome-tab .chrome-tab-close:active {
+    background-color: grey;
+  }
+}
+
+.chrome-tabs.chrome-tab.active {
+  background-color:white;
+  z-index: 5;
+}
+
+.chrome-tabs.chrome-tab {
+  background-color:white;
+  z-index: 5;
+}
+
+#tab-container::-webkit-scrollbar {
+  height: 4px;             
+  width: 4px;               /* width of vertical scrollbar */
+  border: 1px solid #d5d5d5;
+  display: none;
+}
+
+#tab-container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
+}
+
+
+.activity-tab {
+  cursor:default;
+  background-color: transparent;
+}
+
+.activity-tab.inactive:hover {
+  background-color: #dadce0;
+}
+
+.activity-tab.active {
+  background-color: white
+}
+
+.chrome-tabs.chrome-tab.chrome-tab-title {
+  flex: 1;
+  vertical-align: top;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 4px;
+  color: #5f6368;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
 }

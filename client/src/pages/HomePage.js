@@ -54,6 +54,7 @@ import Registration from './Registration'
 import RecordEditor from './RecordEditor'
 import { setCurrentRecord } from '../store/current_record'
 import {reorderTabs} from '../store/activities'
+import useWindowDimensions from '../components/utils/useWindowDimensions'
 
 const drawerWidth = 240;
 
@@ -165,6 +166,16 @@ const HomePage=(props)=>{
   const dispatch = useDispatch()
   const [themes,setThemes] = useState("dark")
   const context = useContext(ThemeContext)
+  const [tabWidth,setTabWidth] = useState()
+  const openTabs = useSelector(state=>state.activities.open_tabs)
+
+  let {windowHeight,windowWidth} = useWindowDimensions()
+
+
+  useEffect(()=>{
+    const newTabWidth = (windowWidth - 72) > (openTabs.length * 240) ? "240px" : `${(windowWidth - 72) / openTabs.length}`
+    setTabWidth(newTabWidth)
+  },[openTabs])
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -221,7 +232,6 @@ const HomePage=(props)=>{
   };
     const [tabs,setTabs] = useState([])
     const [selectedTabName,setSelectedTabName] = useState("dashboard")
-    const openTabs = useSelector(state=>state.activities.open_tabs)
     const [activities,setActivities] =useState([])
     const allActivities = useSelector(state=>state.activities)
     const [loading,setLoading] =useState(false)
@@ -260,6 +270,9 @@ const HomePage=(props)=>{
         }
     }
 
+    console.log(3,4,windowWidth)
+    console.log("tabWidth: ",tabWidth)
+
     const globalTheme = createMuiTheme => ({
       overrides: {
         MuiCssBaseline: {
@@ -280,9 +293,10 @@ const HomePage=(props)=>{
       )
     }
 
+
     return (
         <>    
-                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs,tabs,setTabs,setLoading,loading}}>
+                <HomeContext.Provider value={{setSelectedTab,setSelectedTabName, selectedTabName, setSideBarDisplay,openTabs,tabs,setTabs,setLoading,loading,tabWidth}}>
                 <Breakpoint medium up style={{    
                   display: "block",
                   margin: 0,
@@ -330,8 +344,8 @@ const HomePage=(props)=>{
         zIndex:2,
         overflowY:"hidden",
         display:"block",
-        marginTop:"44px",
-        background:"cornflowerblue"
+        marginTop:"47px",
+        background:"transparent"
         }}>
         <div style={{display:"flex",width:"100%",justifyContent:"flex-end"}}>
           {!open ? <IconButton onClick={handleDrawerOpen}>
@@ -348,17 +362,20 @@ const HomePage=(props)=>{
         </List>
       </div>
         {/* <div className={classes.toolbar} /> */}
-              <div style={{
+              <div id={"tab-container"} style={{
                 display:"flex",
                 flexDirection:"column",
                 flexGrow:1,
                 position:"fixed",
-                marginTop:"44px",
+                marginTop:"47px",
                 height:"46px",
                 marginLeft:"64px",
                 width:"calc(100% - 64px)",
+                overflowY:"hidden",
+                overflowX:"scroll",
+                whiteSpace: "nowrap",
                 zIndex:2,
-                backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230,0.5)"
+                backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230,0.8)"
                 }}>
                     {/* <div 
                     className={context.themes === "dark" ? "dark-tabs" : "tabs"} 
@@ -369,7 +386,7 @@ const HomePage=(props)=>{
                         ))}
                     </div> */}
                     <DragDropContext onDragEnd={onDragEnd}>
-                      <Droppable droppableId="droppable" direction="horizontal">
+                      <Droppable droppableId="droppable" direction="horizontal" style={{hieght:"46px",cursor:"default"}}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -378,21 +395,27 @@ const HomePage=(props)=>{
                             style={{display:"flex",
                             flexDirection:"row",
                             marginBottom:0,
-                            marginLeft:"20px", 
                             marginTop:"0px",
                             padding:0,
-                            height:"100%"
+                            paddingLeft:"8px",
+                            height:"calc(100% - 8px)",
+                            cursor:"default"
                             }}>
                             {tabs.map((activity, index) => (
-                              <Draggable style={{cursor:"pointer",background: activity.name === selectedTabName ? "white" : "transparent"}}key={activity.name} draggableId={activity.name} index={index}>
+                              <Draggable 
+                              style={{cursor:"default",width:`${tabWidth}px`}}
+                              className={`${ selectedTabName === activity.name ?  "chrome-tabs chrome-tab active" : "chrome-tabs chrome-tab"}`}
+                              key={activity.name} draggableId={activity.name} index={index}>
                                 {(provided, snapshot) => (  
                                     <div
-                                    className={`draggable-tabs tabs draggable-tab`}
-                                    style={{cursor:"pointer"}}
+                                    style={{
+                                      cursor:"default"
+                                    }}
                                     ref={provided.innerRef}
+                                    onClick={(e)=>{setSelectedTab(activity.name,activity.patient,activity.record)}}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    index={index} activity={activity}>
+                                    index={index}>
                                       <ActivityTab key={activity.name} index={index} activity={activity}/>
                                     </div>
                                 )}

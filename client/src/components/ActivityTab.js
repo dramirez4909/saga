@@ -12,6 +12,7 @@ import { IconButton } from '@material-ui/core';
 import { closeTab } from '../store/activities';
 import { useDispatch, useSelector } from 'react-redux';
 import { fade} from '@material-ui/core/styles';
+import useWindowDimensions from './utils/useWindowDimensions';
 
 
 const iconStyle = {
@@ -41,6 +42,7 @@ function ActivityTab(props) {
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const dispatch = useDispatch()
 
+
     // useEffect(()=>{
     //     if (context.tabs !== undefined && openTabs !== undefined){
     //             context.setTabs(openTabs)
@@ -66,34 +68,48 @@ function ActivityTab(props) {
     }
 
     return (
-        <>
-            <div key={props.activity.name} onClick={(e)=>{context.setSelectedTab(props.activity.name,props.activity.patient,props.activity.record)}} 
-                // className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
+            <div key={props.activity.name} 
+                className={context.selectedTabName === props.activity.name ? "activity-tab active" : "activity-tab inactive"}
                 style={{
-                margin:0,
-                zIndex: props.activity.name === context.selectedTabName ? 3 : "",
-                // background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
-                // borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
-                // borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
-                background: props.activity.name === context.selectedTabName ? "white" : "transparent",
-                display: display
-            }}
+                    display:"flex",
+                    paddingRight:"10px", 
+                    zIndex:3,
+                    alignItems:"center",
+                    width:"240px",
+                    marginTop:"8px",
+                    borderTopLeftRadius:"8px",
+                    borderTopRightRadius:"8px",
+                    height:"100%",
+                }}
+
+                // className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
+            //     style={{
+            //     margin:0,
+            //     zIndex: props.activity.name === context.selectedTabName ? 3 : "",
+            //     // background: props.activity.name === context.selectedTabName ? themeContext.themes === "light" ? "white" : "#444444" : themeContext.themes === "light" ? "rgb(221,224,230)" : "#212121",
+            //     // borderTopLeftRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+            //     // borderTopRightRadius: props.activity.name === context.selectedTabName ? "10px" : "",
+            //     background: "transparent",
+            //     display: display,
+            //     display:"flex",
+            //     height:"100%",
+            // }}
                 > 
-            <div style={{display:"flex", alignItems:"center", zIndex:3,background: props.activity.name === context.selectedTabName ? "white" : "transparent"}}>
-            {props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/icons8-dashboard-layout-100.png" style={{...iconStyle}}></img> : <></> }
-            {props.activity.name === "My Schedule" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
-            {props.activity.name === "Place Orders" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
-            {props.activity.department ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img> : <></>}
-            {props.activity.name === "Patient Search" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
-            {props.activity.patient ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/folder-open-flat.svg" style={{...iconStyle }}></img> : <></>}
-            {props.activity.name === "dashboard" ? "" : <span style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</span>} 
-            {props.activity.name === "dashboard" ? "" : 
-            <IconButton style={{height:"19px",width:"19px",color:"lightgrey",outline:"none",display:display}} onClick={(e)=>closeThisTab(e,props.activity.name)}>
-            <CloseIcon style={{height:"19px",width:"19px",color:themeContext.themes === "dark" ? "white" : "grey",display:display}} ></CloseIcon>
-            </IconButton>}
+            <div 
+                key={props.activity.name}
+                style={{display:"flex",paddingRight:"10px", zIndex:3,background: "transparent",alignItems:"center"}}
+                className={"chrome-tabs chrome-tab chrome-tab-title"}>
+                {props.activity.name === "dashboard" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/home-icon-google.png" style={{...iconStyle}}></img> : <></> }
+                {props.activity.name === "My Schedule" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
+                {props.activity.name === "Place Orders" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
+                {props.activity.department ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img> : <></>}
+                {props.activity.name === "Patient Search" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
+                {props.activity.patient ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/folder-open-flat.svg" style={{...iconStyle }}></img> : <></>}
+                {props.activity.name === "dashboard" ? <span style={{justifySelf:"center",marginLeft:"8px"}}>Home</span> : <span style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</span>}
+
             </div>
+            {props.activity.name === "dashboard" ? "" : <div className={"chrome-tab-close chrome-tabs chrome-tab"} style={{display:display}} onClick={(e)=>closeThisTab(e,props.activity.name)}></div>}
             </div>
-        </>
     );
 }
 export default ActivityTab;

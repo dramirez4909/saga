@@ -4,7 +4,7 @@ from datetime import time
 load_dotenv()
 
 from app import app, db
-from app.models import User, Security_Point,Role, Resource, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department
+from app.models import User, Security_Point,Role, Resource, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department, Organization
 
 with app.app_context():
   db.drop_all()
@@ -122,12 +122,14 @@ with app.app_context():
   # demo_provider.encounters.append(encounter_nine)
 
   radiology_department = Department(name="Radiology")
-  fam_department = Department(name="Outpatient Family Medicine")
+  fam_department = Department(name="Demo Outpatient Family Medicine")
+  demo_organization = Organization(name="Saga Demo Health Network")
+  demo_organization.departments.append(fam_department)
 
-  exam_room_a = Resource(name="Exam Room A")
-  exam_room_b = Resource(name="Exam Room B")
-  exam_room_c = Resource(name="Exam Room C")
-  exam_room_d = Resource(name="Exam Room D")
+  exam_room_a = Resource(name="Exam Room A",active=1)
+  exam_room_b = Resource(name="Exam Room B",active=1)
+  exam_room_c = Resource(name="Exam Room C",active=1)
+  exam_room_d = Resource(name="Exam Room D",active=1)
   
   # exam_room_a.encounters.append(encounter_one)
   # exam_room_b.encounters.append(encounter_two)

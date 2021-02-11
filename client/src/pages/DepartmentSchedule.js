@@ -436,7 +436,7 @@ const DepartmentSchedule = props => {
                     popup={true}
                     step={60}
                     min={new Date(1970, 1, 1, 8)}
-                    max={new Date(1970, 1, 1, 17)}
+                    max={new Date(1970, 1, 1, 23)}
                     scrollToTime={new Date(1970, 1, 1, 3)}
                     onEventDrop={moveEvent}
                     endAccessor="end"

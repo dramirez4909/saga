@@ -292,8 +292,8 @@ const UserEditRoleForm = (props) => {
     };
 
     const customList = (title, items) => (
-        <Card style={{width:"100%",border:"1px solid #dadce0",minWidth:"350px",borderRadius:"8px", paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
-            <div style={{display:"flex",flexDirection:"column"}}>
+        <Card style={{width:"100%",minWidth:"350px",borderRadius:"8px", paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
+            <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                 <div style={{fontSize:"24px",fontWeight:"400"}}>{title}</div>
             </div>
             <div style={{display:"flex",flexDirection:"row", justifyContent:"space-between",alignItems:"center"}}>
@@ -385,15 +385,20 @@ const UserEditRoleForm = (props) => {
     
     return (
         <Fade in={loading === false}>
-      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
-        <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>
+      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"800px",border:"1px solid #dadce0",marginTop:"25px",borderRadius:"8px"}}>
+        <div style={{display:"flex",flexDirection:"row",width:"100%",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"16px",alignItems:"center"}}>
+          <h3>User Roles</h3>
+        <div style={{display:"flex",flexDirection:"row",marginBottom:"10px"}}>
             <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
         </div>
+        </div>
+        <Divider style={{width:"100%"}} />
+
         <div style={{outline:"none",width:"100%",borderRadius:"8px",display:"flex",flexDirection:"column",paddingLeft:"0px",paddingRight:"0px"}}>
         {loading ? <CircularProgress/> : 
-        <Grid container spacing={2} justify="center" alignItems="center" style={{width:"100%"}}>
+        <Grid container spacing={2} justify="center" alignItems="center">
             <Grid item style={{alignSelf:"baseline"}}>{customList('Available Roles', left)}</Grid>
-            <Grid item>
+            <Grid item style={{display:"flex",flexDirection:"column",justifyContent:"center",height:"calc(100% - 16px",borderLeft:"1px solid #dadce0",borderRight:"1px solid #dadce0"}}>
                 <Grid container direction="column" alignItems="center">
                 <Button
                     variant="outlined"

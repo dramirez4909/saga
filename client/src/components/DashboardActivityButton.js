@@ -39,7 +39,20 @@ const DashButton = (props) => {
             </>
             : 
             ""
-}
+            }
+            {props.title === "Department Editor" 
+            ? 
+            <>
+            <img style={{alignSelf:"center"}} 
+            // src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_316x112_3343d1d69c2d68a4bd3d28babd1f9e80.png"
+            src="https://www.gstatic.com/identity/boq/accountsettingsmobile/dataandpersonalization_icon_96x96_cdb6dff2e31ed6745ece4662231bfd48.png">
+                
+            </img>
+            <div style={{marginRight:"15px"}}>{props.title}</div>
+            </>
+            : 
+            ""
+            }
         </div>
     )
 }

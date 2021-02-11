@@ -20,6 +20,7 @@ from .api.problems import problems
 from .api.providers import providers
 from .api.roles import roles
 from .api.security_points import security_points
+from .api.resources import resources
 
 from .config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
 from .config import Config
@@ -46,6 +47,7 @@ app.register_blueprint(medications,url_prefix='/api/medications')
 app.register_blueprint(problems,url_prefix='/api/problems')
 app.register_blueprint(roles,url_prefix='/api/roles')
 app.register_blueprint(security_points,url_prefix='/api/security_points')
+app.register_blueprint(resources,url_prefix='/api/resources')
 db.init_app(app)
 Migrate(app, db)
 

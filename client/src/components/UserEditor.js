@@ -248,7 +248,7 @@ const UserEditor = (props) => {
       }
     
     return (
-      <div className={classes.paper} style={{display:"flex",flexDirection:"column",outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"20px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+      <div className={classes.paper} style={{alignItems:"center",display:"flex",flexDirection:"column",outline:"none",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",paddingTop:"20px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
         <div style={{display:"flex",flexDirection:"row",alignItems:"center",alignSelf:"center"}}>
         {/* <img style={{width:"200px",alignSelf:"center"}} src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_316x112_3343d1d69c2d68a4bd3d28babd1f9e80.png"></img> */}
           {/* <Avatar style={{width:"90px",height:"90px",alignSelf:"center"}} src={currentRecord.picture}/> */}

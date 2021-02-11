@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import User from '../components/User';
 import UserEditor from '../components/UserEditor'
+import DepartmentEditor from '../components/DepartmentEditor'
 
 
 export default function RecordEditor(props) {
@@ -40,7 +41,7 @@ export default function RecordEditor(props) {
     return (
         <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
             {currentRecord.type === "user" ? <UserEditor user={currentRecord}></UserEditor> : <></>}
-            {/* {currentRecord.type === "department" ? <DepartmentEditor department={currentRecord}></DepartmentEditor> : <></>} */}
+            {currentRecord.type === "department" ? <DepartmentEditor department={currentRecord} resources={currentRecord.resources}></DepartmentEditor> : <></>}
 
         </div>
     )
