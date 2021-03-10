@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter, NavLink, Switch } from 'react-router-dom'
+import { BrowserRouter, NavLink, Switch, Route } from 'react-router-dom'
 import { ProtectedRoute } from '../components/utils/routes'
 import Dashboard from './Dashboard'
-import Orders from './Orders'
-import Schedule from './Schedule'
 import NavBar from '../components/NavBar'
 import HomeContext from '../components/utils/HomeContext'
 import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
@@ -310,81 +308,24 @@ const HomePage=(props)=>{
                   overflowX: "visible",
                   overflowY: "scroll"
                 }}>
-      <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Mini variant drawer
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
+              <CssBaseline />
               <NavBar currentUser={currentUser}>
                 </NavBar>
-      <div style={{
-        left:0,
-        maxWidth:"64px",
-        position:"fixed",
-        minHeight:"100%",
-        zIndex:2,
-        overflowY:"hidden",
-        display:"block",
-        marginTop:"47px",
-        background:"transparent"
-        }}>
-        <div style={{display:"flex",width:"100%",justifyContent:"flex-end"}}>
-          {!open ? <IconButton onClick={handleDrawerOpen}>
-             <ChevronLeftIcon />
-          </IconButton>
-          :
-          <IconButton fullWidth size="large" onClick={handleDrawerClose}>
-            <ChevronRightIcon/>
-          </IconButton>}
-        </div>
-        <Divider />
-        <List style={{justifyContent:"center",display:"flex"}}>
-              <ScheduleSelector/>
-        </List>
-      </div>
-        {/* <div className={classes.toolbar} /> */}
               <div id={"tab-container"} style={{
                 display:"flex",
                 flexDirection:"column",
                 flexGrow:1,
                 position:"fixed",
                 marginTop:"47px",
-                height:"46px",
-                marginLeft:"64px",
-                width:"calc(100% - 64px)",
+                height:"59px",
+                // marginLeft:"64px",
+                width:"100%",
                 overflowY:"hidden",
                 overflowX:"scroll",
                 whiteSpace: "nowrap",
                 zIndex:2,
-                backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230,0.8)"
+                backgroundColor:context.themes === "dark" ? "#212121" : "#f2f2f2"
                 }}>
-                    {/* <div 
-                    className={context.themes === "dark" ? "dark-tabs" : "tabs"} 
-                    style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"0px",listStyleType:"none",...tabStyle,marginTop:"8px"}}>
-                    {tabs.map((activity, index)=>
-                        (   
-                            <ActivityTab key={activity.name} index={index} activity={activity}/>
-                        ))}
-                    </div> */}
                     <DragDropContext onDragEnd={onDragEnd}>
                       <Droppable droppableId="droppable" direction="horizontal" style={{hieght:"46px",cursor:"default"}}>
                         {(provided, snapshot) => (
@@ -396,14 +337,13 @@ const HomePage=(props)=>{
                             flexDirection:"row",
                             marginBottom:0,
                             marginTop:"0px",
-                            padding:0,
-                            paddingLeft:"8px",
-                            height:"calc(100% - 8px)",
+                            padding:"8px 0px 5px 10px",
+                            height:"100%",
                             cursor:"default"
                             }}>
                             {tabs.map((activity, index) => (
                               <Draggable 
-                              style={{cursor:"default",width:`${tabWidth}px`}}
+                              style={{cursor:"default",width:`${tabWidth}px`,marginBottom:"-5px",marginTop:"5px"}}
                               className={`${ selectedTabName === activity.name ?  "chrome-tabs chrome-tab active" : "chrome-tabs chrome-tab"}`}
                               key={activity.name} draggableId={activity.name} index={index}>
                                 {(provided, snapshot) => (  
@@ -432,13 +372,12 @@ const HomePage=(props)=>{
                         console.log("record from home page: !!!!!",activity)
                     return (
                         <div style={{
-                          width:"calc(100% - 64px)",
-                          marginLeft:"64px",
+                          width:"100%",
                           display: activity.name === selectedTabName ? "block" : "none", 
                           position:"relative",
-                          marginTop:"92px",
+                          marginTop:"104px",
                           minHeight:"calc(100vh - 112px)",
-                          backgroundColor:context.themes === "dark" ? "#444444" : "white",
+                          backgroundColor:context.themes === "dark" ? "#444444" : "#f2f2f2",
                           position:"relative",
                           overflowY:"hidden",
                           }}>
@@ -463,27 +402,19 @@ const HomePage=(props)=>{
 
               <div className={classes.content}>
                 <div style={{display:"flex",flexDirection:"column",backgroundColor:context.themes === "dark" ? "#212121" : "rgb(221,224,230)"}}>
-                    {/* <div className={context.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",marginBottom:0,marginLeft:"20px", marginTop:"8px",listStyleType:"none"}}>
-                    {tabs.map((activity, index)=>
-                        (   
-                            <ActivityTab key={index} style={{...tabStyle}} index={index} activity={activity}/>
-                        ))}
-                    </div> */}
                     <div style={{background:context.themes === "dark" ? "#444444" : "white", display:"flex"}}>
                     {tabs.map(( activity, index)=> {
                       console.log("activity: ",activity,"index: ",index)
                     return (
                         <Fade in={activity.name === selectedTabName} timeout={350} mountOnEnter unmountOnExit>
-                        <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
-                            {activity.name === "dashboard" ? <Dashboard/> : <></>}
-                            {/* {activity.name === "My Schedule" ? <ProviderSchedule/> : <></>} */}
-                            {/* {activity.name === "Place Orders" ? <Orders/> : <></>} */}
-                            {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
-                            {activity.name === "Registration" ? <Registration/> : <></>}
-                            {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
-                            {activity.record ? <RecordEditor record={activity.record}/> : <></>}
-                            {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
-                        </div>
+                          <div key={activity.name} style={{width:"100%",display: activity.name === selectedTabName ? "flex" : "none", flexDirection:"column",backgroundColor:context.themes === "dark" ? "#444444" : "white",alignItems:"center"}}>
+                              {activity.name === "dashboard" ? <Dashboard user={currentUser}/> : <></>}
+                              {activity.name === "Patient Search" ? <PatientSearch/>: <></>}
+                              {activity.name === "Registration" ? <Registration/> : <></>}
+                              {activity.patient ? <PatientChart patient={activity.patient}/> : <></>}
+                              {activity.record ? <RecordEditor record={activity.record}/> : <></>}
+                              {activity.department ? <DepartmentSchedule department={activity.department}/> : <></>}
+                          </div>
                         </Fade>
                         )})}
                 </div>

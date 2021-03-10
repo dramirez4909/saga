@@ -1,7 +1,9 @@
-import { Avatar, Button, CircularProgress, Grid,IconButton } from '@material-ui/core'
+import { Avatar, Button, CircularProgress, Grid,IconButton,Divider } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {logout} from '../store/auth'
+import Cookies from 'js-cookie'
+import { withStyles } from '@material-ui/core/styles';
 import DashboardComponent from '../components/DashboardComponent'
 import ThemeContext from '../components/utils/ThemeContext';
 import Brightness4TwoToneIcon from '@material-ui/icons/Brightness4TwoTone';
@@ -17,11 +19,35 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { setCurrentRecord } from '../store/current_record'
 import UserCard from '../components/UserCard'
+import UserCardNarrow from '../components/UserCardNarrow'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserMd } from '@fortawesome/free-solid-svg-icons'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 import CloseIcon from '@material-ui/icons/Close';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import SearchIcon from '@material-ui/icons/Search';
+import AddIcon from '@material-ui/icons/PersonAddRounded';
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color:"dodgerblue",
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        outline: "none",
+        margin:"10px",
+        marginTop:"15px",
+        border:"1px solid dodgerblue",
+        textDecoration:"none",
+        margin: "4px",
+        backgroundColor:"transparent",
+        '&:hover': {
+            backgroundColor: "dodgerblue !important",
+            color:"white"
+        },
+    },
+  }))(Button);
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -31,9 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
       outline:"none",
-      borderRadius:"4px",
       boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
     },
     small: {
       width: theme.spacing(3),
@@ -48,7 +72,57 @@ const useStyles = makeStyles((theme) => ({
 const UserSearchResults = (props) => {
     const dispatch = useDispatch()
     const classes = useStyles();
+    const [searchTerm,setSearchTerm]=useState("")
+    const [users,setUsers] = useState(props.users)
+    const [creatingNewUser,setCreatingNewUser] = useState(false)
+    
+    const handleNewUserClick = () => {
+        setCreatingNewUser(true)
+    }
 
+    useEffect(()=>{
+        const csrfToken = Cookies.get("XSRF-TOKEN")
+        const createNewUser = async () => {
+        const newUser = {first_name:"New User"}
+        const jsonRecord = JSON.stringify(newUser)
+        const res = await fetch(`/api/users/create`,{
+            method: "POST",
+            headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+            body: jsonRecord
+            })
+        const data = await res.json()
+        const user = data.user
+        props.handleUserEditorClick(user)
+        setCreatingNewUser(false)
+        }
+        if (creatingNewUser) {
+            createNewUser()
+        }
+    },[creatingNewUser])
+
+    const handleSearchInput = (e) => {
+        setSearchTerm(e.target.value)
+    }
+
+    useEffect(()=>{
+        const getMatchingUsers = async (searchterm) => {
+            const response = await fetch(`/api/users/search-term/${searchTerm}`)
+            const data = await response.json();
+            console.log("results from api call: ",users)
+            setUsers(data.users)
+            console.log(users)
+        }
+        if (searchTerm.length) {
+            getMatchingUsers(searchTerm)
+        }
+    },[searchTerm])
+    
+    useEffect(()=>{
+        setUsers(props.users)
+    },[props.users])
     return (
         <div>
         <Modal
@@ -64,47 +138,65 @@ const UserSearchResults = (props) => {
             }}
         >
             <Fade in={props.modalLoading === false && props.open}>
-            <div className={classes.paper} style={{maxWidth:"600px",width:"100%",backgroundColor:props.themeContext.themes === "dark" ? "#444444" : "white",display:"flex",flexDirection:"column"}}>
-                <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"10px"}}>
-                <div style={{fontWeight:"400",fontSize:"24px"}}>
+            <div className={classes.paper} style={{maxWidth:"600px",width:"100%",display:"flex",flexDirection:"column",backgroundColor:"#f9f9f9",overflow:"scroll",height:"656px",borderRadius:"8px"}}>
+                <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",backgroundColor:"white",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"10px",borderRadius:"8px"}}>
+                <div style={{display:"flex",flexDirection:"row",maxWidth:"500px",width:"100%",alignItems:"center",justifyContent:"space-between"}}>
+                <h2 style={{marginTop:"16px",color:"dimgrey"}}>
                     Users
+                </h2>
+                <ColorButton onClick={handleNewUserClick}>
+                    <AddIcon style={{marginRight:"8px"}}/>
+                    Create New User
+                </ColorButton>
                 </div>
-                <div style={{display:"flex",flexDirection:"column",margin:"10px",marginTop:"16px"}}>
-                <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
-                    <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"yellowgreen"}}/>
-                    <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
-                    - Provider
-                    </div>
-                </div>
-                <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
-                    <FontAwesomeIcon icon={faUserCog} style={{width:"20px",height:"20px",color:"dodgerblue"}}/>
-                    <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
-                    - Administrator
-                    </div>
-                </div>
-                <div style={{display:"flex",flexDirection:"row", marginTop:"4px",alignItems:"center"}}>
-                    <FontAwesomeIcon icon={faCalendarAlt} style={{width:"20px",height:"20px",color:"lightcoral"}}/>
-                    <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
-                    - Scheduler
-                    </div>
-                </div>
-                </div>
-                <IconButton onClick={(e)=>props.setOpen(false)} size="large" style={{alignSelf:"baseline",marginRight:"-30px"}}>
+                <IconButton onClick={(e)=>props.setOpen(false)} size="large" style={{alignSelf:"baseline",marginRight:"-10px"}}>
                     <CloseIcon/>
                 </IconButton>
                 </div>
-                {props.modalLoading ? <CircularProgress/> :
-                <div style={{display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"600px",width:"100%",overFlow:"scroll",maxHeight:"600px"}}>
-                {props.users.map(user=>{
+                <div style={{display:"flex",flexDirection:"row",paddingBottom:"10px",paddingLeft:"15px",width:"100%",backgroundColor:"white"}}>
+                <div style={{display:"flex",flexDirection:"row", marginRight:"10px",alignItems:"center"}}>
+                    <FontAwesomeIcon icon={faUserMd} style={{width:"20px",height:"20px",color:"yellowgreen"}}/>
+                    <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
+                     Provider
+                    </div>
+                </div>
+                <div style={{display:"flex",flexDirection:"row", marginRight:"10px",alignItems:"center"}}>
+                    <FontAwesomeIcon icon={faUserCog} style={{width:"20px",height:"20px",color:"dodgerblue"}}/>
+                    <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
+                     Administrator
+                    </div>
+                </div>
+                <div style={{display:"flex",flexDirection:"row", marginRight:"10px",alignItems:"center"}}>
+                    <FontAwesomeIcon icon={faCalendarAlt} style={{width:"20px",height:"20px",color:"lightcoral"}}/>
+                    <div style={{marginLeft:"5px",fontWeight:"300",fontSize:"18px"}}>
+                     Scheduler
+                    </div>
+                </div>
+                </div>
+                <InputGroup size="lg" style={{paddingRight:"25px",paddingLeft:"25px",background:"white",borderBottom:"1px solid rgb(206, 212, 218)",paddingBottom:"15px"}}>
+                    <InputGroup.Prepend>
+                    <InputGroup.Text id="basic-addon1"><SearchIcon></SearchIcon></InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
+                    placeholder="Search users by name, email or username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={searchTerm}
+                    onChange={(e)=>handleSearchInput(e)}
+                    />
+                </InputGroup>
+                {/* {props.modalLoading ? <CircularProgress/> : */}
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"600px",width:"100%",overflow:"scroll",maxHeight:"500px"}}>
+                {users.map(user=>{
                     {console.log(user)}
                     return(
-                    <div onClick={(e)=>props.handleUserEditorClick(user)} style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:"14px",marginBottom:"5px",marginRight:"14px",borderRadius:"8px",width:"100%"}}>
-                        <UserCard user={user}/>
+                    <div onClick={(e)=>props.handleUserEditorClick(user)} style={{display:"flex",flexDirection:"column",alignItems:"center",marginLeft:"14px",marginRight:"14px",width:"100%",borderBottom:"1px solid whitesmoke"}}>
+                        <UserCardNarrow user={user}/>
                     </div>
                     )
                 })}
                 </div>
-                }
+                {/* } */}
             </div>
             </Fade>
         </Modal>

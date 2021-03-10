@@ -220,7 +220,7 @@ const DepartmentHoursEditor = (props) => {
       }
     return (
       <Fade in={loading === true}>
-        <div style={{outline:"none",minWidth:"390px",borderRadius:"8px",overflow:"hidden",border:"1px solid #dadce0",display:"flex",flexDirection:"column",height:"267px"}}>
+        <div style={{outline:"none",maxWidth:"800px",marginTop:"35px",borderRadius:"8px",overflow:"hidden",border:"1px solid #dadce0",display:"flex",flexDirection:"column",width:"100%"}}>
         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center",paddingRight:"16px"}}>
         <h3 style={{paddingLeft:"16px"}}>Hours</h3>
         <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>

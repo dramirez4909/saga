@@ -1,5 +1,5 @@
 import { Avatar, Button, CircularProgress, Grid,IconButton } from '@material-ui/core'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {logout} from '../store/auth'
 import DashboardComponent from '../components/DashboardComponent'
@@ -23,7 +23,9 @@ import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 import CloseIcon from '@material-ui/icons/Close';
 import UserSearchResults from '../components/UserSearchResults'
+import {openDepartmentSchedule} from '../store/activities'
 import DepartmentSearchResults from '../components/DepartmentSearchResults'
+import DepartmentScheduleSearchResults from '../components/DepartmentScheduleSearchResults'
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -81,7 +83,7 @@ const Dashboard=(props)=>{
     const [departmentModalLoading,setDepartmentModalLoading] = useState(false)
     const [departmentOpen,setDepartmentOpen] =useState(false)
     const [getDepartmentRecords,setGetDepartmentRecords]=useState(false)
-
+    const current_user = useSelector(state=>state.auth.user)
     const handleLogOut = ()=> {
         dispatch(logout())
     }
@@ -96,6 +98,11 @@ const Dashboard=(props)=>{
       setDepartmentOpen(false)
       if (!openTabs.some(activity=>activity.name === `${department.name} Settings`)) dispatch(openEditor({type:"department",department}))
       homeContext.setSelectedTab(`${department.name} Settings`,null,{type:"department",department})
+    }
+
+    const openDepSchedule=(department)=>{
+      if (!openTabs.some(activity=>activity.name === `${department.name}`)) dispatch(openDepartmentSchedule(department))
+      homeContext.setSelectedTab(`${department.name}`)
     }
 
     const handleActivityClick=(name)=>{
@@ -118,7 +125,13 @@ const Dashboard=(props)=>{
         setSelectedActivity("departments")
         setGetDepartmentRecords(!getDepartmentRecords)
         // dispatch(openEditor({type:"department"}))
-      }
+      } else if (name==="Dep. Schedule") {
+        setDepartmentModalLoading(true)
+        setDepartmentOpen(true)
+        setSelectedActivity("departments")
+        setGetDepartmentRecords(!getDepartmentRecords)
+        // dispatch(openEditor({type:"department"}))
+      } 
     }
 
     useEffect(()=>{
@@ -177,9 +190,9 @@ const Dashboard=(props)=>{
         <>
         <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
           <div style={{display:"flex", flexDirection:"column",borderRadius:"8px",paddingRight:"24px",paddingLeft:"24px",paddingTop:"16px",paddingBottom:"16px",width:"100%"}}>
-            <div style={{fontFamily:"Google Sans,Roboto,Arial,sans-serif",fontWeight:"400",fontSize:"22px",alignSelf:"center"}}>
+            {/* <div style={{fontFamily:"Google Sans,Roboto,Arial,sans-serif",fontWeight:"400",fontSize:"22px",alignSelf:"center"}}>
               My Activities
-            </div>
+            </div> */}
             <div style={{width:"100%",display:"flex",flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}} >
             {activities.some(activity=> activity.name === "Patient Registration") ? 
                                 <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
@@ -202,8 +215,15 @@ const Dashboard=(props)=>{
                   </div>
                   : ""
                   }
+            {activities.some(activity=> activity.name === "Dep. Schedule") ?
+                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Dep. Schedule")}>
+                  <DashboardActivityButton onClick={(e)=>handleActivityClick("Department Schedules")} style={{cursor:"pointer"}} color={"coral"} title="Department Schedules" onClick={(e)=>handleActivityClick("Dep. Schedule")}></DashboardActivityButton>
+                  </div>
+                  : ""
+                  }
             </div>
             </div>
+            {/* <SecureChat user={current_user}/> */}
         </div>
         {/* <div>
             {themeContext.themes === "light" ? <Button onClick={changeThemes} size="small" style={{outline:"none",backgroundColor: "#7f53ac",backgroundImage: "linear-gradient(315deg, #7f53ac 0%, #647dee 74%)",marginRight:"30px",color:"white",textTransform:"none",fontWeight:"bolder"}}><Brightness4TwoToneIcon style={{cursor:"pointer",color:"#3badfb"}}/></Button>
@@ -229,7 +249,19 @@ const Dashboard=(props)=>{
         setOpen={setDepartmentOpen}
         Backdrop={Backdrop}
         handleDepartmentEditorClick={handleDepartmentEditorClick}/>
-        
+        <DepartmentScheduleSearchResults
+        modalLoading={departmentModalLoading} 
+        themeContext={themeContext}
+        departments={departments} 
+        open={departmentOpen}
+        handleClose={handleDepartmentClose}
+        handleOpen={handleDepartmentOpen}
+        setOpen={setDepartmentOpen}
+        Backdrop={Backdrop}
+        openDepartmentSchedule={openDepSchedule}
+        >
+          
+        </DepartmentScheduleSearchResults>
         {/* <div>
       <Modal
         aria-labelledby="transition-modal-title"

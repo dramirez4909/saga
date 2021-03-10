@@ -14,10 +14,12 @@ import BusinessTwoToneIcon from '@material-ui/icons/BusinessTwoTone';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import ContactMailTwoToneIcon from '@material-ui/icons/ContactMailTwoTone';
 import ThemeContext from './utils/ThemeContext';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const imageStyle={
     hieght:"32px",
-    width:"32px"
+    width:"32px",
+    color:"#4ba7fa"
   }
 
 const ColorButton = withStyles((theme) => ({
@@ -46,13 +48,14 @@ function PatientAddressInfo(props) {
     return (
         <>
                 <div style={{display:"flex",flexDirection:"column",borderRadius:"9px", width:"fit-content"}}>
-                    <div style={{display:"flex",flexDirection:"row",padding:"4px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white", width:"fit-content",borderRadius:"8px"}}>
-                        <img style={{...imageStyle}}src="https://saga-health.s3-us-west-1.amazonaws.com/mail-flat.svg"></img>
-                        <div style={{display:"flex",flexDirection:"column", width:"fit-content", marginLeft:"9px"}}>
-                        { props.patient.address_line_one ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_one}</span> </span> : ""}
-                        { props.patient.address_line_two ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_two}</span> </span> : ""}
-                        { props.patient.address_line_three ? <span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_line_three}</span> </span> : ""}
-                        { props.patient.address_city ? <span><span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_city}, {props.patient.address_state}</span> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.address_zip}</span> </span> : ""}
+                    <div style={{display:"flex",flexDirection:"row",padding:"4px",backgroundColor:"transparent", width:"fit-content",borderRadius:"8px",alignItems:"center"}}>
+                        <LocationOnIcon style={{...imageStyle}}/>
+                        <div style={{display:"flex",flexDirection:"column", width:"fit-content", marginLeft:"3px"}}>
+                        { props.patient.address_line_one ? <span> <span style={{fontSize:"14px"}}>{props.patient.address_line_one}</span> </span> : ""}
+                        { props.patient.address_line_two ? <span> <span style={{fontSize:"14px"}}>{props.patient.address_line_two}</span> </span> : ""}
+                        { props.patient.address_line_three ? <span> <span style={{fontSize:"14px"}}>{props.patient.address_line_three}</span> </span> : ""}
+                        { props.patient.address_city ? <span><span style={{fontSize:"14px"}}>{props.patient.address_city}, {props.patient.address_state}</span> 
+                        <span style={{fontSize:"14px"}}>{props.patient.address_zip}</span> </span> : ""}
                         </div>
                     </div>
                 </div>

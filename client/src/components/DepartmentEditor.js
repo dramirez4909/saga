@@ -200,20 +200,8 @@ const DepartmentEditor = (props) => {
           <div style={{display:"flex",marginBottom:"20px",flexDirection:"row",alignItems:"center",fontSize:"28px",fontFamily:"system-ui",fontWeight:"300"}}>{department.name}</div>
           </div>
           <DepartmentBasicInfoForm department={department} />
-          <div style={{
-          display:"flex",
-          flexDirection:"row",
-          alignItems:"center",
-          alignSelf:"center",
-          marginTop:"20px",
-          justifyContent:"space-between",
-          marginBottom:"20px",
-          width:"100%",
-          maxWidth:"800px"
-          }}>
           <DepartmentHoursEditor department={department} />
           <DepartmentAddressEditor department={department}/>
-          </div>
           <DepartmentResourceEditor department={department} resources={resources}/>
         </div>
     )

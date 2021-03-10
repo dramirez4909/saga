@@ -234,7 +234,7 @@ const DepartmentResourceEditor = (props) => {
     return (
       <ResourceListContext.Provider value={{setResources,resources}}>
       <Fade in={loading === false}>
-      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
+      <div style={{width:"100%",display:"flex",marginTop:"35px",flexDirection:"column",alignItems:"center"}}>
         <div style={{outline:"none",minWidth:"800px",minHeight:"280px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px",paddingTop:"16px"}}>
         <div style={{display:"flex",flexDirection:"row",justifyContent:"flex-start",alignItems:"center",paddingRight:"16px"}}>
         <h3 style={{paddingLeft:"16px"}}>Rooms</h3>

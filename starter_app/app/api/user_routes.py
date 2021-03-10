@@ -4,6 +4,9 @@ from app.models import User, db, Patient, Role, Security_Point
 import os
 import boto3
 from app.config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
+from sqlalchemy import or_
+from datetime import datetime
+
 
 user_routes = Blueprint('users', __name__)
 
@@ -19,6 +22,34 @@ def byId(id):
   print("!!!!!!",user)
   format_user = user.to_dict()
   return { "user": format_user}
+
+@user_routes.route('/create',methods=['GET','POST'])
+def create_user():
+  time_str = str(datetime.now()).replace(" ","")
+  str_format = time_str.replace(":","")
+  time_str = str_format.replace(".","")
+  rand_string = time_str.replace("-","")
+  # rand_number = int(rand_string)
+  users = db.session.query(User).filter(User.first_name.ilike(f"New User")).all()
+  new_user_num = len(users)
+  print("num num cookie",new_user_num)
+  new_user = User(username=f"replace-with-username{rand_string[4:-6]}",email=f"replace-with-user-email{rand_string[7:-4]}@saga.com",password="passw0rd123",has_temp_password=True)
+  if new_user_num > 0:
+    new_user.first_name = "New User"
+    new_user.last_name = f"{new_user_num}"
+  else:
+    new_user.first_name = "New User"
+    new_user.last_name = ""
+  db.session.add(new_user)
+  db.session.commit()
+  format_user = new_user.to_dict()
+  return {"user":format_user}
+
+@user_routes.route('/search-term/<search_term>')
+def bySearchTerm(search_term):
+  users = db.session.query(User).filter(or_(User.first_name.ilike(f"%{search_term}%"),User.last_name.ilike(f"%{search_term}%"),User.email.ilike(f"%{search_term}%")))
+  format_users = [user.to_dict() for user in users]
+  return {"users": format_users}
 
 @user_routes.route('/upload-photo/<id>',methods=['POST'])
 def upload(id):

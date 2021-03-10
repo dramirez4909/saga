@@ -23,7 +23,7 @@ import '../styles/PatientChart.css'
 import ChartReview from '../components/ChartReview';
 import FavoriteIcon from '@material-ui/icons/FavoriteTwoTone';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { CircularProgress, Fade, Slide } from '@material-ui/core';
+import { Avatar, CircularProgress, Fade, Slide } from '@material-ui/core';
 import PatientEncounters from '../components/PatientEncounters';
 import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
@@ -39,7 +39,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import PatientAddressInfo from '../components/PatientAddressInfo';
 import '../styles/PatientChartRibbon.css'
 import ChartReviewTabs from '../components/ChartReviewTabs';
-
+import ChartReviewActivityButton from '../components/ChartReviewActivityButton'
+import PatientMedicationsList from '../components/PatientMedicationsList';
 const isBrowser = typeof window !== `undefined`
 
 const useStylesLoginTextField = makeStyles((theme) => ({
@@ -82,6 +83,10 @@ const useStylesLoginTextField = makeStyles((theme) => ({
     },
     drawerPaper: {
       width: drawerWidth,
+    },
+    avatar:{
+      width:"140px",
+      height:"140px",
     },
     drawerContainer: {
       overflow: 'auto',
@@ -127,12 +132,25 @@ function PatientChart(props) {
     const [dxSearchTerm,setDxSearchTerm] = useState("")
     const [dxSearchResults,setDxSearchResults]=useState([]);
     const [patient,setPatient] = useState(props.patient)
+    const [patientDob,setPatientDob] =useState()
     const [loadingPicture,setLoadingPicture] = useState(false)
     const [loading,setLoading] = useState(true)
     const form = useRef(null)
     const [patientTabs,setPatientTabs] = useState(["Chart Review","Encounters","Orders","Problem List","Meds","Notes","Allergies","Media"])
     const [currentPatientTab,setCurrentPatientTab] =useState("Chart Review")
     const themeContext = useContext(ThemeContext)
+    const [displayChartButtons,setDisplayChartButtons] = useState(true)
+    const [displayMedications,setDisplayMedications] = useState(false)
+
+    const handleShowMedications = () => {
+      setDisplayChartButtons(false)
+      setDisplayMedications(true)
+    }
+
+    const handleHideMedications = () => {
+      setDisplayChartButtons(true)
+      setDisplayMedications(false)
+    }
 
     // useScrollPosition(({ prevPos, currPos }) => {
     //   console.log(currPos.x)
@@ -211,6 +229,9 @@ function PatientChart(props) {
     useEffect(()=>{
       if (props.patient.id === currentPatient.id) {
         setLoading(false)
+        const dobstr = patient.dob + "-500"
+        const dob = new Date(dobstr)
+        setPatientDob(dob)
         setPatient(currentPatient)
       }
     },[currentPatient])
@@ -231,7 +252,7 @@ function PatientChart(props) {
     }
     return (
         <>
-        <div style={{display:"flex",marginRight:"10px",width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",flexDirection:"row"}}>
+        <div style={{display:"flex",justifyContent:"center",marginRight:"10px",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
           {/* <div style={{display:"flex",flexDirection:"row",zIndex:8,margin:0,width:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
             <div>
               <div style={{display:"flex", alignItems:"center", cursor:"pointer",display:"flex",flexDirection:"row", background:themeContext.themes === "dark" ? "#444444" : "white"}} >
@@ -278,25 +299,42 @@ function PatientChart(props) {
                     </div>
                 </div>
                 </Fade> */}
-        <div style={{display:"flex",flexDirection:"column",borderRight:themeContext.themes === "dark" ? "" : "",borderRight:themeContext.themes === "dark" ? "1px solid black" : "1px solid gainsboro"}}>
-          <span style={{fontFamily:"inherit",letterSpacing:"2px",textAlign:"center",textTransform:"uppercase",fontSize:"20px",padding:"6px",textDecoration:"none",color:themeContext.themes === "dark" ? "white" : "black",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",fontWeight:"500",marginTop:"30px"}}>{patient.firstName + " " + patient.lastName}</span>
-
-        <div style={{display:"flex",flexDirection:"column", height:"100%",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
+        <div style={{display:"flex",width:"100%",backgroundColor:"transparent",flexDirection:"row",alignItems:"center",paddingLeft:"10px",marginTop:"20px",paddingTop:"4px", flexWrap:"wrap",justifyContent:"center"}}>
+        <div style={{display:"flex",flexDirection:"row", height:"150px",backgroundColor:"white", borderRadius:"8px",boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",paddingLeft:"10px",minWidth:"450px",paddingTop:"4px"}}>
           {/* <span style={{fontSize:"34px",color:themeContext.themes === "dark" ? "white" : "grey"}}>{patient.fullName}</span> */}
-            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",background:themeContext.themes === "dark" ? "#4444" : "white",borderLeft:themeContext.themes === "dark" ? "" : ""}}>
-            <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginLeft:"10px",marginTop:"10px",marginBottom:"10px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}>
-                {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <img id="user-photo" src={patient.picture ? patient.picture : ""}/>}
-            </div>
-            </div>
-            <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",paddingTop:"10px"}}>
-                <div style={{display:"flex",flexDirection:"column",justifyContent:"center"}}>
+            {/* <div className={"circular--portrait"} style={{justifyContent:"center",alignSelf:"center", marginLeft:"10px",marginTop:"10px",marginBottom:"10px",boxShadow: themeContext.themes === "dark" ? "" : "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"}}> */}
+                {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <Avatar className={classes.avatar} src={patient.picture ? patient.picture : ""}/>}
+            {/* </div> */}
+                <div style={{display:"flex",flexDirection:"column",justifyContent:"center",margin:"15px"}}>
+                  <div style={{display:"flex",justifyContent:"flex-start",fontWeight:"600",fontSize:"22px"}}>
+                    {patient.lastName+ "," + " " + patient.firstName}
+                  </div>
+                  <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",color:"dimgrey"}}>
+                  <div>
+                  <div style={{fontWeight:"400",fontSize:"18px"}}>
+                    {patientDob ? `${patient.sex.charAt(0).toUpperCase() + patient.sex.slice(1)}, ${patientDob.getMonth() + 1}.${patientDob.getDate()}.${patientDob.getFullYear()}` : ""}
+                  </div>
+                  <div style={{fontWeight:"400",fontSize:"18px"}}>
+                    {patient.occupation}
+                  </div>
+                  <PatientAddressInfo patient={props.patient}/>
+                  </div>
+                  <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
                     <PatientPhoneNumbers patient={props.patient}/>
-                    <PatientAddressInfo patient={props.patient}/>
+                  </div>
+                  </div>
                 </div>
-            </div>
+
         </div>
-        </div>
-      <div style={{padding:"10px",display:"flex", flexDirection:"column",alignContent:"flex-start",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",width:"100%",alignContent:"center"}}> 
+          <ChartReviewBasicAttributes patient={props.patient}></ChartReviewBasicAttributes>
+          </div>
+        {displayMedications ? 
+              <PatientMedications patient={props.patient} hideMedications={handleHideMedications}></PatientMedications>
+              : 
+              ""
+            }
+      <Slide in={displayChartButtons} direction="up">
+      <div style={{display:"grid",flexWrap:"wrap", gridTemplateColumns:"20% 20% 20% 20% 20%", gridTemplateRows:"100%",backgroundColor: "transparent",marginTop:"8px",width:"100%",paddingLeft:"16px",paddingRight:"16px"}}> 
             {/* <div className={ themeContext.themes === "dark" ? "dark-tabs" : "tabs"} style={{display:"flex",flexDirection:"row",background:themeContext.themes === "dark" ? "#212121" : "rgb(221,224,230)",zIndex:8,paddingTop:"8px",paddingLeft:"19px",position:"sticky",top:"91px",width:"100%"}}>
               {patientTabs.map((tab,index)=>{
                 return (
@@ -308,14 +346,28 @@ function PatientChart(props) {
                 )
               })}
             </div> */}
-                <div>
-                  <ChartReviewBasicAttributes patient={props.patient}></ChartReviewBasicAttributes>
+                <div onClick={handleShowMedications} style={{padding:"8px",width:"100%",gridColumnStart:1,gridColumnEnd:2,}}>
+                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Medications"/>
                 </div>
-              {currentPatientTab === "Chart Review" ? <ChartReviewTabs patient={currentPatient}/> : <></>}
+                <div style={{padding:"8px",width:"100%",gridColumnStart:2,gridColumnEnd:3}}>
+                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Physical Problems List"/>
+                </div>
+                <div style={{padding:"8px",width:"100%",gridColumnStart:3,gridColumnEnd:4}}>
+                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Mental Problems List"/>
+                </div>
+                <div style={{padding:"8px",width:"100%",gridColumnStart:4,gridColumnEnd:5}}>
+                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Orders"/>
+                </div>
+                <div style={{padding:"8px",width:"100%",gridColumnStart:5,gridColumnEnd:6}}>
+                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Encounters"/>
+                </div>
+              {/* {currentPatientTab === "Chart Review" ? <ChartReviewTabs patient={currentPatient}/> : <></>} */}
             </div>
+            </Slide>
             {/* <div style={{minWidth:"400px",marginTop:"0px",position:"sticky",top:"85px",}}>
              Care Timeline 
             </div> */}
+
             </div>
             {/* <form ref={form} onSubmit={submit}>
                 <input type="file" name="file"></input>

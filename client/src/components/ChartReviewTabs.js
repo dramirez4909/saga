@@ -74,8 +74,8 @@ export default function ChartReviewTabs(props) {
   };
 
   return (
-    <div className={classes.root} style={{backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
-      <AppBar position="static" style={{backgroundColor:themeContext.themes === "dark" ? "#666666" : "white"}}>
+    <div className={classes.root} style={{backgroundColor:"transparent"}}>
+      {/* <AppBar position="static" style={{backgroundColor:themeContext.themes === "dark" ? "#666666" : "white"}}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -107,22 +107,21 @@ export default function ChartReviewTabs(props) {
           />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        <div style={{width:"100%",display:"flex"}}></div>
+      <TabPanel value={value} index={0}> */}
         <PatientMedications patient={props.patient}/>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
+      {/* </TabPanel> */}
+      {/* <TabPanel value={value} index={1}> */}
         <PatientMentalProblemsList patient={props.patient}/>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
+      {/* </TabPanel> */}
+      {/* <TabPanel value={value} index={2}> */}
         <PatientPhysicalProblemsList patient={props.patient}/>
-      </TabPanel>
-      <TabPanel value={value} index={3}>
+      {/* </TabPanel> */}
+      {/* // <TabPanel value={value} index={3}> */}
         <PatientOrdersList patient={props.patient}/>
-      </TabPanel>
-      <TabPanel value={value} index={4}>
+      {/* </TabPanel> */}
+      {/* // <TabPanel value={value} index={4}> */}
         <PatientEncountersList patient={props.patient}/>
-      </TabPanel>
+      {/* </TabPanel> */}
     </div>
   );
 }

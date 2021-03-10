@@ -34,6 +34,7 @@ argparse = "*"
 lxml = "*"
 boto3 = "*"
 awscli = "*"
+flask-socketio = "*"
 
 [requires]
 python_version = "3.8"

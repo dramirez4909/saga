@@ -5,11 +5,10 @@ const buttonStyle = {
     fontFamily:"Google Sans,Roboto,Arial,sans-serif",
     display:"flex",
     width:"100%",
-    minWidth:"238px",
     flexDirection:"column",
     boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",
-    borderRadius:"4px",
-    height:"424px",
+    borderRadius:"8px",
+    height:"360px",
     cursor:"pointer",
     color:"dimgray",
     alignItems:"center",
@@ -39,7 +38,10 @@ const DashButton = (props) => {
                 fontSize:"16px",
                 fontWeight:"500",
                 fontFamily:"Google Sans,Roboto,Arial,sans-serif",
-                letterSpacing:"1px"
+                letterSpacing:"1px",
+                background:"white",
+                borderTopLeftRadius:"8px",
+                borderTopRightRadius:"8px"
                 }}>
                 {props.title}
             </div>
@@ -95,6 +97,6 @@ const DashButton = (props) => {
     )
 }
 
-const DashboardActivityButton = Radium(DashButton);
+const ChartReviewActivityButton = Radium(DashButton);
 
-export default DashboardActivityButton
+export default ChartReviewActivityButton

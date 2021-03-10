@@ -11,7 +11,6 @@ import {openTab} from '../store/activities'
 import HomeContext from '../components/utils/HomeContext'
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -31,6 +30,8 @@ import ThemeContext from './utils/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRecord } from '../store/current_record';
 import UserEditFormField from './UserEditFormField';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -152,7 +153,6 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: "10px",
         outline: "none",
         margin:"10px",
-        marginTop:"15px",
         border:"1px solid dodgerblue",
         textDecoration:"none",
         margin: "4px",
@@ -175,10 +175,10 @@ const UserEditForm = (props) => {
     const [loadingPicture,setLoadingPicture] = useState(false)
     const themeContext = useContext(ThemeContext)
     const [loading,setLoading]=useState(true)
-    const [firstNameEdit,setFirstNameEdit] = useState(false)
-    const [lastNameEdit,setLastNameEdit] =useState(false)
-    const [emailEdit,setEmailEdit] = useState(false)
-    const [usernameEdit,setUsernameEdit] = useState(false)
+    const [firstNameEdit,setFirstNameEdit] = useState(true)
+    const [lastNameEdit,setLastNameEdit] =useState(true)
+    const [emailEdit,setEmailEdit] = useState(true)
+    const [usernameEdit,setUsernameEdit] = useState(true)
     const currentRecord = useSelector(state=>state.currentRecord)
     const dispatch = useDispatch()
 
@@ -258,7 +258,7 @@ const UserEditForm = (props) => {
       <Fade in={loading === true}>
       <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
 
-        <div style={{outline:"none",paddingTop:"16px",minWidth:"800px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px"}}>
+        <div style={{outline:"none",paddingTop:"16px",minWidth:"800px",borderRadius:"8px",border:"1px solid #dadce0",paddingBottom:"16px",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px",overflow:"hidden"}}>
         <div style={{width:"100%",display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"16px",alignItems:"center"}}>
         <h3>Basic Info</h3>
         <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>
@@ -298,16 +298,21 @@ const UserEditForm = (props) => {
                 <div style={{display:"flex",flexDirection:"column",width:"100%",paddingLeft:"0px",paddingRight:"0px"}}>
 
                     { firstNameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",maxWidth:"770px",paddingLeft:"16px",minHeight:"47px"}}>
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         FIRST NAME
                     </div>
-                    <form onSubmit={(e)=>handleFirstNameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
-                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setFirstNameEdit(false)}>
-                        Done 
-                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
-                      </Button></InputAdornment>} type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleFirstNameSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
+                    {/* <InputBase autoFocus={true} fontSize="18px" type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}id="outlined-basic" label="FIRST NAME" variant="outlined" /> */}
+                    <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                    <FormControl
+                    placeholder="Search users by name, email or username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={firstName}
+                    onChange={(e)=>setFirstName(e.target.value)}
+                    />
+                  </InputGroup>
                     </form>
                     </div>
                     :
@@ -317,16 +322,21 @@ const UserEditForm = (props) => {
                     }
                     <Divider style={{ width: "100%"}} />
                     { lastNameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",maxWidth:"770px",paddingLeft:"16px",minHeight:"47px"}}>
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         LAST NAME
                     </div>
-                    <form onSubmit={(e)=>handleLastNameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
-                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setLastNameEdit(false)}>
-                        Done 
-                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
-                      </Button></InputAdornment>} type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleLastNameSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
+                    {/* <InputBase autoFocus={true} fontSize="18px" type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" /> */}
+                    <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                    <FormControl
+                    placeholder="Search users by name, email or username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={lastName}
+                    onChange={(e)=>setLastName(e.target.value)}
+                    />
+                    </InputGroup>
                     </form>
                     </div>
                     :
@@ -336,16 +346,21 @@ const UserEditForm = (props) => {
                     }
                     <Divider style={{ width: "100%"}} />
                     { emailEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",maxWidth:"770px",paddingLeft:"16px",minHeight:"47px"}}>
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         EMAIL
                     </div>
-                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
-                    <InputBase autoFocus={true} style={{height:"27px"}} fontSize="18px" endAdornment={<InputAdornment position="end" >
-                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setEmailEdit(false)}>
-                        Done 
-                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
-                      </Button></InputAdornment>} type="text" value={email} onChange={(e)=>setEmail(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
+                    {/* <InputBase autoFocus={true} style={{height:"27px"}} fontSize="18px" type="text" value={email} onChange={(e)=>setEmail(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" /> */}
+                    <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                    <FormControl
+                    placeholder="Search users by name, email or username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
+                    />
+                    </InputGroup>
                     </form>
                     </div>
                     :
@@ -353,18 +368,22 @@ const UserEditForm = (props) => {
                     <UserEditFormField label={"email"} text={email}/>
                     </div>
                     }
-                    <Divider style={{ width: "100%"}} />
                     { usernameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",maxWidth:"770px",paddingLeft:"16px",minHeight:"47px"}}>
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         USERNAME
                     </div>
-                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
-                    <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
-                      <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setUsernameEdit(false)}>
-                        Done 
-                      <CheckCircleOutlineIcon></CheckCircleOutlineIcon>
-                      </Button></InputAdornment>} type="text" value={username} onChange={(e)=>setUsername(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
+                    {/* <InputBase autoFocus={true} fontSize="18px" type="text" value={username} onChange={(e)=>setUsername(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" /> */}
+                    <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                    <FormControl
+                    placeholder="Search users by name, email or username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={username}
+                    onChange={(e)=>setUsername(e.target.value)}
+                    />
+                    </InputGroup>
                     </form>
                     </div>
                     :

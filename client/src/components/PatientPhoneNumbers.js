@@ -12,6 +12,9 @@ import StayCurrentPortraitIcon from '@material-ui/icons/StayCurrentPortrait';
 import StayPrimaryPortraitTwoToneIcon from '@material-ui/icons/StayPrimaryPortraitTwoTone';
 import BusinessTwoToneIcon from '@material-ui/icons/BusinessTwoTone';
 import ThemeContext from './utils/ThemeContext';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
+import CallIcon from '@material-ui/icons/Call';
+import SmartphoneIcon from '@material-ui/icons/Smartphone';
 
 
 const ColorButton = withStyles((theme) => ({
@@ -38,11 +41,11 @@ function PatientPhoneNumbers(props) {
     const themeContext = useContext(ThemeContext)
     return (
         <>
-                <div style={{display:"flex",marginBottom:"4px",flexDirection:"column",borderRadius:"8px",width:"fit-content",padding:"4px",marginRight:"9px"}}>
+                <div style={{display:"flex",marginBottom:"4px",flexDirection:"column",borderRadius:"8px",width:"fit-content",padding:"4px"}}>
                     <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:"transparent", width:"fit-content",borderRadius:"8px"}}>
-                        <div style={{margin:"4px"}}><img src="https://saga-health.s3-us-west-1.amazonaws.com/home-flat.svg" style={{height:"34px",width:"34px"}}></img> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.home_phone}</span></div>
-                        <div style={{margin:"4px"}}><img src="https://saga-health.s3-us-west-1.amazonaws.com/iphone-flat.svg" style={{height:"34px",width:"34px"}}></img> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.mobile_phone}</span></div>
-                        <div style={{margin:"4px"}}><img src="https://saga-health.s3-us-west-1.amazonaws.com/bank-flat.svg" style={{height:"34px",width:"34px"}}></img> <span style={{fontWeight:"bolder",color:themeContext.themes === "dark" ? "white" : "grey"}}>{props.patient.work_phone}</span></div>
+                        <div style={{margin:"4px"}}><HomeIcon style={{height:"18px",width:"18px",color:"grey"}}/> <span style={{fontSize:"14px"}}>{props.patient.home_phone}</span></div>
+                        <div style={{margin:"4px"}}><SmartphoneIcon style={{height:"18px",width:"18px",color:"grey"}}/> <span style={{fontSize:"14px"}}>{props.patient.mobile_phone}</span></div>
+                        <div style={{margin:"4px"}}><LocationCityIcon style={{height:"18px",width:"18px",color:"grey"}}/> <span style={{fontSize:"14px"}}>{props.patient.work_phone}</span></div>
                     </div>
                 </div>
         </>

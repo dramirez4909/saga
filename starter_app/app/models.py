@@ -383,8 +383,10 @@ class Patient(db.Model):
   smoker = db.Column(db.String(20),nullable=True)
   occupation = db.Column(db.String(50),nullable=True)
   pronouns = db.Column(db.String(50),nullable=True)
+  blood_type = db.Column(db.String(50),nullable=True)
 
   medications = db.relationship("Medication",back_populates="patient")
+  overtime_patient_items = db.relationship("Overtime_Patient_Item",back_populates="patient")
   encounters= db.relationship("Encounter",back_populates="patient")
   orders = db.relationship("Order",back_populates="patient")
   providers = db.relationship("Provider",secondary=care_teams, back_populates="patients")
@@ -399,6 +401,7 @@ class Patient(db.Model):
       "lastName": self.lastName,
       "fullName": f"{self.lastName}, {self.firstName}",
       "dob": self.dob,
+      "bloodType":self.blood_type,
       "mrn": self.mrn,
       "beats_per_minute": self.beats_per_minute,
       "height": self.height,
@@ -432,6 +435,7 @@ class Patient(db.Model):
       "lastName": self.lastName,
       "fullName": f"{self.lastName}, {self.firstName}",
       "dob": self.dob,
+      "bloodType":self.blood_type,
       "mrn": self.mrn,
       "beats_per_minute": self.beats_per_minute,
       "height": self.height,
@@ -468,6 +472,7 @@ class Patient(db.Model):
       "mrn": self.mrn,
       "beats_per_minute": self.beats_per_minute,
       "height": self.height,
+      "bloodType":self.blood_type,
       "weight": self.weight,
       "occupation":self.occupation,
       "ethnicity": self.ethnicity,
@@ -705,6 +710,18 @@ class Resource(db.Model):
     }
 
 
+class Overtime_Patient_Item(db.Model):
+  __tablename__ = "overtime_patient_items"
+
+  id = db.Column(db.Integer, primary_key = True)
+  name = db.Column(db.String(40), nullable = False)
+  value = db.Column(db.String(40), nullable = False)
+  date = db.Column(db.DateTime, nullable=True)
+  patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=False)
+
+  patient = db.relationship("Patient",back_populates="overtime_patient_items")
+
+
 class Role(db.Model):
   __tablename__ = "roles"
 
@@ -731,6 +748,8 @@ class User(db.Model,UserMixin):
   profile_picture_path = db.Column(db.String(500), nullable=True)
   first_name = db.Column(db.String(100), nullable=True)
   last_name = db.Column(db.String(100), nullable=True)
+  has_temp_password = db.Column(db.Boolean, default=False)
+  is_draft = db.Column(db.Boolean, default=False)
 
   provider = db.relationship("Provider", back_populates="user")
   roles = db.relationship("Role",secondary=user_roles, back_populates="users")
@@ -748,6 +767,8 @@ class User(db.Model,UserMixin):
         "picture": self.profile_picture_path,
         "first_name": self.first_name,
         "last_name": self.last_name,
+        "has_temp_password": self.has_temp_password,
+        "is_draft":self.is_draft,
       }
     else:
       return {
@@ -759,6 +780,8 @@ class User(db.Model,UserMixin):
         "picture": self.profile_picture_path,
         "first_name": self.first_name,
         "last_name": self.last_name,
+        "has_temp_password": self.has_temp_password,
+        "is_draft":self.is_draft,
       }
   
   @property

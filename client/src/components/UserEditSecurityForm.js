@@ -296,7 +296,7 @@ const UserEditSecurityForm = (props) => {
     };
 
     const customList = (title, items) => (
-        <Card style={{width:"100%",border:"1px solid #dadce0",borderRadius:"8px", minWidth:"350px",paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
+        <Card style={{width:"100%",borderRadius:"8px", minWidth:"350px",paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
             <div style={{display:"flex",flexDirection:"column"}}>
                 <div style={{fontSize:"24px",fontWeight:"400"}}>{title}</div>
             </div>
@@ -379,16 +379,23 @@ const UserEditSecurityForm = (props) => {
     
     return (
       <Fade in={loading === false}>
-      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
-        <div style={{display:"flex",flexDirection:"row",marginBottom:"10px",alignItems:"center",justifyContent:"space-between",width:"100%",paddingLeft:"24px"}}>
+      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",maxWidth:"800px",border:"1px solid #dadce0",marginTop:"25px",borderRadius:"8px"}}>
+        {/* <div style={{display:"flex",flexDirection:"row",marginBottom:"10px",alignItems:"center",justifyContent:"space-between",width:"100%",paddingLeft:"24px"}}>
             <Chip size="medium" style={{margin:"1px",color:"dimgray"}} icon={<CheckCircleOutlineIcon style={{color:"yellowgreen"}}/>} label={`Security Points already granted to the User through a User Role`} variant="outlined" />
             <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
+        </div> */}
+        <div style={{display:"flex",flexDirection:"row",width:"100%",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"16px",alignItems:"center"}}>
+          <h3>User Security</h3>
+        <div style={{display:"flex",flexDirection:"row",marginBottom:"10px"}}>
+            <ColorButton onClick={(e)=>saveChanges(e)}>Accept Changes <CheckCircleOutlineIcon style={{marginLeft:"8px"}}></CheckCircleOutlineIcon></ColorButton>
         </div>
-        <div style={{outline:"none",width:"100%",borderRadius:"8px",display:"flex",flexDirection:"column",paddingLeft:"0px",paddingRight:"0px"}}>
+        </div>
+        <Divider style={{width:"100%"}} />
+        <div style={{outline:"none",width:"max-content",borderRadius:"8px",display:"flex",flexDirection:"column",paddingLeft:"0px",paddingRight:"0px"}}>
         {loading ? <CircularProgress/> : 
-        <Grid container spacing={2} justify="center" alignItems="center" style={{width:"100%"}}>
+        <Grid container spacing={2} justify="center" alignItems="center">
             <Grid item style={{alignSelf:"baseline"}}>{customList('Security Points', left)}</Grid>
-            <Grid item>
+            <Grid item style={{display:"flex",flexDirection:"column",justifyContent:"center",height:"calc(100% - 16px",borderLeft:"1px solid #dadce0",borderRight:"1px solid #dadce0"}}>
                 <Grid container direction="column" alignItems="center">
                 <Button
                     variant="outlined"

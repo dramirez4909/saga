@@ -5,6 +5,8 @@ from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
+# from flask_socketio import SocketIO, emit, join_room
+from flask_cors import CORS
 
 from .models import db, User
 from .api.session import session
@@ -25,7 +27,6 @@ from .api.resources import resources
 from .config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_BUCKET_NAME
 from .config import Config
 
-
 s3 = boto3.client(
     's3',
     aws_access_key_id=AWS_ACCESS_KEY,
@@ -34,6 +35,11 @@ s3 = boto3.client(
 
 app = Flask(__name__)
 app.config.from_object(Config)
+# socket=SocketIO(app,cors_allowed_origins="*")
+app.debug = True
+
+app.host = 'localhost'
+
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(session, url_prefix='/api/session')
 app.register_blueprint(providers, url_prefix='/api/providers')
@@ -50,7 +56,6 @@ app.register_blueprint(security_points,url_prefix='/api/security_points')
 app.register_blueprint(resources,url_prefix='/api/resources')
 db.init_app(app)
 Migrate(app, db)
-
 ## Application Security
 CORS(app)
 @app.after_request
@@ -61,7 +66,6 @@ def inject_csrf_token(response):
         samesite='Strict' if os.environ.get('FLASK_ENV') else None,
         httponly=True)
     return response
-
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -76,6 +80,19 @@ def react_root(path):
 
 login = LoginManager(app)
 login.login_view = "session.login"
+
+# users = [];
+
+# @socket.on('connect')
+# def on_connect():
+#     print('user connected')
+#     emit('retrieve_active_users', broadcast=True)
+
+
+# @socket.on('username')
+# def recieve_username(username):
+#     users.append({username : request.sid})
+#     print("USERS LIST: ",users)
 
 @app.route('/files')
 def files():

@@ -46,7 +46,7 @@ const buttonStyle = {
     cursor:"pointer",
     justifyContent:"center",
     position:"absolute",
-    maxWidth:"388px",
+    maxWidth:"800px",
     transition:".2s",
     alignItems:"center",
     backgroundColor:"white",
@@ -80,7 +80,7 @@ const DashButton = (props) => {
 
     return (
         <div style={buttonStyle}>
-                  {loading ? "" : <div style={{display:"flex",flexDirection:"row",width:"388px",alignItems:"center",paddingTop:"10px",paddingBottom:"10px"}}>
+                  {loading ? "" : <div style={{display:"flex",flexDirection:"row",justifyContent:"center",width:"100%",alignItems:"center",paddingTop:"10px",paddingBottom:"10px"}}>
                       {props.empty ? 
                       <div style={{display:"flex",flexDirection:"row",justifyContent:"center",minWidth:"240px",border:"1px solid tomato",borderRadius:"8px",alignItems:"center",paddingTop:"20px",paddingBottom:"20px"}}>
                       <ErrorIcon style={{color:"tomato"}}/>

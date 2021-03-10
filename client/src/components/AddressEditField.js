@@ -12,6 +12,8 @@ import ErrorIcon from '@material-ui/icons/Error';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateRecord } from '../store/current_record';
 import LocationContext from './utils/LocationContext'
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +59,7 @@ const buttonStyle = {
     // backgroundImage:"linear-gradient(to bottom, #ff6e7f 0%, white 100%)",
     ':hover':{
         // backgroundColor:"rgba(0,0,0,.03)",
-        backgroundColor:"#F1F1F1"
+        // backgroundColor:"#F1F1F1"
         // boxShadow:"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
     }
 }
@@ -113,21 +115,85 @@ const DashButton = (props) => {
     }
     return (
         <div style={buttonStyle}>
-                <div style={{display:"flex",flexDirection:"column",width:"100%",alignItems:"center",justifyContent:"space-around",paddingTop:"10px",height:"200px",paddingBottom:"10px",maxWidth:"388px"}}>
-                    <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-around",width:"100%"}}>
-                        <div style={{minWidth:"80px"}}>Line 1:</div><input value={context.addressLineOne} onChange={(e)=>context.setAddressLineOne(e.target.value)}/>
+                <div style={{
+                  display:"flex",
+                  flexDirection:"column",
+                  width:"100%",
+                  alignItems:"center",
+                  justifyContent:"space-around",
+                  paddingTop:"10px",
+                  paddingBottom:"10px",
+                  }}>
+                    <div style={{
+                      display:"flex",
+                      flexDirection:"row",
+                      alignItems:"center",
+                      justifyContent:"space-around",
+                      width:"100%"
+                      }}>
+                        <div style={{minWidth:"80px"}}>Line 1:</div>
+                        {/* <input value={context.addressLineOne} onChange={(e)=>context.setAddressLineOne(e.target.value)}/> */}
+                        <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                          <FormControl
+                          placeholder={`\"4909 23rd St.\", \"Apartment 1\"`}
+                          aria-label="line one"
+                          aria-describedby="basic-addon1"
+                          value={context.addressLineOne}
+                          onChange={(e)=>context.setAddressLineOne(e.target.value)}
+                          />
+                        </InputGroup>
                     </div>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-around",width:"100%"}}>
-                        <div style={{minWidth:"80px"}}>Line 2:</div><input value={context.addressLineTwo} onChange={(e)=>context.setAddressLineTwo(e.target.value)}/>
+                        <div style={{minWidth:"80px"}}>Line 2:</div>
+                        <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                          <FormControl
+                          placeholder={`\"4909 23rd St.\", \"Apartment 1\"`}
+                          aria-label="line two"
+                          aria-describedby="basic-addon1"
+                          value={context.addressLineTwo}
+                          onChange={(e)=>context.setAddressLineTwo(e.target.value)}
+                          />
+                        </InputGroup>
+                        {/* <input value={context.addressLineTwo} onChange={(e)=>context.setAddressLineTwo(e.target.value)}/> */}
                     </div>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-around",width:"100%"}}>
-                        <div style={{minWidth:"80px"}}>City:</div><input value={context.addressCity} onChange={(e)=>context.setAddressCity(e.target.value)}/>
+                        <div style={{minWidth:"80px"}}>City:</div>
+                        {/* <input value={context.addressCity} onChange={(e)=>context.setAddressCity(e.target.value)}/> */}
+                        <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                          <FormControl
+                          placeholder={`\"Austin\", \"Austin, TX\"`}
+                          aria-label="city"
+                          aria-describedby="basic-addon1"
+                          value={context.addressCity}
+                          onChange={(e)=>context.setAddressCity(e.target.value)}
+                          />
+                        </InputGroup>
                     </div>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-around",width:"100%"}}>
-                        <div style={{minWidth:"80px"}}>State:</div><input value={context.addressState} onChange={(e)=>context.setAddressState(e.target.value)}/>
+                        <div style={{minWidth:"80px"}}>State:</div>
+                        {/* <input value={context.addressState} onChange={(e)=>context.setAddressState(e.target.value)}/> */}
+                        <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                          <FormControl
+                          placeholder={`\"Texas\", \"TX\", "`}
+                          aria-label="city"
+                          aria-describedby="basic-addon1"
+                          value={context.addressState}
+                          onChange={(e)=>context.setAddressState(e.target.value)}
+                          />
+                        </InputGroup>
                     </div>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-around",width:"100%"}}>
-                        <div style={{minWidth:"80px"}}>Zip:</div><input value={context.addressZip} onChange={(e)=>context.setAddressZip(e.target.value)}/>
+                        <div style={{minWidth:"80px"}}>Zip:</div>
+                        {/* <input value={context.addressZip} onChange={(e)=>context.setAddressZip(e.target.value)}/> */}
+                        <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                          <FormControl
+                          placeholder={`\"77539\"`}
+                          aria-label="city"
+                          aria-describedby="basic-addon1"
+                          value={context.addressZip}
+                          onChange={(e)=>context.setAddressZip(e.target.value)}
+                          />
+                        </InputGroup>
                     </div>
                 </div>
         </div>

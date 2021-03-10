@@ -300,7 +300,7 @@ const Navbar = (props) => {
     <>
     <PatientSearchContext.Provider value={{setDisplayPatientSearchResults,setPatientSearchTerm}}>
       <Breakpoint medium up>
-      <div style={{flexGrow:1,position:"fixed",display:"block",left:0,right:0,top:0,zIndex:999,minHeight:"44px"}}>
+      <div style={{flexGrow:1,position:"fixed",display:"block",left:0,right:0,top:0,zIndex:999,minHeight:"44px",  boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px"}}>
         <div style={{display:"flex", alignItems:"center",backgroundColor:"rgba(255,255,255,0.96)",minHeight:"44px"}}>
             <div style={{display:"flex", alignItems:"center", flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
             <div style={{display:"flex",flexDirection:"row",justifySelf:"center"}}>

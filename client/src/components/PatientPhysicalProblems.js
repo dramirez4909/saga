@@ -14,8 +14,6 @@ import IconButton from '@material-ui/core/IconButton';
 import {createProblem} from '../store/current_patient'
 import PatientMedicationsList from './PatientMedicationsList';
 import PatientPhysicalProblemList from './PatientPhysicalProblemList';
-
-
 const useStylesLoginTextField = makeStyles((theme) => ({
     root: {
       border: '2px solid #e2e2e1',

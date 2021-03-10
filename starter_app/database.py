@@ -4,7 +4,7 @@ from datetime import time
 load_dotenv()
 
 from app import app, db
-from app.models import User, Security_Point,Role, Resource, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department, Organization
+from app.models import User, Security_Point,Role, Resource, Encounter, Patient,Order_Type, Provider, Activity, Encounter_Type, Department, Organization, Overtime_Patient_Item
 
 with app.app_context():
   db.drop_all()
@@ -31,7 +31,36 @@ with app.app_context():
   record_editor_access = Security_Point(name="record editor access")
 
   demo_provider =Provider(specialty="Family Medicine")
-  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731",bmi="22.74",beats_per_minute="115/75",weight="112",height="5'4''",ethnicity="White",picture="https://saga-health.s3-us-west-1.amazonaws.com/Tulsa-Headshot-Photographer_9639a.jpg",smoker="yes",occupation="Writer",mobile_phone="(832) 370-8893", home_phone="(281) 349-8893", work_phone="(409) 342-8144")
+  
+  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731",bmi="22.74",beats_per_minute="115/75",weight="112",height="5'4''",ethnicity="White",picture="https://saga-health.s3-us-west-1.amazonaws.com/Tulsa-Headshot-Photographer_9639a.jpg",smoker="yes",occupation="Writer",mobile_phone="(832) 370-8893", home_phone="(281) 349-8893", work_phone="(409) 342-8144",blood_type="B+")
+  
+  demo_patient_bpm = Overtime_Patient_Item(name="bpm",value="74",date = datetime.datetime(2020,12,22))
+  demo_patient_bpm_0 = Overtime_Patient_Item(name="bpm",value="75",date = datetime.datetime(2021,1,22))
+  demo_patient_bpm_1 = Overtime_Patient_Item(name="bpm",value="65",date = datetime.datetime(2021,2,10))
+  demo_patient_bpm_2 = Overtime_Patient_Item(name="bpm",value="85",date = datetime.datetime(2021,3,1))
+
+  demo_patient.overtime_patient_items.append(demo_patient_bpm)
+  demo_patient.overtime_patient_items.append(demo_patient_bpm_0)
+  demo_patient.overtime_patient_items.append(demo_patient_bpm_1)
+  demo_patient.overtime_patient_items.append(demo_patient_bpm_2)
+
+  demo_patient_weight_0 = Overtime_Patient_Item(name="weight",value="145",date = datetime.datetime(2021,1,22))
+  demo_patient_weight_1 = Overtime_Patient_Item(name="weight",value="135",date = datetime.datetime(2021,2,10))
+  demo_patient_weight_2 = Overtime_Patient_Item(name="weight",value="115",date = datetime.datetime(2021,3,1))
+
+  demo_patient.overtime_patient_items.append(demo_patient_weight_0)
+  demo_patient.overtime_patient_items.append(demo_patient_weight_1)
+  demo_patient.overtime_patient_items.append(demo_patient_weight_2)
+
+  demo_patient_bmi_0 = Overtime_Patient_Item(name="bmi",value="25",date = datetime.datetime(2021,1,22))
+  demo_patient_bmi_1 = Overtime_Patient_Item(name="bmi",value="22",date = datetime.datetime(2021,2,18))
+  demo_patient_bmi_2 = Overtime_Patient_Item(name="bmi",value="21",date = datetime.datetime(2021,3,1))
+
+  demo_patient.overtime_patient_items.append(demo_patient_bmi_0)
+  demo_patient.overtime_patient_items.append(demo_patient_bmi_1)
+  demo_patient.overtime_patient_items.append(demo_patient_bmi_2)
+
+
   rosemary = Patient(firstName="Rosemary",lastName="Boxer",dob = datetime.datetime(1926, 8, 11), sex="female", address_line_one ="4909 23rd St.",address_city="Austin",address_state="TX",address_zip="78704")
   thyme = Patient(firstName="Laura",lastName="Thyme",dob = datetime.datetime(1930, 2, 9), sex="female", address_line_one ="3038 Mason Rd.",address_city="Austin",address_state="TX",address_zip="78718")
   severus = Patient(firstName="Severus",lastName="Snape",dob = datetime.datetime(1967, 7, 19), sex="male", address_line_one ="7677 W. 15th St.",address_city="Austin",address_state="TX",address_zip="78712")
@@ -84,6 +113,7 @@ with app.app_context():
 
   administrator_role.security_points.append(user_editor_access)
   administrator_role.security_points.append(record_editor_access)
+  administrator_role.security_points.append(department_schedule_access)
 
   # encounter_one = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,10,30),end=datetime.datetime(2020,10,21,11,30))
   # encounter_two = Encounter(date=datetime.datetime(2020,10,21),start=datetime.datetime(2020,10,21,10,30),end=datetime.datetime(2020,10,21,11,30))

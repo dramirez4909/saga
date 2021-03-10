@@ -22,15 +22,18 @@
     "@testing-library/user-event": "^7.1.2",
     "ag-grid-community": "^24.1.0",
     "ag-grid-react": "^24.1.1",
+    "bootstrap": "^5.0.0-beta2",
     "http-proxy-middleware": "^1.0.5",
     "js-cookie": "^2.2.1",
     "json2mq": "^0.2.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
+    "prop-types": "^15.7.2",
     "radium": "^0.26.1",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-big-calendar": "^0.28.1",
+    "react-bootstrap": "^1.4.3",
     "react-data-grid": "^7.0.0-canary.33",
     "react-dom": "^16.13.1",
     "react-grid-layout": "^1.1.1",
@@ -40,7 +43,8 @@
     "react-socks": "^2.1.0",
     "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^3.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

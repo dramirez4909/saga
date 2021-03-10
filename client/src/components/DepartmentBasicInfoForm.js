@@ -11,7 +11,6 @@ import {openTab} from '../store/activities'
 import HomeContext from '../components/utils/HomeContext'
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -34,6 +33,8 @@ import UserEditFormField from './UserEditFormField';
 import DepartmentEditFormField from './DepartmentEditFormField';
 import AddressDisplayField from './AddressDisplayField'
 import AddressEditField from './AddressEditField'
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -155,7 +156,6 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: "10px",
         outline: "none",
         margin:"10px",
-        marginTop:"15px",
         border:"1px solid dodgerblue",
         textDecoration:"none",
         margin: "4px",
@@ -179,8 +179,8 @@ const DepartmentBasicInfoForm = (props) => {
     const [loadingPicture,setLoadingPicture] = useState(false)
     const themeContext = useContext(ThemeContext)
     const [loading,setLoading]=useState(true)
-    const [specialtyEdit,setSpecialtyEdit] = useState(false)
-    const [nameEdit,setNameEdit] =useState(false)
+    const [specialtyEdit,setSpecialtyEdit] = useState(true)
+    const [nameEdit,setNameEdit] =useState(true)
 
     const [editAddressDisplay,setEditAddressDisplay]=useState(false)
     const [addressLineOne,setAddressLineOne] = useState(props.department.address_line_one)
@@ -299,7 +299,7 @@ const DepartmentBasicInfoForm = (props) => {
     return (
       <Fade in={loading === true}>
       <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",overflow:"hidden"}}>
-        <div style={{outline:"none",paddingTop:"16px",minWidth:"800px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px",overflow:"hidden"}}>
+        <div style={{outline:"none",paddingTop:"16px",minWidth:"800px",borderRadius:"8px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",marginLeft:"50px",marginRight:"50px",overflow:"hidden",paddingBottom:"18px"}}>
         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center",paddingRight:"16px"}}>
         <h3 style={{paddingLeft:"16px"}}>Basic Info</h3>
         <div style={{display:"flex",flexDirection:"row",alignSelf:"flex-end",marginBottom:"10px"}}>
@@ -335,17 +335,25 @@ const DepartmentBasicInfoForm = (props) => {
                   </div>
                 </form>
                 </div> */}
-                <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
                 
                 <div style={{display:"flex",flexDirection:"column",width:"100%",paddingLeft:"0px",paddingRight:"0px"}}>
 
                     { nameEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
-                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
-                        Department Name
+                    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%",maxWidth:"770px",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368"}}>
+                        Name
                     </div>
-                    <form onSubmit={(e)=>handleNameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
-                    <InputBase autoFocus={true} fontSize="18px" type="text" value={name} onChange={(e)=>setName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" variant="outlined" />
+                    <form onSubmit={(e)=>handleNameSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
+                    {/* <InputBase autoFocus={true} fontSize="18px" type="text" value={name} onChange={(e)=>setName(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" variant="outlined" /> */}
+                    <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                    <FormControl
+                    placeholder="e.g. SHN Outpatient Imaging"
+                    aria-label="specialty"
+                    aria-describedby="basic-addon1"
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
+                    />
+                    </InputGroup>
                     </form>
                     </div>
                     :
@@ -353,14 +361,22 @@ const DepartmentBasicInfoForm = (props) => {
                     <DepartmentEditFormField label={"department name"} text={name}/>
                     </div>
                     }
-                    <Divider style={{ width: "100%"}} />
                     { specialtyEdit ? 
-                    <div style={{display:"flex",flexDirection:"row",width:"100%",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
-                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",flexDirection:"row",width:"100%",maxWidth:"770px",alignItems:"center",paddingLeft:"16px",minHeight:"47px"}}>
+                    <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368"}}>
                         Specialty
                     </div>
-                    <form onSubmit={(e)=>handleSpecialtySubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
-                    <InputBase autoFocus={true} fontSize="18px" type="text" value={specialty} onChange={(e)=>setSpecialty(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" />
+                    <form onSubmit={(e)=>handleSpecialtySubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
+                    {/* <InputBase autoFocus={true} fontSize="18px" type="text" value={specialty} onChange={(e)=>setSpecialty(e.target.value)} style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"dodgerblue"}}id="outlined-basic" label="FIRST NAME" variant="outlined" /> */}
+                    <InputGroup size="md" style={{margin:"5px",fontFamily:"Roboto,Arial,sans-serif",fontSize:"18px",color:"yellowgreen"}}>
+                    <FormControl
+                    placeholder="e.g. Radiology, Pediatrics, Family Medicine, etc..."
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={specialty}
+                    onChange={(e)=>setSpecialty(e.target.value)}
+                    />
+                    </InputGroup>
                     </form>
                     </div>
                     :
@@ -373,7 +389,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         Address Line One
                     </div>
-                    <form onSubmit={(e)=>handleAddressLineOneSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleAddressLineOneSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setAddressLineOneEdit(false)}>
                         Done
@@ -392,7 +408,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         Address Line Two
                     </div>
-                    <form onSubmit={(e)=>handleAddressLineTwoSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleAddressLineTwoSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setAddressLineTwoEdit(false)}>
                         Done
@@ -411,7 +427,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         City
                     </div>
-                    <form onSubmit={(e)=>handleAddressCitySubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleAddressCitySubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setAddressCityEdit(false)}>
                         Done
@@ -430,7 +446,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         State
                     </div>
-                    <form onSubmit={(e)=>handleAddressStateSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleAddressStateSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setAddressStateEdit(false)}>
                         Done
@@ -449,7 +465,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         Zip
                     </div>
-                    <form onSubmit={(e)=>handleAddressZipSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleAddressZipSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setAddressZipEdit(false)}>
                         Done
@@ -469,7 +485,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         EMAIL
                     </div>
-                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleEmailSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} style={{height:"27px"}} fontSize="18px" endAdornment={<InputAdornment position="end" >
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setEmailEdit(false)}>
                         Done 
@@ -488,7 +504,7 @@ const DepartmentBasicInfoForm = (props) => {
                     <div style={{fontSize:"11px",fontFamily:"Roboto,Arial,sans-serif",textTransform:"uppercase",color:"#5f6368",minWidth:"180px"}}>
                         USERNAME
                     </div>
-                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"100%",paddingLeft:"6px"}}>
+                    <form onSubmit={(e)=>handleUsernameSubmit(e)} style={{width:"90%",paddingLeft:"6px"}}>
                     <InputBase autoFocus={true} fontSize="18px" endAdornment={<InputAdornment position="end">
                       <Button fullwidth style={{color:"grey"}} size="medium" onClick={(e)=>setUsernameEdit(false)}>
                         Done 
@@ -507,7 +523,6 @@ const DepartmentBasicInfoForm = (props) => {
                 </div>
 
                 </div>
-              </div>
             </form>
           </div>
         </div>

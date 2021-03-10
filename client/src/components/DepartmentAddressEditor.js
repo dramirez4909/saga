@@ -181,11 +181,11 @@ const DepartmentAddressEditor = (props) => {
     const [loadingPicture,setLoadingPicture] = useState(false)
     const themeContext = useContext(ThemeContext)
     const [loading,setLoading]=useState(true)
-    const [specialtyEdit,setSpecialtyEdit] = useState(false)
-    const [nameEdit,setNameEdit] =useState(false)
-    const [timeOpenEdit,setTimeOpenEdit]=useState(false)
-    const [timeClosedEdit,setTimeClosedEdit]=useState(false)
-    const [editAddressDisplay,setEditAddressDisplay]=useState(false)
+    const [specialtyEdit,setSpecialtyEdit] = useState(true)
+    const [nameEdit,setNameEdit] =useState(true)
+    const [timeOpenEdit,setTimeOpenEdit]=useState(true)
+    const [timeClosedEdit,setTimeClosedEdit]=useState(true)
+    const [editAddressDisplay,setEditAddressDisplay]=useState(true)
 
     const [addressLineOne,setAddressLineOne] = useState(props.department.address_line_one)
     const [addressLineTwo,setAddressLineTwo] = useState(props.department.address_line_two)
@@ -225,7 +225,7 @@ const DepartmentAddressEditor = (props) => {
     return (
         <LocationContext.Provider value={{setAddressLineOne,setAddressLineTwo,setAddressZip,setAddressState,setAddressCity,saveChanges,addressLineOne,addressLineTwo,addressCity,addressState,addressZip}}>
       <Fade in={loading === true}>
-        <div style={{outline:"none",maxWidth:"400px",borderRadius:"8px",overflow:"hidden",border:"1px solid #dadce0",display:"flex",flexDirection:"column",height:"267px",maxWidth:"390px"}}>
+        <div style={{outline:"none",maxWidth:"400px",borderRadius:"8px",overflow:"hidden",marginTop:"35px",border:"1px solid #dadce0",display:"flex",flexDirection:"column",width:"100%",maxWidth:"800px"}}>
         <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center",paddingRight:"16px"}}>
         <h3 style={{paddingLeft:"16px"}}>Location</h3>
         <Fade in={editAddressDisplay}>

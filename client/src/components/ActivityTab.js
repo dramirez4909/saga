@@ -13,11 +13,12 @@ import { closeTab } from '../store/activities';
 import { useDispatch, useSelector } from 'react-redux';
 import { fade} from '@material-ui/core/styles';
 import useWindowDimensions from './utils/useWindowDimensions';
+import FaceIcon from '@material-ui/icons/Face';
 
 
 const iconStyle = {
-    height: "25px",
-    width: "25px",
+    height: "35px",
+    width: "35px",
   }
 
 const closeTabStyle = {
@@ -79,7 +80,11 @@ function ActivityTab(props) {
                     marginTop:"8px",
                     borderTopLeftRadius:"8px",
                     borderTopRightRadius:"8px",
+                    borderRadius:"8px",
                     height:"100%",
+                    marginTop:"-1px",
+                    transition: "all .2s ease-in-out",
+                    marginRight:"5px"
                 }}
 
                 // className={`${props.activity.name === context.selectedTabName ? "active" : ""}`} 
@@ -104,7 +109,7 @@ function ActivityTab(props) {
                 {props.activity.name === "Place Orders" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
                 {props.activity.department ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/calendar-flat-2.svg" style={{...iconStyle }}></img> : <></>}
                 {props.activity.name === "Patient Search" ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/binocular-flat.svg" style={{...iconStyle }}></img> : <></>}
-                {props.activity.patient ? <img src="https://saga-health.s3-us-west-1.amazonaws.com/folder-open-flat.svg" style={{...iconStyle }}></img> : <></>}
+                {props.activity.patient ? <FaceIcon style={{...iconStyle, color:"#4ba7fa" }}/> : <></>}
                 {props.activity.name === "dashboard" ? <span style={{justifySelf:"center",marginLeft:"8px"}}>Home</span> : <span style={{margin:0,cursor:"default", marginLeft:"4px",color: themeContext.themes === "light" ? "black" : "white" }}>{props.activity.name}</span>}
 
             </div>

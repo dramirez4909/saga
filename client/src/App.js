@@ -1,5 +1,5 @@
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AuthRoute, ProtectedRoute } from './components/utils/routes';
 import SignUpPage from './pages/SignUpPage'
 import Dashboard from './pages/Dashboard'
@@ -16,11 +16,15 @@ import { loadProviderEncounters , loadDepartmentEncounters} from './store/encoun
 import { loadDepartmentOrders} from './store/orders';
 import ThemeContext from './components/utils/ThemeContext';
 import {BreakpointProvider} from 'react-socks'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [loading, setLoading] = useState(true)
   const [themes,setThemes] = useState("light")
+
+
+
+
   const dispatch = useDispatch()
   useEffect(()=>{
     const loadUser = async () => {
@@ -89,9 +93,8 @@ function App() {
         <Switch>
             <AuthRoute exact path='/signup' component={SignUpPage} currentUserId={currentUser.id}/>
             <AuthRoute exact path='/login' component={LoginPage} currentUserId={currentUser.id}/>
-            <ProtectedRoute exact path='/dashboard' component={Dashboard} currentUserId={currentUser.id}/>
-            <ProtectedRoute exact path='/' component={Home} currentUserId={currentUser.id}/>
-            <AuthRoute exact path='/' component={LoginPage} currentUserId={currentUser.id}/>
+            <ProtectedRoute exact strict path='/' component={Home} currentUserId={currentUser.id}/>
+            <AuthRoute exact path='/' component={LoginPage} currentUserId={currentUser.id}/> 
         </Switch>
     </BrowserRouter>
     </ThemeContext.Provider>

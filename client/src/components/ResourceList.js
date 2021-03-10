@@ -300,7 +300,9 @@ const ResourceEditor = (props) => {
                                 margin:"0px",
                                 width:"100%"
                                 }}>
+                                  <Divider style={{width:"100%"}}/>
                                 <ResourceEditField label={`${index + 1}`} text={`${resource.name}`}/>
+
                             </div>
                     )
                 })}

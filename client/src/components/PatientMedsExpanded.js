@@ -31,7 +31,6 @@ import NewPhysicalProblemForm from './NewPhysicalProblemForm';
 import NewOrderForm from './NewOrderForm';
 import {updateMedication} from '../store/current_patient';
 import EditIcon from '@material-ui/icons/Edit';
-import MedicationCard from './MedicationCard';
 
 const NewItemColorButton = withStyles((theme) => ({
     root: {
@@ -197,8 +196,7 @@ function PatientMedicationsList(props) {
     const [modalForm, setModalForm] = useState("")
     const [showInstructionEdit,setShowInstructionEdit] = useState(false)
     const [selectedMedInstructions,setSelectedMedInstructions] = useState("")
-    
-    const current_patient = useSelector(state=>state.currentPatient)
+
     // console.log(props.patient)
     const [loading,setLoading] = useState(true)
 
@@ -223,12 +221,12 @@ function PatientMedicationsList(props) {
     };
 
     useEffect(()=>{
-        if (current_patient) {
-            setMedsArray(Object.values(current_patient.medications))
-            console.log("MEDS ARRAAAY:",medsArray)
+        if (props.patient.problems) {
+            setMedsArray(Object.values(patient.medications))
+            setPatient(props.patient)
             setLoading(false)
         }
-    },[current_patient])
+    },[props.patient])
 
     useEffect(()=>{
         const searchForCui = async (cui) => {
@@ -313,72 +311,74 @@ function PatientMedicationsList(props) {
         <>  
             <Fade in={loading === false}>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                    <div style={{display:"flex",flexDirection:"column",
+                    <div style={{display:"flex",flexDirection:"column",width: "35%",
                     boxShadow:"rgba(0, 0, 0, 0.05) 0px 0px 0px 1px",borderRadius:"4px",
                 }}>
                     <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewMedicationForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Add a Medication
                     </NewItemColorButton>
-            <div style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px",display:"flex",flexDirection:"row",flexWrap:"wrap",justifyContent:"center",width:"100%"}} component="nav" aria-label="main mailbox folders">
-                        {medsArray.map((med,index)=>{
+            <List style={{backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",borderRadius:"8px",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
+                        {Object.values(patient.medications).map((med,index)=>{
                             const noted =med.created_at.split(" ")
                             const notedDate = noted.slice(0,4).join(" ")
-                            return (
-                                <MedicationCard medication={med}/>
+                            return(
+                                <>
+                            {selectedIndex !== index && selectedIndex !== index - 1 ? <Divider style={{ width: "100%" }}/> : <Divider style={{ width:"100%" }} light />}
+                            <ButtonBase
+                                style={{
+                                    width: "100%",
+                                    outline:"none",
+                                }}
+                                // primary
+                                TouchRippleProps={{ classes: {...rippleClasses}}}
+                            >
+                                <div style={{width:"100%"}} className={classes.colorSplash}>
+                            <ListItem
+                                key={`list-item-${index}`}
+                                selected={selectedIndex === index}
+                                onClick={(event) => {
+                                    handleListItemClick(med, index)
+                                }}
+                                className={"TaskPaperListItem"}
+                                style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none",
+                                backgroundColor: themeContext.themes === "dark" ? selectedIndex === index ? "#999999" : "#444444" : selectedIndex === index ? "aliceblue" : "white",
+                                color: themeContext.themes === "light" ? "#444444" : "white" }}
+                            >
+                                <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
+                                <span style={{fontSize:"18px"}}>{med.name}</span> 
+                                {console.log("current med boi",med.current)}
+                               {med.current === "true" ? <span style={{fontSize:"18px",background:"yellowgreen",padding:"2px", borderRadius:"4px",color:"white"}}>Current</span> : <span style={{color:"white",fontSize:"18px",background:"darkgray",padding:"2px", borderRadius:"4px"}}>Discontinued</span>}
+                                </div>
+                                <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
+                            </ListItem>
+                            </div>
+                            </ButtonBase>
+                            </>
                             )
                         })}
+                </List>
                 </div>
-                </div>
-                </div>
-                </Fade>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={formModalOpen}
-        onClose={handleFormModalClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 200
-        }}
-      >
-        <Slide direction="up" in={formModalOpen}>
-          <div className={classes.modalPaper} style={{autooverflow:"hidden",display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden"}}>
-          {modalForm === "NewMedicationForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
-          {modalForm === "NewOrderForm" ? <NewOrderForm patient={props.patient}></NewOrderForm> : <></> }
-          {modalForm === "NewMentalProblemForm" ? <NewMentalProblemForm patient={props.patient}></NewMentalProblemForm> : <></> }
-          {modalForm === "NewPhysicalProblemForm" ? <NewPhysicalProblemForm patient={props.patient}></NewPhysicalProblemForm> : <></> }
-          </div>
-        </Slide>
-      </Modal>
-        </>
-    );
-}
-
-export default PatientMedicationsList;
-
-                {/* {med.name && provider.first_name ? 
+                {selectedMed.name && provider.first_name ? 
                 <div style={{borderRadius:"4px",
                 marginLeft:"10px",
                 boxShadow:"0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149)",
                 overflow:"scroll",height:"fit-content",
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                     <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                                                {med.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>DISCONTINUED</span>}
+                                                {selectedMed.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>DISCONTINUED</span>}
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
-                        <h2 style={{color:"cornflowerblue"}}>{med.name}</h2>
+                        <h2 style={{color:"cornflowerblue"}}>{selectedMed.name}</h2>
                         <span style={{marginLeft:"20px",color:"salmon"}}>
-                            CUI: {" " + med.cui}
+                            CUI: {" " + selectedMed.cui}
                         </span>
-                        {med.current === "false" ? <GreenColorButton onClick={handleRestart}>Restart</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
+                        {selectedMed.current === "false" ? <GreenColorButton onClick={handleRestart}>Restart</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
                             discontinue
                         </ColorButton>}
                     </div>
                         <Divider style={{ width: "100%" }} light={true} />
                         <div style={{display:"flex",flexDirection:"column"}}>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
-                                Prescribed: <span>{med.created_at}</span>
+                                Prescribed: <span>{selectedMed.created_at}</span>
                             </div>
                             <Divider style={{ width: "100%"}} light={true} />
                             <div style={{background:themeContext.themes === "dark" ? "" : "#f9f9f9",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
@@ -440,4 +440,32 @@ export default PatientMedicationsList;
                 display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"transparent"}}>
                     <img src="https://saga-health.s3-us-west-1.amazonaws.com/simmmax191100036-removebg-preview.png" style={{width:"400px"}}></img>
                     <div>Select a medication to expand</div>
-                </div>} */}
+                </div>}
+                </div>
+                </Fade>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={formModalOpen}
+        onClose={handleFormModalClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 200
+        }}
+      >
+        <Slide direction="up" in={formModalOpen}>
+          <div className={classes.modalPaper} style={{autooverflow:"hidden",display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden"}}>
+          {modalForm === "NewMedicationForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
+          {modalForm === "NewOrderForm" ? <NewOrderForm patient={props.patient}></NewOrderForm> : <></> }
+          {modalForm === "NewMentalProblemForm" ? <NewMentalProblemForm patient={props.patient}></NewMentalProblemForm> : <></> }
+          {modalForm === "NewPhysicalProblemForm" ? <NewPhysicalProblemForm patient={props.patient}></NewPhysicalProblemForm> : <></> }
+          </div>
+        </Slide>
+      </Modal>
+        </>
+    );
+}
+
+export default PatientMedicationsList;

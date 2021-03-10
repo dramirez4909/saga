@@ -52,11 +52,11 @@ function BasicPatientAttributes(props) {
 
     return (
         <>
-            <div style={{display:"flex",flexDirection:"column",borderRadius:"7px", marginTop:"15px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",marginLeft:"16px", marginRight:"15px",padding:"8px",
+            <div style={{display:"flex",flexDirection:"row",borderRadius:"7px", marginTop:"15px",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",marginLeft:"16px", marginRight:"15px",padding:"8px",
             // boxShadow: themeContext.themes === "light" ? "rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset" : "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px" 
             }}>
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-                <div style={{display:"flex",flexDirection:"column"}}>
+            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                <div style={{display:"flex",flexDirection:"row"}}>
                     {/* <div style={{display:"flex",flexDirection:"row",alignItems:"center"}} >
                         <div style={{...metricContainerStyle,color:themeContext.themes === "dark" ? "white" : "grey",backgroundColor:themeContext.themes === "dark" ? "#444444" : "white"}}>
                             {props.patient.sex === "female" ? 

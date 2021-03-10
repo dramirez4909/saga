@@ -294,7 +294,7 @@ const UserEditRoleForm = (props) => {
     const customList = (title, items) => (
         <Card style={{width:"100%",minWidth:"350px",borderRadius:"8px", paddingTop:"12px",paddingRight:"10px",paddingLeft:"10px",paddingBottom:"10px"}}>
             <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
-                <div style={{fontSize:"24px",fontWeight:"400"}}>{title}</div>
+                <div style={{fontSize:"20px",fontWeight:"400"}}>{title}</div>
             </div>
             <div style={{display:"flex",flexDirection:"row", justifyContent:"space-between",alignItems:"center"}}>
             <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
