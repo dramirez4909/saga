@@ -254,7 +254,7 @@ const MedicationCard = (props) => {
         setSelectedMed(newMed)
         setSelectedMedInstructions(selectedMedInstructions)
         setShowInstructionEdit(false)
-        dispatch(updateMedication({id:selectedMed.id,instructions:selectedMedInstructions,current:selectedMed.current}))
+        dispatch(updateMedication({id:med.id,instructions:selectedMedInstructions,current:selectedMed.current}))
     }
 
     const handleCancel = () => {
@@ -266,14 +266,14 @@ const MedicationCard = (props) => {
         const newMed = {...selectedMed}
         newMed.current = "false"
         setSelectedMed(newMed)
-        dispatch(updateMedication({id:selectedMed.id,instructions:selectedMedInstructions,current:"false"}))
+        dispatch(updateMedication({id:med.id,instructions:selectedMedInstructions,current:"false"}))
     }
 
     const handleRestart = () => {
         const newMed = {...selectedMed}
         newMed.current = "true"
         setSelectedMed(newMed)
-        dispatch(updateMedication({id:selectedMed.id,instructions:selectedMedInstructions,current:"true"}))
+        dispatch(updateMedication({id:med.id,instructions:selectedMedInstructions,current:"true"}))
     }
 
 

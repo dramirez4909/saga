@@ -5,17 +5,16 @@ const buttonStyle = {
     fontFamily:"Google Sans,Roboto,Arial,sans-serif",
     display:"flex",
     width:"100%",
-    minWidth:"150px",
     flexDirection:"column",
     boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",
-    borderRadius:"8px",
-    height:"150px",
+    borderRadius:"4px",
+    height:"100px",
     cursor:"pointer",
     color:"dimgray",
     alignItems:"center",
-    maxWidth:"150px",
+    maxWidth:"100px",
     transition:".2s",
-    marginLeft:"16px",
+    margin:"6px",
     // boxShadow:"rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px",
     backgroundColor:"white",
     // backgroundImage:"linear-gradient(to bottom, #ff6e7f 0%, white 100%)",
@@ -33,37 +32,52 @@ const DashButton = (props) => {
             <div style={{
                 color:"black",
                 height:"40px",
-                padding:"4px 0px 4px 16px",
-                justifyContent:"flex-start",
+                justifyContent:"center",
                 borderBottom:"1px solid rgb(232,232,232)",
                 alignItems:"center",
                 width:"100%",
-                fontSize:"16px",
+                fontSize:"14px",
                 display:"flex",
                 flexDirection:"row",
                 fontFamily:"Google Sans,Roboto,Arial,sans-serif",
                 letterSpacing:"1px",
                 background:"white",
-                borderTopLeftRadius:"8px",
-                borderTopRightRadius:"8px"
+                borderTopLeftRadius:"4px",
+                borderTopRightRadius:"4px"
                 }}>
                 {props.icon}
                 {props.title}
             </div>
+            {props.title === "Coverage" ? 
             <div style={{
                 width:"100%",
                 justifyContent:"center",
                 display:"flex",
-                height:"100px",
+                height:"80px",
                 flexDirection:"column",
                 backgroudColor:"white",
                 fontWeight:"400",
                 alignItems:"center",
-                fontSize:"39px",
+                fontSize:"14px",
+                textAlign:"center",
+                color:"black"
+            }}>
+                    <span>{props.coverage}</span>
+            </div>
+            : <div style={{
+                width:"100%",
+                justifyContent:"center",
+                display:"flex",
+                height:"80px",
+                flexDirection:"column",
+                backgroudColor:"white",
+                fontWeight:"400",
+                alignItems:"center",
+                fontSize:"28px",
                 color:"black"
             }}>
                     {props.value}
-            </div>
+            </div>}
         </div>
     )
 }

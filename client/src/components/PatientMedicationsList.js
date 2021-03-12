@@ -32,6 +32,7 @@ import NewOrderForm from './NewOrderForm';
 import {updateMedication} from '../store/current_patient';
 import EditIcon from '@material-ui/icons/Edit';
 import MedicationCard from './MedicationCard';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const NewItemColorButton = withStyles((theme) => ({
     root: {

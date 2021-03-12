@@ -41,6 +41,7 @@ import NewOrderForm from './NewOrderForm';
 import PatientChartContext from './utils/PatientChartContext';
 import encountersReducer from '../store/encounters';
 import ChartReviewTabs from './ChartReviewTabs'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -150,9 +151,12 @@ function PatientMedications(props) {
 
 
     return (
-        <>
+        <div style={{display:"flex",flexDirection:"column"}}>
+          <div style={{width:"100%"}}>
+            <ColorButton onClick={()=>props.hideMedications()}> <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart</ColorButton>
+          </div>
                     <PatientMedicationsList patient={{...props.patient}}/>
-        </>
+        </div>
     );
 }
 

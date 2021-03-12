@@ -384,6 +384,8 @@ class Patient(db.Model):
   occupation = db.Column(db.String(50),nullable=True)
   pronouns = db.Column(db.String(50),nullable=True)
   blood_type = db.Column(db.String(50),nullable=True)
+  coverage = db.Column(db.String(80),nullable=True)
+  visit_copay = db.Column(db.String(80),nullable=True)
 
   medications = db.relationship("Medication",back_populates="patient")
   overtime_patient_items = db.relationship("Overtime_Patient_Item",back_populates="patient")
@@ -410,6 +412,8 @@ class Patient(db.Model):
       "ethnicity": self.ethnicity,
       "sex":self.sex,
       "smoker":self.smoker,
+      "coverage":self.coverage,
+      "visit_copay":self.visit_copay,
       "pronouns":self.pronouns,
       "work_phone":self.work_phone,
       "home_phone":self.home_phone,
@@ -437,6 +441,8 @@ class Patient(db.Model):
       "dob": self.dob,
       "bloodType":self.blood_type,
       "mrn": self.mrn,
+      "coverage":self.coverage,
+      "visit_copay":self.visit_copay,
       "beats_per_minute": self.beats_per_minute,
       "height": self.height,
       "weight": self.weight,
@@ -472,7 +478,9 @@ class Patient(db.Model):
       "mrn": self.mrn,
       "beats_per_minute": self.beats_per_minute,
       "height": self.height,
-      "bloodType":self.blood_type,
+      "blood_type":self.blood_type,
+      "coverage":self.coverage,
+      "visit_copay":self.visit_copay,
       "weight": self.weight,
       "occupation":self.occupation,
       "ethnicity": self.ethnicity,

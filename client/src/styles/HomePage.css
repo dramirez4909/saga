@@ -353,6 +353,10 @@ div.makeStyles-toolbar-10 {
   }
 }
 
+-webkit-scrollbar {
+  z-index: 12
+}
+
 .chrome-tabs.chrome-tab.active {
   background-color:white;
   z-index: 5;

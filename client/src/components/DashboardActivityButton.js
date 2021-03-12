@@ -37,6 +37,9 @@ const DashButton = (props) => {
                 lineHeight:"16px",
                 width:"100%",
                 fontSize:"16px",
+                background:"white",
+                borderTopRightRadius:"4px",
+                borderTopLeftRadius:"4px",
                 fontWeight:"500",
                 fontFamily:"Google Sans,Roboto,Arial,sans-serif",
                 letterSpacing:"1px"
