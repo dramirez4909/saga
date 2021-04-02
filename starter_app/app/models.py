@@ -386,6 +386,7 @@ class Patient(db.Model):
   blood_type = db.Column(db.String(50),nullable=True)
   coverage = db.Column(db.String(80),nullable=True)
   visit_copay = db.Column(db.String(80),nullable=True)
+  temperature = db.Column(db.String(80),nullable=True)
 
   medications = db.relationship("Medication",back_populates="patient")
   overtime_patient_items = db.relationship("Overtime_Patient_Item",back_populates="patient")
@@ -411,6 +412,7 @@ class Patient(db.Model):
       "occupation":self.occupation,
       "ethnicity": self.ethnicity,
       "sex":self.sex,
+      "temperature":self.temperature,
       "smoker":self.smoker,
       "coverage":self.coverage,
       "visit_copay":self.visit_copay,
@@ -436,6 +438,7 @@ class Patient(db.Model):
     return {
       "id": self.id,
       "firstName": self.firstName,
+      "temperature":self.temperature,
       "lastName": self.lastName,
       "fullName": f"{self.lastName}, {self.firstName}",
       "dob": self.dob,
@@ -501,9 +504,11 @@ class Patient(db.Model):
       "notes": {note.id : note.basic() for note in self.notes},
       "problems": {problem.id : problem.basic() for problem in self.problems},
       "encounters": {encounter.id: encounter.basic() for encounter in self.encounters},
+      "temperature":self.temperature,
       "providers": {provider.id: provider.name_and_id() for provider in self.providers},
       "bmi": self.bmi,
-      "picture":self.picture
+      "picture":self.picture,
+      "overtime_items": {item.id : item.to_dict() for item in self.overtime_patient_items}
     }
 
   def name_and_id(self):
@@ -726,8 +731,16 @@ class Overtime_Patient_Item(db.Model):
   value = db.Column(db.String(40), nullable = False)
   date = db.Column(db.DateTime, nullable=True)
   patient_id = db.Column(db.Integer, db.ForeignKey("patients.id"),nullable=False)
-
+  
   patient = db.relationship("Patient",back_populates="overtime_patient_items")
+
+  def to_dict(self):
+    return {
+      "id":self.id,
+      "value":self.value,
+      "date":self.date,
+      "name":self.name
+    }
 
 
 class Role(db.Model):

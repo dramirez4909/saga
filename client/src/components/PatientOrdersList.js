@@ -31,6 +31,9 @@ import NewPhysicalProblemForm from './NewPhysicalProblemForm';
 import NewOrderForm from './NewOrderForm';
 import {updateMedication, updateOrder, updateProblem} from '../store/current_patient';
 import EditIcon from '@material-ui/icons/Edit';
+import OrderCard from './OrderCard';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 
 const NewItemColorButton = withStyles((theme) => ({
     root: {
@@ -185,7 +188,7 @@ function PatientProblemList(props) {
     const dispatch = useDispatch()
     const openTabs = useSelector(state=>state.activities.open_tabs)
     const [patient,setPatient] = useState(props.patient)
-    const [medsArray,setMedsArray] = useState([])
+    const [ordersArray,setOrdersArray] = useState([])
     const [selectedIndex, setSelectedIndex] = useState();
     const [previewCui,setPreviewCui] = useState("")
     const [selectedItemDefinitions,setSelectedItemDefinitions] = useState([])
@@ -199,6 +202,8 @@ function PatientProblemList(props) {
 
     // console.log(props.patient)
     const [loading,setLoading] = useState(true)
+
+    const current_patient = useSelector(state=>state.currentPatient)
 
     const handleListItemClick = (med, index) => {
         setShowInstructionEdit(false)
@@ -221,11 +226,12 @@ function PatientProblemList(props) {
     };
 
     useEffect(()=>{
-        if (props.patient.problems) {
-            setPatient(props.patient)
+        if (current_patient) {
+            setOrdersArray(Object.values(current_patient.orders))
+            console.log("MEDS ARRAAAY:",ordersArray)
             setLoading(false)
         }
-    },[props.patient])
+    },[current_patient])
 
     useEffect(()=>{
         const searchForCui = async (cui) => {
@@ -309,140 +315,26 @@ function PatientProblemList(props) {
     return (
         <>  
         <Fade in={loading === false}>
-            <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
+            <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
+                <div style={{width:"100%"}}>
+                    <ColorButton onClick={()=>props.hideOrders()}> <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart</ColorButton>
+                </div>
                     <div style={{display:"flex",flexDirection:"column",width: "35%"}}>
                     <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewOrderForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Place An Order
                     </NewItemColorButton>
-            <List style={{backgroundColor:themeContext.themes === "dark" ? "#444444" : "white",borderRadius:"8px",paddingTop:"0px"}} component="nav" aria-label="main mailbox folders">
-                        {Object.values(patient.orders).map((med,index)=>{
-                            if (med.type === "physical") return
-                            const noted =med.created_at.split(" ")
-                            const notedDate = noted.slice(0,4).join(" ")
+            <div style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px"}}>
+                        {ordersArray.map((med,index)=>{
                             return(
-                                <>
-                            {selectedIndex !== index && selectedIndex !== index - 1 ? <Divider style={{ width: "100%" }}/> : <Divider style={{ width:"100%" }} light />}
-                            <ButtonBase
-                                style={{
-                                    width: "100%",
-                                    outline:"none",
-                                }}
-                                // primary
-                                TouchRippleProps={{ classes: {...rippleClasses}}}
-                            >
-                                <div style={{width:"100%"}} className={classes.colorSplash}>
-                            <ListItem
-                                key={`list-item-${index}`}
-                                selected={selectedIndex === index}
-                                onClick={(event) => {
-                                    handleListItemClick(med, index)
-                                }}
-                                className={"TaskPaperListItem"}
-                                style={{ paddingTop: "3px", paddingBottom: "3px", outline: "none",
-                                backgroundColor: themeContext.themes === "dark" ? selectedIndex === index ? "#999999" : "#444444" : selectedIndex === index ? "aliceblue" : "white",
-                                color: themeContext.themes === "light" ? "#444444" : "white" }}
-                            >
-                                <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",width:"100%"}}>
-                                {/* <span style={{color:themeContext.themes === "light" ? "#444444" : "lightgreen"}}>{notedDate}</span>  */}
-                                <span style={{fontSize:"18px"}}>{med.name}</span> 
-                                {console.log("current med boi",med.current)}
-                               {med.status === "Needs Scheduling" ? <span style={{fontSize:"18px",background:"yellowgreen",padding:"2px", borderRadius:"4px",color:"white"}}>New</span> : med.status === "Completed" ? <span style={{color:"white",fontSize:"18px",background:"darkgray",padding:"2px", borderRadius:"4px"}}>Completed</span> : med.status === "Scheduled" ? <span style={{color:"white",fontSize:"18px",background:"darkgray",padding:"2px", borderRadius:"4px"}}>Scheduled</span> : <span style={{color:"white",fontSize:"18px",background:"salmon",padding:"2px", borderRadius:"4px"}}>Canceled</span> }
-                                </div>
-                                <span className={"MuiTouchRipple-root" + " " + "rainbow" + " " + "party"}></span>
-                            </ListItem>
-                            </div>
-                            </ButtonBase>
-                            </>
+                                <OrderCard order={med} />
                             )
                         })}
-                </List>
                 </div>
-                {selectedMed.name && provider.first_name ? 
-                <div style={{borderRadius:"4px",
-                marginLeft:"10px",
-                boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
-                overflow:"scroll",maxHeight:"450px",
-                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
-                    <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                    <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkgrey" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{selectedMed.status}</span>
-                    <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
-                        <h2 style={{color:"cornflowerblue"}}>{selectedMed.name}</h2>
-                        <span style={{marginLeft:"20px",color:"salmon"}}>
-                            {" " + selectedMed.cui}
-                        </span>
-                        {selectedMed.status === "Canceled" ? <GreenColorButton onClick={handleRestart}>Mark as new</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
-                            Cancel
-                        </ColorButton>}
-                    </div>
-                        <Divider style={{ width: "100%" }} light={true} />
-                        <div style={{display:"flex",flexDirection:"column"}}>
-                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
-                                Order Placed: <span>{selectedMed.created_at}</span>
-                            </div>
-                            <Divider style={{ width: "100%"}} light={true} />
-                            <div style={{background:themeContext.themes === "dark" ? "" : "#f9f9f9",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
-
-                                <div style={{color:"cornflowerblue"}}>Order Notes:</div> 
-                                {!showInstructionEdit ? 
-                                <>
-                                <div style={{display:"flex",flexDirection:"column",marginLeft:"20px",marginRight:"20px"}}>
-                                <div className={themeContext.themes === "dark" ? classes.patientInstructionsDark: classes.patientInstructions} onClick={(e)=>{setShowInstructionEdit(true)}} rows={4} style={{border:themeContext.themes === "dark" ? "2px solid grey" : "2px solid grey", borderRadius:"4px",width:"100%",padding:"10px"}}>{!selectedMedInstructions ? "Empty" : selectedMedInstructions}</div>
-                                <div style={{display:"flex",marginLeft:"40px"}}><BlueColorButton onClick={(e)=>{setShowInstructionEdit(true)}}><EditIcon style={{marginRight:"4px"}}/>Edit</BlueColorButton> </div>
-                                </div>
-                                </>
-                                 : 
-                                 <div style={{display:"flex",flexDirection:"column",marginLeft:"20px",marginRight:"20px"}}>
-                                    <TextareaAutosize rows={4} style={{outline:"none",border:"2px solid cornflowerblue", borderRadius:"4px",width:"100%"}} onChange={(e)=>setSelectedMedInstructions(e.target.value)} value={!selectedMedInstructions ? "" : selectedMedInstructions}></TextareaAutosize>
-                                    <div style={{display:"flex",flexDirection:"row",marginLeft:"40px"}}>
-                                    <NewItemColorButton onClick={handleSave}> Save </NewItemColorButton>
-                                    <ColorButton onClick={handleCancel}>Cancel</ColorButton>
-                                    </div>
-                                </div>}
-                            </div>
-                            <Divider style={{ width: "100%"}} light={true} />
-                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
-                                Ordering Provider:
-                                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",background:themeContext.themes === "dark" ? "transparent" : "aliceblue",borderRadius:"30px", padding:"7px",fontSize:"18px",border:themeContext.themes==="dark" ? "2px solid cornflowerblue" : ""}}>
-                                    {provider.picture ? <Avatar src={`${provider.picture}`} className={classes.large}></Avatar>
-                                    : <Avatar className={classes.large}>{provider.first_name[0] + " " + provider.last_name[0]}</Avatar>}
-                                    <div style={{display:"flex",flexDirection:"column",justifyContent:"center", marginLeft:"5px"}}>
-                                        <span style={{color:themeContext.themes === "dark" ? "white" : "cornflowerblue"}}>{provider.full_name}</span>
-                                        <span style={{color:themeContext.themes === "dark" ? "white" : "yellowgreen"}}>{provider.specialty}</span>
-                                    </div>
-                                    </div>
-                            </div>
-                            <Divider style={{ width: "100%"}} light={true} />
-                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-                                </div>
-                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <h5 style={{padding:"10px",color:"cornflowerblue"}}>Unified Medical Language Definitions: </h5>
-                    {selectedItemDefinitions.map((def,index)=>{
-                        return (
-                        <div key={index} style={{width:"100%", display:"flex",flexDirection:"column"}}>
-                        <div style={{display:"flex",flexDirection:"space-between", alignItems:"center"}}>
-                            <span style={{padding:"20px"}}>{def.source}:</span><span style={{color:themeContext.themes === "dark" ? "darkgray" : "grey"}}>{def.value}</span>
-                        </div>
-                        <Divider style={{ color:"cornflowerblue",width: "100%", backgroundColor:themeContext.themes === "dark" ? "white" : "#666666" }} light={true} />
-                        </div>
-                        )
-                    })}
-                </div> : 
-                <div style={{borderRadius:"4px",
-                marginLeft:"10px",
-                // boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
-                overflow:"scroll",maxHeight:"450px",
-                justifyContent:"center",alignItems:"center",
-                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#888888",background:"transparent"}}>
-                    <img src="https://saga-health.s3-us-west-1.amazonaws.com/reasons-people-avoid-mental-health-treatment-removebg-preview.png" style={{width:"400px"}}></img>
-                    <div>Select an order to expand.</div>
-                </div>}
                 </div>
+                    {/* <img src="https://saga-health.s3-us-west-1.amazonaws.com/reasons-people-avoid-mental-health-treatment-removebg-preview.png" style={{width:"400px"}}></img> */}
+                    </div>
                 </Fade>
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

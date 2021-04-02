@@ -32,10 +32,11 @@ with app.app_context():
 
   demo_provider =Provider(specialty="Family Medicine")
   
-  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731",bmi="22.74",beats_per_minute="75",weight="112",height="5'4''",ethnicity="White",picture="https://saga-health.s3-us-west-1.amazonaws.com/Tulsa-Headshot-Photographer_9639a.jpg",smoker="yes",occupation="Writer",mobile_phone="(832) 370-8893", home_phone="(281) 349-8893", work_phone="(409) 342-8144",blood_type="B+",visit_copay="20.00",coverage="Central Texas Community Health")
+  demo_patient = Patient(firstName="Clare",lastName="Donohue-Meyer",dob = datetime.datetime(1993, 6, 22), sex="female", address_line_one ="221B Baker St.",address_city="Austin",address_state="TX",address_zip="78731",bmi="22.74",beats_per_minute="75",weight="112",height="5'4''",ethnicity="White",picture="https://saga-health.s3-us-west-1.amazonaws.com/Tulsa-Headshot-Photographer_9639a.jpg",smoker="yes",occupation="Writer",mobile_phone="(832) 370-8893", home_phone="(281) 349-8893", work_phone="(409) 342-8144",blood_type="B+",visit_copay="20.00",temperature="98.6",coverage="Central Texas Community Health")
   
   demo_patient_bpm = Overtime_Patient_Item(name="bpm",value="74",date = datetime.datetime(2020,12,22))
   demo_patient_bpm_0 = Overtime_Patient_Item(name="bpm",value="75",date = datetime.datetime(2021,1,22))
+  demo_patient_bpm_1 = Overtime_Patient_Item(name="bpm",value="80",date = datetime.datetime(2021,2,10))
   demo_patient_bpm_1 = Overtime_Patient_Item(name="bpm",value="65",date = datetime.datetime(2021,2,10))
   demo_patient_bpm_2 = Overtime_Patient_Item(name="bpm",value="85",date = datetime.datetime(2021,3,1))
 
@@ -43,6 +44,19 @@ with app.app_context():
   demo_patient.overtime_patient_items.append(demo_patient_bpm_0)
   demo_patient.overtime_patient_items.append(demo_patient_bpm_1)
   demo_patient.overtime_patient_items.append(demo_patient_bpm_2)
+
+  demo_patient_temperature = Overtime_Patient_Item(name="temperature",value="98",date = datetime.datetime(2020,12,22))
+  demo_patient_temperature_0 = Overtime_Patient_Item(name="temperature",value="97.5",date = datetime.datetime(2021,1,10))
+  demo_patient_temperature_1 = Overtime_Patient_Item(name="temperature",value="98.6",date = datetime.datetime(2021,1,22))
+  demo_patient_temperature_2 = Overtime_Patient_Item(name="temperature",value="96",date = datetime.datetime(2021,2,10))
+  demo_patient_temperature_3 = Overtime_Patient_Item(name="temperature",value="98.6",date = datetime.datetime(2021,3,1))
+
+  demo_patient.overtime_patient_items.append(demo_patient_temperature)
+  demo_patient.overtime_patient_items.append(demo_patient_temperature_0)
+  demo_patient.overtime_patient_items.append(demo_patient_temperature_1)
+  demo_patient.overtime_patient_items.append(demo_patient_temperature_2)
+  demo_patient.overtime_patient_items.append(demo_patient_temperature_3)
+
 
   demo_patient_weight_0 = Overtime_Patient_Item(name="weight",value="145",date = datetime.datetime(2021,1,22))
   demo_patient_weight_1 = Overtime_Patient_Item(name="weight",value="135",date = datetime.datetime(2021,2,10))

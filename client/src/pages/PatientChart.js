@@ -13,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import BorderColorTwoToneIcon from '@material-ui/icons/BorderColorTwoTone';
 import EventNoteTwoToneIcon from '@material-ui/icons/EventNoteTwoTone';
 import NoteAddTwoToneIcon from '@material-ui/icons/NoteAddTwoTone';
@@ -23,7 +24,7 @@ import '../styles/PatientChart.css'
 import ChartReview from '../components/ChartReview';
 import FavoriteIcon from '@material-ui/icons/FavoriteTwoTone';
 import FitnessCenterIcon from '@material-ui/icons/FitnessCenter';
-import { Avatar, CircularProgress, Fade, Slide } from '@material-ui/core';
+import { Avatar, CircularProgress, Fade, IconButton, Slide } from '@material-ui/core';
 import PatientEncounters from '../components/PatientEncounters';
 import PatientOrders from '../components/PatientOrders';
 import { useSelector } from 'react-redux';
@@ -40,13 +41,46 @@ import PatientAddressInfo from '../components/PatientAddressInfo';
 import '../styles/PatientChartRibbon.css'
 import ChartReviewTabs from '../components/ChartReviewTabs';
 import ChartReviewActivityButton from '../components/ChartReviewActivityButton'
+import ChartReviewActivityButtonLarge from '../components/ChartReviewActivityButtonLarge'
 import PatientMedicationsList from '../components/PatientMedicationsList';
 import PatientEncountersList from '../components/PatientEncountersList';
 import PatientMentalProblemsList from '../components/PatientMentalProblemList'
 import PatientPhysicalProblemsList from '../components/PatientPhysicalProblemList'
 import PatientOrdersList from '../components/PatientOrdersList';
+import ColorizeIcon from '@material-ui/icons/Colorize';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import InvertColorsIcon from '@material-ui/icons/InvertColors';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import EditIcon from '@material-ui/icons/Edit';
+import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
+import PatientBasicInfoEdit from '../components/PatientBasicInfoEdit';
+import PatientVitalsForm from '../components/PatientVitalsForm';
+import VitalsLineGraph  from '../components/VitalsLineGraph';
+import PatientVitals from '../components/PatientVitals';
+import PatientNameCard from './PatientNameCard';
+import { updatePatientInfo } from '../store/current_patient';
+import ReactDOM from 'react-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPills } from '@fortawesome/free-solid-svg-icons'
+import { faUserInjured as userInjured} from '@fortawesome/free-solid-svg-icons'
+import { faBrain } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons'
+import ChartReviewSmallActivityButton from '../components/ChartReviewSmallActivityButton';
+import AccessibilityIcon from '@material-ui/icons/Accessibility';
+import ChartReviewMetrics from '../components/ChartReviewMetrics'
+import EventIcon from '@material-ui/icons/Event';
 
-
+const iconStyle = {
+  background:"grey",
+  borderRadius:"50%",
+  color:"white",
+  padding:"2px",
+  boxShadow:"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+  width:"24px",
+  height:"24px",
+  marginRight:"5px"
+}
 
 const isBrowser = typeof window !== `undefined`
 
@@ -69,6 +103,25 @@ const useStylesLoginTextField = makeStyles((theme) => ({
     },
     focused: {},
   }));
+
+  const EditBasicInfoButton = withStyles((theme) => ({
+    root: {
+        paddingRight: "10px",
+        paddingLeft: "10px",
+        margin: "4px",
+        border:"1px solid tomato",
+        color:"tomato",
+        outline:"none",
+        width:"fit-content",
+        backgroundColor:"transparent",
+        textTransform:"none",
+        height:"30px",
+        transition:"all .2s ease-in-out",
+        '&:hover': {
+            backgroundColor: "rgb(0,0,0,.1)",
+        },
+    },
+    }))(Button);
 
   function LoginTextField(props) {
     const classes = useStylesLoginTextField();
@@ -113,7 +166,6 @@ const tabStyle = {
   '&:hover': {
     background:"grey"
   }
-
 }
 
 const metricContainerStyle={
@@ -152,7 +204,8 @@ function PatientChart(props) {
     const [displayMentalProblems,setDisplayMentalProblems] = useState(false)
     const [displayOrders,setDisplayOrders] = useState(false)
     const [displayEncounters,setDisplayEncounters] = useState(false)
-
+    const [chartData,setChartData]=useState({});
+    const [open,setOpen]=useState()
 
     const handleShowMedications = () => {
       setDisplayChartButtons(false)
@@ -202,6 +255,13 @@ function PatientChart(props) {
     const handleHideOrders = () => {
       setDisplayChartButtons(true)
       setDisplayOrders(false)
+    }
+
+    const newMedication = (e) => {
+      e.stopPropagation();
+      setDisplayChartButtons(false)
+      setDisplayMedications(true)
+      setOpen(true)
     }
     // useScrollPosition(({ prevPos, currPos }) => {
     //   console.log(currPos.x)
@@ -279,13 +339,35 @@ function PatientChart(props) {
 
     useEffect(()=>{
       if (props.patient.id === currentPatient.id) {
-        setLoading(false)
         const dobstr = patient.dob + "-500"
         const dob = new Date(dobstr)
         setPatientDob(dob)
         setPatient(currentPatient)
+        //Gather data for line graphs
+        const bpmReadings = getReadingsArray("bpm",currentPatient.overtime_items)
+        const weightReadings = getReadingsArray("weight",currentPatient.overtime_items)
+        const bmiReadings = getReadingsArray("bmi",currentPatient.overtime_items)
+        const temperatureReadings = getReadingsArray("temperature",currentPatient.overtime_items)
+        console.log("bpmReadings: ",temperatureReadings)
+        setChartData({bpmReadings,weightReadings,bmiReadings,temperatureReadings})
+        setLoading(false)
       }
     },[currentPatient])
+
+    const getReadingsArray = (metric,readingsObj={}) => {
+      const filteredValues = Object.values(readingsObj).filter(el => {
+        if (el.name === metric ) {
+          return true
+        } 
+        return false
+      })
+      const readings = filteredValues.map(el=>{
+          const dateString = el.date + "-500"
+          const date = new Date(dateString)
+          return [date,Number(el.value)]
+      })
+      return readings.sort((a,b)=> b.date - a.date)
+    }
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -303,84 +385,100 @@ function PatientChart(props) {
     }
     return (
         <>
-        <div style={{display: displayMedications ? "flex" : "none",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
-          <PatientMedications patient={props.patient} hideMedications={handleHideMedications}></PatientMedications>
-        </div>
-        <div style={{display: displayPhysicalProblems ? "flex" : "none",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
-        <PatientPhysicalProblemsList patient={props.patient} hidePhysicalProblems={handleHidePhysicalProblems}/>
-        </div>
-        <div style={{display: displayMentalProblems ? "flex" : "none",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
-        <PatientMentalProblemsList patient={props.patient} hideMentalProblems={handleHideMentalProblems}/>
-        </div>
-        <div style={{display: displayOrders ? "flex" : "none",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
-        <PatientOrdersList patient={props.patient} hideOrders={handleHideOrders}/>
-        </div>
-        <div style={{display: displayEncounters ? "flex" : "none",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
-        <PatientEncountersList patient={props.patient} hideEncounters={handleHideEncounters}/>
-        </div>
-
-        <div style={{display: displayChartButtons ? "flex" : "none",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
-        <div style={{display:"flex",width:"100%",backgroundColor:"transparent",flexDirection:"row",alignItems:"center",paddingLeft:"10px",marginTop:"20px",paddingTop:"4px", flexWrap:"wrap",justifyContent:"center"}}>
+        <Fade in={displayChartButtons} direction="down" timeout={300}>
+        <div style={{
+          display:displayChartButtons ? "flex" : "none",
+          justifyContent:"center",
+          width:"100%",
+          backgroundColor:"white",
+          flexDirection:"column",
+          alignItems:"center",
+          fontFamily:"Roboto,RobotoDraft,Helvetica,Arial,sans-serif",
+          paddingBottom:"100px"}}>
+        {/* <Fade in={displayChartButtons} direction="up">
+          <div style={{
+            display:displayChartButtons ? "flex" : "none",
+            flexWrap:"wrap",justifyContent:"center",
+            // backgroundColor: "#827be5",
+            backgroundColor:"white",
+            width:"100%",
+            paddingLeft:"16px",
+            paddingRight:"16px",
+            flexDirection:"row"}}> 
+              <EditBasicInfoButton>Schedule an appointment</EditBasicInfoButton>
+            </div>
+            </Fade> */}
         <div style={{
           display:"flex",
-          flexDirection:"row", 
-          height:"150px",
-          // backgroundColor:"white", 
-          borderRadius:"8px",
-          // boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",
-          paddingLeft:"10px",
-          minWidth:"450px",
-          paddingTop:"4px"
+          width:"100%", 
+        //  backgroundColor:"#1a73e8",
+        //  backgroundColor:"#95a1d3",
+        backgroundSize:"cover",
+        backgroundColor:"transparent",
+        // backgroundImage:"linear-gradient( 67.2deg,  rgba(37,208,199,1) -7.5%, rgba(165,90,240,1) 62.7% )",
+        //  backgroundImage:"url('https://saga-health.s3-us-west-1.amazonaws.com/110494-blue-blurred-background-vector+(2).jpg')",
+         flexDirection:"row",alignItems:"center",paddingLeft:"10px",paddingTop:"4px", paddingBottom:"6px",flexWrap:"wrap",justifyContent:"center"}}>
+        <div style={{flexDirection:"column",display:"flex",alignItems:"center"}}>
+        <Avatar style={{ boxShadow:"rgb(0 0 0 / 30%) 0px 19px 38px, rgb(0 0 0 / 22%) 0px 15px 12px",width:"230px",height:"230px",margin:"20px"}} src={patient.picture ? patient.picture : ""}/>
+        <EditBasicInfoButton><EventIcon style={{marginRight:"4px"}}></EventIcon>Request an office visit</EditBasicInfoButton>
+        </div>
+        <div style={{
+          display:"flex",
+          flexDirection:"column", 
+          paddingTop:"4px",
+          alignItems:"center",
           }}>
-                {loadingPicture ? <img id="user-photo" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> : <Avatar className={classes.avatar} src={patient.picture ? patient.picture : ""}/>}
-                <div style={{display:"flex",flexDirection:"column",justifyContent:"center",margin:"15px"}}>
-                  <div style={{display:"flex",justifyContent:"flex-start",fontWeight:"600",fontSize:"18px"}}>
-                    {patient.lastName+ "," + " " + patient.firstName}
-                  </div>
-                  <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",color:"dimgrey"}}>
-                  <div>
-                  <div style={{fontWeight:"400",fontSize:"14px"}}>
-                    {patientDob ? `${patient.sex.charAt(0).toUpperCase() + patient.sex.slice(1)}, ${patientDob.getMonth() + 1}.${patientDob.getDate()}.${patientDob.getFullYear()}` : ""}
-                  </div>
-                  <div style={{fontWeight:"400",fontSize:"14px"}}>
-                    {patient.occupation}
-                  </div>
-                  <PatientAddressInfo patient={props.patient}/>
-                  </div>
-                  <div style={{display:"flex",flexDirection:"row",justifyContent:"center"}}>
-                    <PatientPhoneNumbers patient={props.patient}/>
-                  </div>
-                  </div>
-                </div>
+            <PatientBasicInfoEdit patient={patient}/>
+
+            <PatientNameCard patientDob={patientDob} patient={patient}/>
 
         </div>
-          <ChartReviewBasicAttributes patient={props.patient}></ChartReviewBasicAttributes>
+            <PatientVitals patient={patient} chartData={chartData}/>
+            
           </div>
-      <Slide in={displayChartButtons} direction="up">
-      <div style={{display:"grid",flexWrap:"wrap", gridTemplateColumns:"20% 20% 20% 20% 20%", gridTemplateRows:"100%",backgroundColor: "transparent",marginTop:"8px",width:"100%",paddingLeft:"16px",paddingRight:"16px"}}> 
-                <div onClick={handleShowMedications} style={{padding:"8px",width:"100%",gridColumnStart:1,gridColumnEnd:2,}}>
-                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Medications"/>
-                </div>
-                <div onClick={handleShowPhysicalProblems} style={{padding:"8px",width:"100%",gridColumnStart:2,gridColumnEnd:3}}>
-                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Physical Problems List"/>
-                </div>
-                <div onClick={handleShowMentalProblems} style={{padding:"8px",width:"100%",gridColumnStart:3,gridColumnEnd:4}}>
-                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Mental Problems List"/>
-                </div>
-                <div onClick={handleShowOrders} style={{padding:"8px",width:"100%",gridColumnStart:4,gridColumnEnd:5}}>
-                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Orders"/>
-                </div>
-                <div onClick={handleShowEncounters} style={{padding:"8px",width:"100%",gridColumnStart:5,gridColumnEnd:6}}>
-                  <ChartReviewActivityButton style={{cursor:"pointer"}} color={"coral"} title="Encounters"/>
-                </div>
+          <div style={{display:"flex",flexDirection:"column"}}>
+          <ChartReviewMetrics patient={patient} chartData={chartData}/>
+
+          <Fade in={displayChartButtons} direction="up">
+          <div style={{
+            display:displayChartButtons ? "flex" : "none",
+            flexWrap:"wrap",justifyContent:"center",
+            // backgroundColor: "#827be5",
+            // boxShadow:"rgb(0 0 0 / 30%) 0px 19px 38px, rgb(0 0 0 / 22%) 0px 15px 12px",
+            width:"100%",
+            paddingLeft:"16px",
+            height:"min-content",
+            paddingRight:"16px",
+            flexDirection:"row"}}> 
+                  <ChartReviewActivityButtonLarge patient={patient} handleShowMedications={handleShowMedications} style={{cursor:"pointer"}} icon={<FontAwesomeIcon style={{width:"25px",height:"25px"}} icon={faPills}></FontAwesomeIcon>} handleNewItem={(e)=>newMedication(e)} title="Medications"/>
+                  <ChartReviewActivityButtonLarge patient={patient} handleShowPhysicalProblems={handleShowPhysicalProblems} style={{cursor:"pointer"}} icon={<FontAwesomeIcon style={{width:"25px",height:"25px"}} icon={userInjured}></FontAwesomeIcon>} color={"coral"} title="Problems List"/>
+                  <ChartReviewActivityButtonLarge patient={patient} handleShowMentalProblems={handleShowMentalProblems} style={{cursor:"pointer"}} icon={<FontAwesomeIcon style={{width:"25px",height:"25px"}} icon={faBrain}></FontAwesomeIcon>} color={"coral"} title="Mental Health"/>
+                  <ChartReviewActivityButtonLarge patient={patient} handleShowOrders={handleShowOrders} style={{cursor:"pointer"}} icon={<FontAwesomeIcon style={{width:"25px",height:"25px"}} icon={faPaperPlane}></FontAwesomeIcon>} color={"coral"} title="Procedure Orders"/>
+                  <ChartReviewActivityButtonLarge handleShowEncounters={handleShowEncounters} style={{cursor:"pointer"}} icon={<FontAwesomeIcon style={{width:"25px",height:"25px"}} icon={faCalendarCheck}></FontAwesomeIcon>} color={"coral"} title="Encounters"/>
               {/* {currentPatientTab === "Chart Review" ? <ChartReviewTabs patient={currentPatient}/> : <></>} */}
             </div>
-            </Slide>
-            {/* <div style={{minWidth:"400px",marginTop:"0px",position:"sticky",top:"85px",}}>
-             Care Timeline 
-            </div> */}
-
+            </Fade>
             </div>
+            </div>
+        </Fade>
+
+
+
+            {displayMedications ? <div style={{display: "flex",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
+              <PatientMedications patient={props.patient} open={open} hideMedications={handleHideMedications}></PatientMedications>
+            </div> : <></>}
+            {displayPhysicalProblems ? <div style={{display: "flex",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
+            <PatientPhysicalProblemsList patient={props.patient} hidePhysicalProblems={handleHidePhysicalProblems}/>
+            </div> : <></>}
+            {displayMentalProblems ? <div style={{display: "flex",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
+            <PatientMentalProblemsList patient={props.patient} hideMentalProblems={handleHideMentalProblems}/>
+            </div> : <></>}
+            {displayOrders ? <div style={{display:"flex",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
+            <PatientOrdersList patient={props.patient} hideOrders={handleHideOrders}/>
+            </div> : <></>}
+            {displayEncounters ? <div style={{display:  "flex",justifyContent:"center",width:"100%",backgroundColor:"transparent",flexDirection:"column",alignItems:"center"}}>
+            <PatientEncountersList patient={props.patient} hideEncounters={handleHideEncounters}/>
+            </div> : <></>}
             {/* <form ref={form} onSubmit={submit}>
                 <input type="file" name="file"></input>
                 <input type="submit" name="Sign Up" />

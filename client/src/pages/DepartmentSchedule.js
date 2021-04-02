@@ -22,12 +22,6 @@ import Button from '@material-ui/core/Button';
 import OrderList from '../components/OrderList'
 import { Accordion, AccordionDetails, AccordionSummary, CircularProgress, Grid, List } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import LocalHospitalTwoToneIcon from '@material-ui/icons/LocalHospitalTwoTone';
 import SelectedOrderPreviewCard from '../components/SelectedOrderPreviewCard';
 import ExitToAppTwoToneIcon from '@material-ui/icons/ExitToAppTwoTone';
 import ThemeContext from '../components/utils/ThemeContext';

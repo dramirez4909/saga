@@ -58,15 +58,21 @@ const iconStyle = {
 
 const chartContainerStyle = {
     display:"flex",
-    flexDirection:"row",
-    paddingBottom:"0px",
+    flexDirection:"column",
+    padding:"8px",
     alignItems:"center",
     justifyContent:"center",
     maxWidth:"500px",
+    minWidth:"220px",
     backgroundColor:"white",
     borderRadius:"8px",
     overflow:"hidden",
-    margin:"6px"
+    margin:"6px",
+    border:"1px solid rgb(218, 220, 224)"
+}
+
+const titleStyle = {
+    fontSize:"16px"
 }
 
 function ChartReviewBasicAttributes(props) { 
@@ -87,38 +93,37 @@ function ChartReviewBasicAttributes(props) {
                     justifyContent:"center",
                     flexWrap:"wrap",
                     width:"100%",
-                    maxWidth:"520px"
                     }}>
                         <div style={{...chartContainerStyle}}>
-                        <ChartReviewSmallActivityButton 
+                            <span style={{...titleStyle}}>Heart Rate</span>
+                        {/* <ChartReviewSmallActivityButton 
                             title={"Heart Rate"} 
-                            value={ <span style={{fontSize:"40px",fontFamily:"-webkit-body"}}>{props.patient.beats_per_minute}<span style={{color:"black",marginLeft:"5px",fontSize:"18px"}}>bpm</span></span>} 
+                            value={ <span style={{fontSize:"40px"}}>{props.patient.beats_per_minute}<span style={{color:"black",marginLeft:"5px",fontSize:"18px"}}>bpm</span></span>} 
                             icon={<FavoriteIcon style={{...iconStyle,}}/>}
-                            />
-                            {/* <VitalsLineGraph data={props.chartData.bpmReadings} title={"Heart Rate"}/>  */}
+                            /> */}
+                            <VitalsLineGraph data={props.chartData.bpmReadings} title={"Heart Rate"}/> 
                         </div>
                         <div style={{...chartContainerStyle}}>
-                        <ChartReviewSmallActivityButton title={"Weight"} value={<span  style={{fontSize:"40px",fontFamily:"-webkit-body"}}>{props.patient.weight} <span style={{color:"black",fontSize:"18px"}}>lb</span></span>} icon={<FitnessCenterIcon style={{...iconStyle,}}/>}/>
-                        {/* <VitalsLineGraph data={props.chartData.weightReadings} title={"Weight"}/>  */}
+                            <span style={{...titleStyle}}>Weight</span>
+
+                        {/* <ChartReviewSmallActivityButton title={"Weight"} value={<span  style={{fontSize:"40px"}}>{props.patient.weight} <span style={{color:"black",fontSize:"18px"}}>lb</span></span>} icon={<FitnessCenterIcon style={{...iconStyle,}}/>}/> */}
+                        <VitalsLineGraph data={props.chartData.weightReadings} title={"Weight"}/> 
 
                         </div>
                         <div style={{...chartContainerStyle}}>
-                        <ChartReviewSmallActivityButton title={"Temperature"} value={<span style={{display:"flex",alignItems:"center",flexDirection:"row",fontSize:"40px",fontFamily:"-webkit-body"}}>{props.patient.temperature}<span style={{color:"black",fontSize:"24px",marginRight:"1px"}}>°F</span></span>} icon={<ColorizeIcon style={{...iconStyle}}/>}/>
-                        {/* <VitalsLineGraph data={props.chartData.temperatureReadings} title={"Temperature"}/>  */}
+                            <span style={{...titleStyle}}>Temperature</span>
+
+                        {/* <ChartReviewSmallActivityButton title={"Temperature"} value={<span style={{display:"flex",alignItems:"center",flexDirection:"row",fontSize:"40px"}}>{props.patient.temperature}<span style={{color:"black",fontSize:"24px",marginRight:"1px"}}>°F</span></span>} icon={<ColorizeIcon style={{...iconStyle}}/>}/> */}
+                        <VitalsLineGraph data={props.chartData.temperatureReadings} title={"Temperature"}/> 
 
                         </div>
                         <div style={{...chartContainerStyle}}>
-                        <ChartReviewSmallActivityButton title={"BMI"} value={<span style={{fontSize:"40px",fontFamily:"-webkit-body"}}>{props.patient.bmi}</span>} icon={<TrackChangesIcon style={{...iconStyle,}}/>}/>
-                        {/* <VitalsLineGraph data={props.chartData.bmiReadings} title={"Body Mass Index"}/>  */}
+                            <span style={{...titleStyle}}>BMI</span>
+                        {/* <ChartReviewSmallActivityButton title={"BMI"} value={<span style={{fontSize:"40px"}}>{props.patient.bmi}</span>} icon={<TrackChangesIcon style={{...iconStyle,}}/>}/> */}
+                        <VitalsLineGraph data={props.chartData.bmiReadings} title={"Body Mass Index"}/> 
 
                             </div>
-                        <div style={{...chartContainerStyle}}>
-                            <ChartReviewSmallActivityButton title={"Height"} value={<span style={{fontSize:"40px",fontFamily:"-webkit-body"}}>{props.patient.height}</span>} icon={<AccessibilityIcon style={{...iconStyle,}}/>}/>
-                        </div>
-                        <div style={{...chartContainerStyle}}>
-                            <ChartReviewSmallActivityButton title={"Blood Type"} value={<span style={{fontSize:"40px",fontFamily:"-webkit-body"}}>{props.patient.blood_type}</span>} icon={<InvertColorsIcon style={{...iconStyle,}}/>}/>
-
-                        </div>
+                        
                 </div>
     );
 }

@@ -26,6 +26,7 @@ import UserSearchResults from '../components/UserSearchResults'
 import {openDepartmentSchedule} from '../store/activities'
 import DepartmentSearchResults from '../components/DepartmentSearchResults'
 import DepartmentScheduleSearchResults from '../components/DepartmentScheduleSearchResults'
+import VitalsLineGraph from '../components/VitalsLineGraph'
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard=(props)=>{
+
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -82,7 +84,9 @@ const Dashboard=(props)=>{
     const homeContext = useContext(HomeContext)
     const [departmentModalLoading,setDepartmentModalLoading] = useState(false)
     const [departmentOpen,setDepartmentOpen] =useState(false)
+    const [departmentScheduleOpen,setDepartmentScheduleOpen] =useState(false)
     const [getDepartmentRecords,setGetDepartmentRecords]=useState(false)
+    const [departmentScheduleModalLoading,setDepartmentScheduleModalLoading]=useState(false)
     const current_user = useSelector(state=>state.auth.user)
     const handleLogOut = ()=> {
         dispatch(logout())
@@ -127,7 +131,7 @@ const Dashboard=(props)=>{
         // dispatch(openEditor({type:"department"}))
       } else if (name==="Dep. Schedule") {
         setDepartmentModalLoading(true)
-        setDepartmentOpen(true)
+        setDepartmentScheduleOpen(true)
         setSelectedActivity("departments")
         setGetDepartmentRecords(!getDepartmentRecords)
         // dispatch(openEditor({type:"department"}))
@@ -221,6 +225,8 @@ const Dashboard=(props)=>{
                   </div>
                   : ""
                   }
+
+
             </div>
             </div>
             {/* <SecureChat user={current_user}/> */}
@@ -253,7 +259,7 @@ const Dashboard=(props)=>{
         modalLoading={departmentModalLoading} 
         themeContext={themeContext}
         departments={departments} 
-        open={departmentOpen}
+        open={departmentScheduleOpen}
         handleClose={handleDepartmentClose}
         handleOpen={handleDepartmentOpen}
         setOpen={setDepartmentOpen}

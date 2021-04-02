@@ -31,7 +31,6 @@ import NewPhysicalProblemForm from './NewPhysicalProblemForm';
 import NewOrderForm from './NewOrderForm';
 import {updateMedication, updateOrder, updateProblem} from '../store/current_patient';
 import EditIcon from '@material-ui/icons/Edit';
-import EncounterCard from './EncounterCard'
 
 const NewItemColorButton = withStyles((theme) => ({
     root: {
@@ -176,7 +175,7 @@ const ColorButton = withStyles((theme) => ({
         }
     }));
 
-function PatientProblemList(props) { 
+function EncounterCard(props) { 
     const classes = useStyles()
     console.log("prs!!",props.patient)
     console.log("ptheseasdfadfddd",{...props.patient})
@@ -197,8 +196,8 @@ function PatientProblemList(props) {
     const [modalForm, setModalForm] = useState("")
     const [showInstructionEdit,setShowInstructionEdit] = useState(false)
     const [selectedMedInstructions,setSelectedMedInstructions] = useState("")
+    const [med,setMed]=useState(props.encounter)
 
-    const current_patient = useSelector(state=>state.currentPatient)
     // console.log(props.patient)
     const [loading,setLoading] = useState(true)
 
@@ -222,12 +221,11 @@ function PatientProblemList(props) {
     };
 
     useEffect(()=>{
-        if (current_patient) {
-            setMedsArray(Object.values(current_patient.encounters))
-            console.log("MEDS ARRAAAY:",medsArray)
+        if (props.encounter) {
+            setMed(props.encounter)
             setLoading(false)
         }
-    },[current_patient])
+    },[props.encounter])
 
     useEffect(()=>{
         const searchForCui = async (cui) => {
@@ -256,11 +254,11 @@ function PatientProblemList(props) {
         setSelectedMed(newMed)
         setSelectedMedInstructions(selectedMedInstructions)
         setShowInstructionEdit(false)
-        dispatch(updateOrder({id:selectedMed.id,note:selectedMedInstructions,status:selectedMed.status}))
+        dispatch(updateOrder({id:med.id,note:selectedMedInstructions,status:med.status}))
     }
 
     const handleCancel = () => {
-        setSelectedMedInstructions(selectedMed.note)
+        setSelectedMedInstructions(med.note)
         setShowInstructionEdit(false)
     }
 
@@ -268,14 +266,14 @@ function PatientProblemList(props) {
         const newMed = {...selectedMed}
         newMed.status = "Canceled"
         setSelectedMed(newMed)
-        dispatch(updateOrder({id:selectedMed.id,status:"Canceled",note:selectedMedInstructions}))
+        dispatch(updateOrder({id:med.id,status:"Canceled",note:selectedMedInstructions}))
     }
 
     const handleRestart = () => {
         const newMed = {...selectedMed}
         newMed.status = "Needs Scheduling"
         setSelectedMed(newMed)
-        dispatch(updateOrder({id:selectedMed.id,status:"Needs Scheduling",note:selectedMedInstructions}))
+        dispatch(updateOrder({id:med.id,status:"Needs Scheduling",note:selectedMedInstructions}))
     }
 
 
@@ -296,11 +294,12 @@ function PatientProblemList(props) {
             const response = await fetch(`/api/providers/photo/${providerId}`)
             const data = await response.json()
             setProvider(data.provider)
+            setPreviewCui(med.cui)
         }
-        if (selectedMedProviderId !== "") {
-            searchForDoc(selectedMedProviderId)
+        if (med.provider_id) {
+            searchForDoc(med.provider_id)
         }
-    },[selectedMedProviderId])
+    },[med])
 
     if (loading) {
         return ""
@@ -312,47 +311,96 @@ function PatientProblemList(props) {
         <>  
             <Fade in={loading === false}>
             <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                    <div style={{display:"flex",flexDirection:"column",width: "35%"}}>
-                    {/* <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewOrderForm")} style={{outline:"none"}}>
-                        <AddIcon></AddIcon> Place An Order
-                    </NewItemColorButton> */}
-            <List style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px",overflow:"scroll",maxHeight:"500px"}} component="nav" aria-label="main mailbox folders">
-                        {medsArray.map((med,index)=>{
-                            const noted =med.date.split(" ")
-                            const notedDate = noted.slice(0,4).join(" ")
-                            return(
+                <div style={{borderRadius:"4px",
+                marginLeft:"10px",
+                boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
+                overflow:"scroll",maxHeight:"450px",
+                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
+                    <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
+                    {/* <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkgrey" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{med.status}</span> */}
+                    <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
+                        <h2 style={{color:"cornflowerblue"}}>Encounter on <span style={{color:"darkgrey"}}>{med.date.split(" ").slice(0,4).join(" ")}</span></h2>
+                        {/* {console.log(med.orders)}
+                        {med.status === "Canceled" ? <GreenColorButton onClick={handleRestart}>Mark as new</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
+                            Cancel
+                        </ColorButton>} */}
+                    </div>
+                        <Divider style={{ width: "100%" }} light={true} />
+                        <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
+                                Primary Encounter Provider:
+                                <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",background:themeContext.themes === "dark" ? "transparent" : "aliceblue",borderRadius:"30px", padding:"7px",fontSize:"18px",border:themeContext.themes==="dark" ? "2px solid cornflowerblue" : ""}}>
+                                    {provider.picture ? <Avatar src={`${provider.picture}`} className={classes.large}></Avatar>
+                                    : <Avatar className={classes.large}>{ provider.first_name ? provider.first_name[0] + " " + provider.last_name[0] : ""}</Avatar>}
+                                    <div style={{display:"flex",flexDirection:"column",justifyContent:"center", marginLeft:"5px"}}>
+                                        <span style={{color:themeContext.themes === "dark" ? "white" : "cornflowerblue"}}>{provider.full_name}</span>
+                                        <span style={{color:themeContext.themes === "dark" ? "white" : "yellowgreen"}}>{provider.specialty}</span>
+                                    </div>
+                                    </div>
+                            </div>
+                            <Divider style={{ width: "100%"}} light={true} />
+                        <div style={{display:"flex",flexDirection:"column"}}>
+                            {med.orders.length ? 
+                            <div style={{display:"flex",flexDirection:"column"}}>
+                            <div style={{alignSelf:"center"}}>Encounter Order Details</div>
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
+                                Procedure: <span style={{fontSize:"18px",padding:"2px",paddingLeft:"5px",paddingRight:"5px",background:"yellowgreen", borderRadius:"4px",color:"white"}}>{med.orders[0].name}</span>
+                            </div>
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
+                                Placed: <span>{med.orders[0].created_at}</span>
+                            </div>
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
+                                Status: <span>{med.orders[0].status}</span>
+                            </div>
+                            </div>
+                            : 
+                            ""
+                            }
+                            <Divider style={{ width: "100%"}} light={true} />
+                            <div style={{background:themeContext.themes === "dark" ? "" : "#f9f9f9",display:"flex",flexDirection:"column",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
+
+                                <div style={{color:"cornflowerblue"}}>Encounter Notes:</div> 
+                                {!showInstructionEdit ? 
                                 <>
-                                <EncounterCard encounter={med}/>
-                            </>
-                            )
-                        })}
-                </List>
-                </div>
+                                <div style={{display:"flex",flexDirection:"column",marginLeft:"20px",marginRight:"20px"}}>
+                                <div className={themeContext.themes === "dark" ? classes.patientInstructionsDark: classes.patientInstructions} onClick={(e)=>{setShowInstructionEdit(true)}} rows={4} style={{border:themeContext.themes === "dark" ? "2px solid grey" : "2px solid grey", borderRadius:"4px",width:"100%",padding:"10px"}}>{!selectedMedInstructions ? "Empty" : selectedMedInstructions}</div>
+                                <div style={{display:"flex",marginLeft:"40px"}}><BlueColorButton onClick={(e)=>{setShowInstructionEdit(true)}}><EditIcon style={{marginRight:"4px"}}/>Edit</BlueColorButton> </div>
+                                </div>
+                                </>
+                                 : 
+                                 <div style={{display:"flex",flexDirection:"column",marginLeft:"20px",marginRight:"20px"}}>
+                                    <TextareaAutosize rows={4} style={{outline:"none",border:"2px solid cornflowerblue", borderRadius:"4px",width:"100%"}} onChange={(e)=>setSelectedMedInstructions(e.target.value)} value={!selectedMedInstructions ? "" : selectedMedInstructions}></TextareaAutosize>
+                                    <div style={{display:"flex",flexDirection:"row",marginLeft:"40px"}}>
+                                    <NewItemColorButton onClick={handleSave}> Save </NewItemColorButton>
+                                    <ColorButton onClick={handleCancel}>Cancel</ColorButton>
+                                    </div>
+                                </div>}
+                            </div>
+                            <Divider style={{ width: "100%"}} light={true} />
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                                </div>
+                            <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* <h5 style={{padding:"10px",color:"cornflowerblue"}}>Unified Medical Language Definitions: </h5>
+                    {selectedItemDefinitions.map((def,index)=>{
+                        return (
+                        <div key={index} style={{width:"100%", display:"flex",flexDirection:"column"}}>
+                        <div style={{display:"flex",flexDirection:"space-between", alignItems:"center"}}>
+                            <span style={{padding:"20px"}}>{def.source}:</span><span style={{color:themeContext.themes === "dark" ? "darkgray" : "grey"}}>{def.value}</span>
+                        </div>
+                        <Divider style={{ color:"cornflowerblue",width: "100%", backgroundColor:themeContext.themes === "dark" ? "white" : "#666666" }} light={true} />
+                        </div>
+                        )
+                    })} */}
+                </div> 
+                    {/* <img src="https://saga-health.s3-us-west-1.amazonaws.com/22f753e82862f39c5b374d443012f720-removebg-preview+(1).png" style={{width:"400px"}}></img> */}
                 </div>
                 </Fade>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={formModalOpen}
-        onClose={handleFormModalClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 200
-        }}
-      >
-        <Slide direction="up" in={formModalOpen}>
-          <div className={classes.modalPaper} style={{autooverflow:"hidden",display:"flex",outline:"none",backgroundColor: themeContext.themes === "dark" ? "#444444" : "white",color: themeContext.themes === "dark" ? "white" : "#444444",padding:"0",overflow:"hidden"}}>
-          {modalForm === "NewMedicationForm" ? <NewMedicationForm patient={props.patient}></NewMedicationForm> : <></> }
-          {modalForm === "NewOrderForm" ? <NewOrderForm patient={props.patient}></NewOrderForm> : <></> }
-          {modalForm === "NewMentalProblemForm" ? <NewMentalProblemForm patient={props.patient}></NewMentalProblemForm> : <></> }
-          {modalForm === "NewPhysicalProblemForm" ? <NewPhysicalProblemForm patient={props.patient}></NewPhysicalProblemForm> : <></> }
-          </div>
-        </Slide>
-      </Modal>
         </>
     );
 }
 
-export default PatientProblemList;
+export default EncounterCard;

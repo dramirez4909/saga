@@ -115,6 +115,38 @@ export const addProblem = (problem) => {
     }
 }
 
+export const updateVitals = (vitals) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const jsonVitals = JSON.stringify(vitals)
+    const res = await fetch(`/api/patients/update-vitals/${vitals.patient_id}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonVitals
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(setPatient(data.patient))
+}
+
+export const updatePatientInfo = (info) => async (dispatch) => {
+    const csrfToken = Cookies.get("XSRF-TOKEN")
+    const jsonInfo = JSON.stringify(info)
+    const res = await fetch(`/api/patients/update-patient/${info.patient_id}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        body: jsonInfo
+    })
+    const data = await res.json()
+    console.log(data)
+    dispatch(setPatient(data.patient))
+}
+
 export const updateOrder = (order) => async (dispatch) => {
     const csrfToken = Cookies.get("XSRF-TOKEN")
     const jsonOrd = JSON.stringify(order)

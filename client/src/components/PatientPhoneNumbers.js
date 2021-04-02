@@ -43,9 +43,9 @@ function PatientPhoneNumbers(props) {
         <>
                 <div style={{display:"flex",marginBottom:"4px",flexDirection:"column",borderRadius:"8px",width:"fit-content",padding:"4px"}}>
                     <div style={{display:"flex",flexDirection:"column",padding:"4px",backgroundColor:"transparent", width:"fit-content",borderRadius:"8px"}}>
-                        <div style={{margin:"4px"}}><HomeIcon style={{height:"18px",width:"18px",color:"grey"}}/> <span style={{fontSize:"14px"}}>{props.patient.home_phone}</span></div>
-                        <div style={{margin:"4px"}}><SmartphoneIcon style={{height:"18px",width:"18px",color:"grey"}}/> <span style={{fontSize:"14px"}}>{props.patient.mobile_phone}</span></div>
-                        <div style={{margin:"4px"}}><LocationCityIcon style={{height:"18px",width:"18px",color:"grey"}}/> <span style={{fontSize:"14px"}}>{props.patient.work_phone}</span></div>
+                        <div style={{margin:"4px"}}><HomeIcon style={{height:"18px",width:"18px",color:"white"}}/> <span style={{fontSize:"14px"}}>{props.patient.home_phone}</span></div>
+                        <div style={{margin:"4px"}}><SmartphoneIcon style={{height:"18px",width:"18px",color:"white"}}/> <span style={{fontSize:"14px"}}>{props.patient.mobile_phone}</span></div>
+                        <div style={{margin:"4px"}}><LocationCityIcon style={{height:"18px",width:"18px",color:"white"}}/> <span style={{fontSize:"14px"}}>{props.patient.work_phone}</span></div>
                     </div>
                 </div>
         </>

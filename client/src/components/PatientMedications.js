@@ -155,7 +155,7 @@ function PatientMedications(props) {
           <div style={{width:"100%"}}>
             <ColorButton onClick={()=>props.hideMedications()}> <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart</ColorButton>
           </div>
-                    <PatientMedicationsList patient={{...props.patient}}/>
+                    <PatientMedicationsList open={props.open} patient={{...props.patient}}/>
         </div>
     );
 }

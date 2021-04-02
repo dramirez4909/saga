@@ -8,7 +8,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import RegistrationContext from './utils/RegistrationContext';
 
 
-
 export default function RegistrationBasicInfoForm() {
 
     const regContext = useContext(RegistrationContext)
