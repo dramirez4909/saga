@@ -315,6 +315,7 @@ const MedicationCard = (props) => {
                 display:"flex",flexDirection:"column",
                 width:"100%",
                 maxWidth:"430px",
+                minWidth:"430px",
                 color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                 <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
                 {med.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>DISCONTINUED</span>}

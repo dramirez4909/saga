@@ -138,7 +138,7 @@ const UserSearchResults = (props) => {
             }}
         >
             <Fade in={props.modalLoading === false && props.open}>
-            <div className={classes.paper} style={{maxWidth:"600px",width:"100%",display:"flex",flexDirection:"column",backgroundColor:"#f9f9f9",overflow:"scroll",height:"656px",borderRadius:"8px"}}>
+            <div className={classes.paper} style={{maxWidth:"600px",width:"100%",display:"flex",flexDirection:"column",backgroundColor:"#f9f9f9",overflow:"scroll",height:"656px",borderRadius:"4px"}}>
                 <div style={{display:"flex",flexDirection:"row",alignItems:"center",width:"100%",backgroundColor:"white",justifyContent:"space-between",paddingLeft:"16px",paddingRight:"10px",borderRadius:"8px"}}>
                 <div style={{display:"flex",flexDirection:"row",maxWidth:"500px",width:"100%",alignItems:"center",justifyContent:"space-between"}}>
                 <h2 style={{marginTop:"16px",color:"dimgrey"}}>

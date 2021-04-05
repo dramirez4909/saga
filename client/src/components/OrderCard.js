@@ -311,14 +311,13 @@ function OrderCard(props) {
     return (
         <>  
         <Fade in={loading === false}>
-            <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
                 <div style={{borderRadius:"4px",
-                marginLeft:"10px",
-                boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
-                overflow:"scroll",maxHeight:"450px",
-                display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
+                margin:"5px",
+                boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",
+                overflow:"scroll",maxWidth:"450px",
+                display:"flex",flexDirection:"column",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                     <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
-                    <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkgrey" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{selectedMed.status}</span>
+                    <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkgrey" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{med.status}</span>
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
                         <h2 style={{color:"cornflowerblue"}}>{med.name}</h2>
                         <span style={{marginLeft:"20px",color:"salmon"}}>
@@ -385,7 +384,6 @@ function OrderCard(props) {
                         </div>
                         )
                     })}
-                </div>
                 </div>
                 </Fade>
         </>

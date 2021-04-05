@@ -17,6 +17,7 @@ import { loadDepartmentOrders} from './store/orders';
 import ThemeContext from './components/utils/ThemeContext';
 import {BreakpointProvider} from 'react-socks'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SplashPage from './pages/SplashPage';
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -91,6 +92,7 @@ function App() {
     <ThemeContext.Provider value={{themes,setThemes}}>
     <BrowserRouter>
         <Switch>
+            {/* <AuthRoute exact path='/welcome' component={SplashPage} currentUserId={currentUser.id}/> */}
             <AuthRoute exact path='/signup' component={SignUpPage} currentUserId={currentUser.id}/>
             <AuthRoute exact path='/login' component={LoginPage} currentUserId={currentUser.id}/>
             <ProtectedRoute exact strict path='/' component={Home} currentUserId={currentUser.id}/>

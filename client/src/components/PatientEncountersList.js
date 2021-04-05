@@ -32,6 +32,7 @@ import NewOrderForm from './NewOrderForm';
 import {updateMedication, updateOrder, updateProblem} from '../store/current_patient';
 import EditIcon from '@material-ui/icons/Edit';
 import EncounterCard from './EncounterCard'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const NewItemColorButton = withStyles((theme) => ({
     root: {
@@ -311,12 +312,15 @@ function PatientProblemList(props) {
     return (
         <>  
             <Fade in={loading === false}>
-            <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                    <div style={{display:"flex",flexDirection:"column",width: "35%"}}>
+            <div style={{display:"flex",flexDirection:"column",width:"100%",alignItems:"center",paddingBottom:"80px"}}>
+                    <div style={{display:"flex",flexDirection:"row",width: "100%",justifyContent:"center"}}>
+                    <ColorButton onClick={()=>props.hideEncounters()}> <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart</ColorButton>
                     {/* <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewOrderForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Place An Order
                     </NewItemColorButton> */}
-            <List style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px",overflow:"scroll",maxHeight:"500px"}} component="nav" aria-label="main mailbox folders">
+                    </div>
+
+            <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap",backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px",justifyContent:"center"}}>
                         {medsArray.map((med,index)=>{
                             const noted =med.date.split(" ")
                             const notedDate = noted.slice(0,4).join(" ")
@@ -326,7 +330,6 @@ function PatientProblemList(props) {
                             </>
                             )
                         })}
-                </List>
                 </div>
                 </div>
                 </Fade>

@@ -315,21 +315,19 @@ function PatientProblemList(props) {
     return (
         <>  
         <Fade in={loading === false}>
-            <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
-                <div style={{width:"100%"}}>
+            <div style={{display:"flex",flexDirection:"column",width:"100%",paddingBottom:"80px",alignItems:"center"}}>
+                <div style={{width:"100%", flexDirection:"row",display:"flex",justifyContent:"center"}}>
                     <ColorButton onClick={()=>props.hideOrders()}> <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart</ColorButton>
-                </div>
-                    <div style={{display:"flex",flexDirection:"column",width: "35%"}}>
                     <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewOrderForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Place An Order
                     </NewItemColorButton>
-            <div style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px"}}>
+                    </div>
+            <div style={{backgroundColor:"transparent", width:"100%",maxWidth:"950px",display:"flex",flexDirection:"row",flexWrap:"wrap",paddingTop:"0px",justifyContent:"center"}}>
                         {ordersArray.map((med,index)=>{
                             return(
                                 <OrderCard order={med} />
                             )
                         })}
-                </div>
                 </div>
                     {/* <img src="https://saga-health.s3-us-west-1.amazonaws.com/reasons-people-avoid-mental-health-treatment-removebg-preview.png" style={{width:"400px"}}></img> */}
                     </div>

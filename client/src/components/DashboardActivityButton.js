@@ -59,11 +59,15 @@ const DashButton = (props) => {
             <img style={{
                 alignSelf:"center",
                 padding:"16px 16px 0px",
-                height:"auto"
+                height:"auto",
+                width:"260px"
+
             }} 
             // src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_316x112_3343d1d69c2d68a4bd3d28babd1f9e80.png"
-            src="https://www.gstatic.com/identity/boq/accountsettingsmobile/dataandpersonalization_icon_96x96_cdb6dff2e31ed6745ece4662231bfd48.png">
-                
+            // src="https://www.gstatic.com/identity/boq/accountsettingsmobile/dataandpersonalization_icon_96x96_cdb6dff2e31ed6745ece4662231bfd48.png"
+            src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_active_316x112_f843f357c2520236914c8f154234c3a4.png"
+            >
+            
             </img>
             </>
             : 
@@ -76,9 +80,24 @@ const DashButton = (props) => {
                 alignSelf:"center",
                 padding:"16px 16px 0px",
                 height:"auto",
-                width:"210px"
+                width:"260px"
             }}             // src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_316x112_3343d1d69c2d68a4bd3d28babd1f9e80.png"
-            src="https://developers.google.com/my-business/images/landing-page-leverage-2-2x.png">
+            src="https://www.gstatic.com/identity/boq/accountsettingsmobile/lesssecureapps_on_scene_316x112_600f0fd0b19720a4975d8442d953fa32.png">
+            </img>
+            </>
+            : 
+            ""
+            }
+            {props.title === "Department Schedules" 
+            ? 
+            <>
+            <img style={{
+                alignSelf:"center",
+                padding:"16px 16px 0px",
+                height:"auto",
+                width:"260px"
+            }}             // src="https://www.gstatic.com/identity/boq/accountsettingsmobile/privacycheckup_scene_316x112_3343d1d69c2d68a4bd3d28babd1f9e80.png"
+            src="https://www.gstatic.com/identity/boq/accountsettingsmobile/reservations_scene_316x112_166117b2f9a9fdcce83b20f77cf604e9.png">
             </img>
             </>
             : 
@@ -88,11 +107,23 @@ const DashButton = (props) => {
             <div style={{
                 display:"flex",
                 flexDirection:"column",
-                padding:"16px 16px 0px",
+                padding:"16px 16px 16px",
                 marginBottom:"0px",
-                color:"black"
+                color:"black",
+                backgroundColor:"white",
+                fontFamily:'"Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif'
                 }}>
-                This is an activity in saga
+
+                <span style={{
+                    fontSize:"16px",
+                    color:"rgb(50, 49, 48)",
+                    fontWeight:"600"
+                }}>{props.mainText}</span>
+                <span style={{
+                    fontSize:"12px",
+                    marginTop:"16px",
+                    color:"rgb(96, 94, 92)"
+                }}>{props.secondaryText}</span>
             </div>
         </div>
     )

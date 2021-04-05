@@ -39,7 +39,7 @@ const NewItemColorButton = withStyles((theme) => ({
         paddingLeft: "10px",
         margin: "4px",
         outline:"none",
-        width:"fit-content",
+        minWidth:"100px",
         backgroundColor:"#a9a9a9",
         '&:hover': {
             backgroundColor: "yellowgreen !important",
@@ -53,6 +53,7 @@ const GreenColorButton = withStyles((theme) => ({
         paddingRight: "10px",
         paddingLeft: "10px",
         outline:"none",
+        minWidth:"100px",
         margin: "4px",
         backgroundColor:"#a9a9a9",
         '&:hover': {
@@ -69,6 +70,7 @@ const ColorButton = withStyles((theme) => ({
         paddingLeft: "10px",
         outline:"none",
         margin: "4px",
+        minWidth:"100px",
         backgroundColor:"#a9a9a9",
         border:"1px solid #a9a9a9",
         '&:hover': {
@@ -85,7 +87,7 @@ const ColorButton = withStyles((theme) => ({
             paddingLeft: "10px",
             outline:"none",
             margin: "4px",
-            width:"fit-content",
+            minWidth:"100px",
             backgroundColor:"#a9a9a9",
             '&:hover': {
                 backgroundColor: "dodgerblue !important",
@@ -309,8 +311,9 @@ const MentalProblemCard = (props) => {
     return(
         <div style={{borderRadius:"4px",
         marginLeft:"10px",
-        boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
-        overflow:"scroll",maxHeight:"450px",
+        boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",
+        overflow:"scroll",
+        maxWidth:"450px",
         display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
             <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
             {med.current === "true" ? "" : <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "gainsboro" ,padding:"2px", borderRadius:"4px",paddingLeft:"10px", paddingRight:"10px"}}>RESOLVED</span>}

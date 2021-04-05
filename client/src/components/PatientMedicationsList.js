@@ -313,14 +313,18 @@ function PatientMedicationsList(props) {
     return (
         <>  
             <Fade in={loading === false}>
-            <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
-                    <div style={{display:"flex",flexDirection:"column",
-                    boxShadow:"rgba(0, 0, 0, 0.05) 0px 0px 0px 1px",borderRadius:"4px",
+            <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
+                    <div style={{display:"flex",flexDirection:"row",alignSelf:"center",position:"fixed",
+                    boxShadow:"rgba(0, 0, 0, 0.05) 0px 0px 0px 1px",borderRadius:"4px",maxWidth:"900px",
                 }}>
+                    <ColorButton onClick={()=>props.hideMedications()}> 
+                        <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart
+                    </ColorButton>
                     <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewMedicationForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Add a Medication
                     </NewItemColorButton>
-            <div style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px",display:"flex",flexDirection:"row",flexWrap:"wrap",justifyContent:"center",width:"100%"}} component="nav" aria-label="main mailbox folders">
+                </div>
+            <div style={{backgroundColor:"transparent",borderRadius:"8px",paddingTop:"0px",display:"flex",flexDirection:"row",flexWrap:"nowrap",overflowX:"scroll",marginTop:"45px",maxWidth:"1200px",width:"100%"}} component="nav" aria-label="main mailbox folders">
                         {medsArray.map((med,index)=>{
                             const noted =med.created_at.split(" ")
                             const notedDate = noted.slice(0,4).join(" ")
@@ -328,7 +332,6 @@ function PatientMedicationsList(props) {
                                 <MedicationCard medication={med}/>
                             )
                         })}
-                </div>
                 </div>
                 </div>
                 </Fade>

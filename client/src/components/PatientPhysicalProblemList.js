@@ -323,13 +323,12 @@ function PatientProblemList(props) {
         <>  
 
             <div style={{display:"flex",flexDirection:"column",width:"100%"}}>
-                <div style={{width:"100%"}}>
+                <div style={{display:"flex",flexDirection:"row",width: "100%",justifyContent:"center"}}>
                     <ColorButton onClick={()=>props.hidePhysicalProblems()}> <ArrowBackIcon style={{marginRight:"4px"}}></ArrowBackIcon>{props.patient.firstName}'s chart</ColorButton>
-                </div>
-                    <div style={{display:"flex",flexDirection:"column",width: selectedMed.name ? "35%" : "70%",transition:"width .2s ease-in-out"}}>
-                    <NewItemColorButton fullWidth={"false"} onClick={(e)=>handleFormModalOpen("NewPhysicalProblemForm")} style={{outline:"none"}}>
+                    <NewItemColorButton onClick={(e)=>handleFormModalOpen("NewPhysicalProblemForm")} style={{outline:"none"}}>
                         <AddIcon></AddIcon> Add A Physical Health Issue
                     </NewItemColorButton>
+                    </div>
             <div style={{backgroundColor:"transparent",width:"100%",flexDirection:"row",flexWrap:"wrap",display:"flex"}} >
                         {probsArray.map((problem,index)=>{
                             if (problem.type === "mental") return 
@@ -341,7 +340,6 @@ function PatientProblemList(props) {
                             )
                         })}
                 </div>
-            </div>
                     {/* <img src="https://saga-health.s3-us-west-1.amazonaws.com/student-mental-health-removebg-preview.png" style={{width:"400px"}}></img> */}
             </div>
       <Modal

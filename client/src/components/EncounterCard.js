@@ -310,16 +310,16 @@ function EncounterCard(props) {
     return (
         <>  
             <Fade in={loading === false}>
-            <div style={{display:"flex",flexDirection:"row",width:"100%"}}>
+            <div style={{display:"flex",flexDirection:"row",maxWidth:"450px",width:"100%"}}>
                 <div style={{borderRadius:"4px",
-                marginLeft:"10px",
-                boxShadow:"rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
+                margin:"5px",
+                boxShadow:"rgb(0 0 0 / 13%) 0px 3.2px 7.2px 0px, rgb(0 0 0 / 11%) 0px 0.6px 1.8px 0px",
                 overflow:"scroll",maxHeight:"450px",
-                display:"flex",flexDirection:"column",width:"65%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
+                display:"flex",flexDirection:"column",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "#f9f9f9"}}>
                     <div style={{display:"flex",flexDirection:"column",width:"100%",color:themeContext.themes === "dark" ? "white" : "#444444",background:themeContext.themes === "dark" ? "#444444" : "white"}}>
                     {/* <span style={{color:"white",fontSize:"24px",background:themeContext.themes === "dark" ? "#222222" : "darkgrey" ,padding:"2px",paddingLeft:"10px", paddingRight:"10px"}}>{med.status}</span> */}
                     <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"space-between",padding:"10px"}}>
-                        <h2 style={{color:"cornflowerblue"}}>Encounter on <span style={{color:"darkgrey"}}>{med.date.split(" ").slice(0,4).join(" ")}</span></h2>
+                        <h4 style={{color:"grey"}}>Encounter on <span style={{color:"cornflowerblue"}}>{med.date.split(" ").slice(0,4).join(" ")}</span></h4>
                         {/* {console.log(med.orders)}
                         {med.status === "Canceled" ? <GreenColorButton onClick={handleRestart}>Mark as new</GreenColorButton>: <ColorButton onClick={handleDiscontinue}>
                             Cancel
@@ -343,7 +343,7 @@ function EncounterCard(props) {
                             <div style={{display:"flex",flexDirection:"column"}}>
                             <div style={{alignSelf:"center"}}>Encounter Order Details</div>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
-                                Procedure: <span style={{fontSize:"18px",padding:"2px",paddingLeft:"5px",paddingRight:"5px",background:"yellowgreen", borderRadius:"4px",color:"white"}}>{med.orders[0].name}</span>
+                                Procedure: <span style={{fontSize:"18px",padding:"2px",paddingLeft:"5px",paddingRight:"5px",background:"yellowgreen", borderRadius:"4px",textAlign:"center",color:"white"}}>{med.orders[0].name}</span>
                             </div>
                             <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between",padding:"5px",paddingLeft:"50px",paddingRight:"50px"}}>
                                 Placed: <span>{med.orders[0].created_at}</span>

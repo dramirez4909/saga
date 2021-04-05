@@ -27,6 +27,7 @@ import {openDepartmentSchedule} from '../store/activities'
 import DepartmentSearchResults from '../components/DepartmentSearchResults'
 import DepartmentScheduleSearchResults from '../components/DepartmentScheduleSearchResults'
 import VitalsLineGraph from '../components/VitalsLineGraph'
+import DashboardUserHeader from '../components/DashboardUserHeader'
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -197,31 +198,56 @@ const Dashboard=(props)=>{
             {/* <div style={{fontFamily:"Google Sans,Roboto,Arial,sans-serif",fontWeight:"400",fontSize:"22px",alignSelf:"center"}}>
               My Activities
             </div> */}
+            <DashboardUserHeader user={current_user}/>
             <div style={{width:"100%",display:"flex",flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}} >
             {activities.some(activity=> activity.name === "Patient Registration") ? 
-                                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
+                                <div style={{maxWidth:"300px",width:"100%",margin:"8px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
                   <DashboardActivityButton onClick={(e)=>handleActivityClick("Patient Registration")} style={{cursor:"pointer"}} color={"coral"} title="Patient Registration"></DashboardActivityButton>
                   </div>
                   : ""}
             {activities.some(activity=> activity.name === "Patient Check-in") ? 
-                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
+                <div style={{maxWidth:"300px",width:"100%",margin:"8px"}} onClick={(e)=>handleActivityClick("Patient Registration")}>
                   <DashboardActivityButton onClick={(e)=>handleActivityClick("Patient Check-in")} style={{cursor:"pointer"}} color={"coral"} title="Patient Check-in"></DashboardActivityButton>
                 </div>
                    : ""}
             {activities.some(activity=> activity.name === "User Editor") ? 
-                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("User Editor")}>
-                  <DashboardActivityButton onClick={(e)=>handleActivityClick("User Editor")} style={{cursor:"pointer"}} color={"transparent"} title="User Editor"></DashboardActivityButton>
+                <div style={{maxWidth:"300px",width:"100%",margin:"8px"}} onClick={(e)=>handleActivityClick("User Editor")}>
+                  <DashboardActivityButton 
+                    onClick={(e)=>handleActivityClick("User Editor")} 
+                    style={{cursor:"pointer"}} 
+                    color={"transparent"} 
+                    title="User Editor"
+                    mainText={"Every setting on one screen"}
+                    secondaryText={"Create users, update users' basic information, or manage user security with user roles and security points"}
+                    >
+                    </DashboardActivityButton>
                   </div>
                   : ""}
             {activities.some(activity=> activity.name === "Record Editor") ?
-                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Department Editor")}>
-                  <DashboardActivityButton onClick={(e)=>handleActivityClick("Department Editor")} style={{cursor:"pointer"}} color={"coral"} title="Department Editor" onClick={(e)=>handleActivityClick("Department Editor")}></DashboardActivityButton>
+                <div style={{maxWidth:"300px",width:"100%",margin:"8px"}} onClick={(e)=>handleActivityClick("Department Editor")}>
+                  <DashboardActivityButton 
+                    onClick={(e)=>handleActivityClick("Department Editor")} 
+                    style={{cursor:"pointer"}} 
+                    color={"coral"} 
+                    mainText={"Manage your care facilities"}
+                    secondaryText={"Add and remove rooms, configure department schedules, update location and specialty information"}
+                    title="Department Editor" 
+                    onClick={(e)=>handleActivityClick("Department Editor")}>
+                  </DashboardActivityButton>
                   </div>
                   : ""
                   }
             {activities.some(activity=> activity.name === "Dep. Schedule") ?
-                <div style={{maxWidth:"300px",width:"100%",marginLeft:"20px",marginRight:"20px",marginTop:"10px"}} onClick={(e)=>handleActivityClick("Dep. Schedule")}>
-                  <DashboardActivityButton onClick={(e)=>handleActivityClick("Department Schedules")} style={{cursor:"pointer"}} color={"coral"} title="Department Schedules" onClick={(e)=>handleActivityClick("Dep. Schedule")}></DashboardActivityButton>
+                <div style={{maxWidth:"300px",width:"100%",margin:"8px"}} onClick={(e)=>handleActivityClick("Dep. Schedule")}>
+                  <DashboardActivityButton 
+                    onClick={(e)=>handleActivityClick("Department Schedules")} 
+                    style={{cursor:"pointer"}} 
+                    color={"coral"} 
+                    title="Department Schedules" 
+                    onClick={(e)=>handleActivityClick("Dep. Schedule")}
+                    mainText={"Timing is everything"}
+                    secondaryText={"Create encounters from your departments' unscheduled orders queue with drag and drop! View a daily or monthly breakdown of your department's past and upcoming encoutners"}>
+                    </DashboardActivityButton>
                   </div>
                   : ""
                   }
